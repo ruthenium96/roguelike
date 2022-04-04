@@ -1,7 +1,11 @@
 @startuml
 'https://plantuml.com/class-diagram
 
+'The main class controlling game logic, UI and user input.
 class Controller {
+- Action changeWorldCommand(Command)
+- ??? changeUICommand(Command)
+'Start game.
 + void start()
 }
 
@@ -11,6 +15,7 @@ Controller "1" o-- "1" InputManager
 
 'INPUT SECTION:
 abstract InputManager {
+'This function waits for user input and returns Command.
 +Command readCommand()
 }
 
@@ -31,14 +36,18 @@ Unknown
 'UI SECTION:
 
 class UI {
+'Draws game, based on Map and Inventory information.
 +void draw(Map, Inventory)
 }
 
 'WORLD LOGIC SECTION
 
 class GameEngine {
+'Takes Action from Controller and apply it to WorldState.
 + void applyExternalAction(Action)
+'Get Map, based on WorldState.
 + Map getMap()
+'Get Inventory of Player, based on WorldState.
 + Inventory getPlayerInventory()
 }
 
@@ -46,6 +55,7 @@ GameEngine "1" o-- "1" WorldState
 GameEngine "1" o-- "1" WorldGenerator
 
 abstract WorldGenerator {
+'Return GameObjects on new Coordinate, using information from Map.
 + GameObject[] generateObjects(Coordinate, Map)
 }
 
@@ -53,7 +63,9 @@ WorldGenerator -.|> WorldGeneratorFromFile
 WorldGenerator -.|> WorldGeneratorOnTheFly
 
 class WorldState {
+'Return Map.
 + Map getMap()
+'Return Inventory of Player.
 + Inventory getPlayerInventory()
 }
 
