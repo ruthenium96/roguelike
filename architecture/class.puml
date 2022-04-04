@@ -14,7 +14,7 @@ abstract InputManager {
 +Command readCommand()
 }
 
-InputManager --|> KeyboardManager
+InputManager -.|> KeyboardManager
 
 class Command {
 }
@@ -47,8 +47,8 @@ abstract WorldGenerator {
 + GameObject[] generateObjects(Coordinate, Map)
 }
 
-WorldGenerator --|> WorldGeneratorFromFile
-WorldGenerator --|> WorldGeneratorOnTheFly
+WorldGenerator -.|> WorldGeneratorFromFile
+WorldGenerator -.|> WorldGeneratorOnTheFly
 
 class WorldState {
 +Map getMap()
@@ -74,9 +74,9 @@ class Tile
 'It is required because Item is not Object.
 class Artefact
 
-GameObject ---|> Tile
-GameObject ---|> Player
-GameObject ---|> Artefact
+GameObject --.|> Tile
+GameObject --.|> Player
+GameObject --.|> Artefact
 
 'Item is self-explaining
 class Item
