@@ -38,6 +38,8 @@ class UI {
 
 class GameEngine {
 + void applyExternalAction(Action)
++ Map getMap()
++ Inventory getPlayerInventory()
 }
 
 GameEngine "1" o-- "1" WorldState
@@ -51,7 +53,8 @@ WorldGenerator -.|> WorldGeneratorFromFile
 WorldGenerator -.|> WorldGeneratorOnTheFly
 
 class WorldState {
-+Map getMap()
++ Map getMap()
++ Inventory getPlayerInventory()
 }
 
 WorldState "1" o-- "*" GameObject
@@ -68,7 +71,9 @@ abstract class GameObject {
 }
 
 'Player is self-explaining
-class Player
+class Player {
++Inventory getInventory()
+}
 'Tile is something like floor, each coordinate has to have one Tile
 class Tile
 'Artefact is something able to hold Item (like chest or just item).
