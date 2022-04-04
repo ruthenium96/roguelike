@@ -71,7 +71,7 @@ class Player
 'Tile is something like floor, each coordinate has to have one Tile
 class Tile
 'Artefact is something able to hold Item (like chest or just item).
-'It is required because Item is not Object.
+'It is required because Item is not GameObject.
 class Artefact
 
 GameObject --.|> Tile
@@ -80,7 +80,7 @@ GameObject --.|> Artefact
 
 'Item is self-explaining
 class Item
-'Action is attempt of Object to change the World (including itself)
+'Action is attempt of GameObject to change the World (including itself)
 abstract class Action {
 - id: Identity
 + Identity getIdentityOfAuthor()
