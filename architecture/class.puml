@@ -54,7 +54,8 @@ class WorldState {
 +Map getMap()
 }
 
-WorldState "1" o-- "1..*" GameObject
+WorldState "1" o-- "*" GameObject
+WorldState "1" o-- "*" Player
 
 'Object is something with Coordinate, Item[], Action[]
 abstract class GameObject {
@@ -75,7 +76,7 @@ class Tile
 class Artefact
 
 GameObject --.|> Tile
-GameObject --.|> Player
+GameObject .|> Player
 GameObject --.|> Artefact
 
 'Item is self-explaining
