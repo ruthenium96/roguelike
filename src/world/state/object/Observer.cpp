@@ -24,11 +24,11 @@ std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Ident
         identityObjectMap_[object->getIdentity()] = object;
     }
 
-    std::vector<common::ObjectType> Observer::getObjectsTypes(common::Coordinate coordinate) const {
-        std::vector<common::ObjectType> answer;
+    std::vector<std::shared_ptr<AbstractObject>> Observer::getObjects(common::Coordinate coordinate) const {
+        std::vector<std::shared_ptr<AbstractObject>> answer;
         for (const auto& [_, object] : identityObjectMap_) {
             if (object->getCoordinate() == coordinate) {
-                answer.push_back(object->getObjectType());
+                answer.push_back(object);
             }
         }
         return answer;

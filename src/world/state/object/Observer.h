@@ -16,7 +16,7 @@ public:
     std::shared_ptr<const object::Player> getPlayer() const;
     std::optional<std::shared_ptr<object::AbstractObject>> getObject(Identity);
 
-    std::vector<common::ObjectType> getObjectsTypes(common::Coordinate) const;
+    std::vector<std::shared_ptr<AbstractObject>> getObjects(common::Coordinate) const;
 
     void addObject(const std::shared_ptr<object::AbstractObject>&);
 
