@@ -7,7 +7,8 @@
 #include <any>
 
 #include "Identity.h"
-#include "Coordinate.h"
+#include "../../../common/Coordinate.h"
+#include "../../../common/ObjectType.h"
 
 namespace world::state::object {
 class AbstractObject {
@@ -16,17 +17,18 @@ public:
     const Identity& getIdentity() const {
         return identity_;
     };
-    const Coordinate& getCoordinate() const {
+    const common::Coordinate& getCoordinate() const {
         return coordinate_;
     }
-    Coordinate& getCoordinate() {
+    common::Coordinate& getCoordinate() {
         return coordinate_;
     }
+    virtual common::ObjectType getObjectType() const = 0;
 //    virtual std::optional<std::any> getProperty();
 
 private:
     const Identity identity_;
-    Coordinate coordinate_;
+    common::Coordinate coordinate_;
 };
 }
 

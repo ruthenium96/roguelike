@@ -8,6 +8,7 @@ namespace world::state::object {
 class Player : public AbstractObject {
 public:
     explicit Player(Identity&& identity) : AbstractObject(std::move(identity)) {};
+    common::ObjectType getObjectType() const override;
 private:
 };
 

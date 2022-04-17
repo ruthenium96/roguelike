@@ -5,14 +5,19 @@
 
 #include "state/State.h"
 #include "generator/AbstractGenerator.h"
+#include "../common/Command.h"
+#include "../common/Map.h"
 
 namespace world {
 class Engine {
 public:
     Engine();
-    void start();
+    //common::Map
+    common::Map applyCommand(common::Command);
 
 private:
+    common::Map generateMap();
+
     state::State state_;
     std::unique_ptr<generator::AbstractGenerator> generator_;
 };

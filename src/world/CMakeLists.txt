@@ -6,4 +6,4 @@ add_library(world
         generator/OnTheFly.cpp generator/OnTheFly.h
         )
 
-target_link_libraries(world state)
+target_link_libraries(world state common)

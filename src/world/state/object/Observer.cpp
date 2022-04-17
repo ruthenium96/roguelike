@@ -1,9 +1,14 @@
 #include "Observer.h"
 namespace world::state::object {
 
-std::shared_ptr<object::AbstractObject> world::state::object::Observer::getPlayer() {
-    // TODO: fix it
-    return identityObjectMap_[Identity(0)];
+std::shared_ptr<object::Player> world::state::object::Observer::getPlayer() {
+    for (const auto& [_, object] : identityObjectMap_) {
+        if (object->getObjectType() == common::ObjectType::PLAYER) {
+            auto ptrToPlayer = std::dynamic_pointer_cast<Player>(object);
+            return ptrToPlayer;
+        }
+    }
+    return nullptr;
 }
 
 std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Identity identity) {
@@ -19,4 +24,23 @@ std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Ident
         identityObjectMap_[object->getIdentity()] = object;
     }
 
+    std::vector<common::ObjectType> Observer::getObjectsTypes(common::Coordinate coordinate) const {
+        std::vector<common::ObjectType> answer;
+        for (const auto& [_, object] : identityObjectMap_) {
+            if (object->getCoordinate() == coordinate) {
+                answer.push_back(object->getObjectType());
+            }
+        }
+        return answer;
+    }
+
+    std::shared_ptr<const object::Player> Observer::getPlayer() const {
+        for (const auto& [_, object] : identityObjectMap_) {
+            if (object->getObjectType() == common::ObjectType::PLAYER) {
+                auto ptrToPlayer = std::dynamic_pointer_cast<Player>(object);
+                return ptrToPlayer;
+            }
+        }
+        return nullptr;
+    }
 }

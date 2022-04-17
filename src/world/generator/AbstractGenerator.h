@@ -18,8 +18,8 @@ struct ObjectAndActions {
 
 class AbstractGenerator {
 public:
-    virtual std::vector<ObjectAndActions> generateObjects(state::object::Coordinate, const state::object::Observer&) = 0;
-    virtual ~AbstractGenerator() = default;;
+    virtual std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) = 0;
+    virtual ~AbstractGenerator() = default;
 
 private:
     // TODO: should we keep Coordinates of already generated Coordinates?

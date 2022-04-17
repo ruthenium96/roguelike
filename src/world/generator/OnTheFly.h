@@ -7,7 +7,7 @@ namespace world::generator {
 
 class OnTheFly : public AbstractGenerator {
 public:
-    std::vector<ObjectAndActions> generateObjects(state::object::Coordinate, const state::object::Observer&) override;
+    std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) override;
 
 private:
     uint32_t generated_objects_ = 0;

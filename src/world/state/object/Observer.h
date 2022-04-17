@@ -7,13 +7,17 @@
 #include "Identity.h"
 #include "AbstractObject.h"
 #include "concrete/Player.h"
+#include "../../../common/Map.h"
 
 namespace world::state::object {
 class Observer {
 public:
-    // TODO: change to object::Player
-    std::shared_ptr<object::AbstractObject> getPlayer();
+    std::shared_ptr<object::Player> getPlayer();
+    std::shared_ptr<const object::Player> getPlayer() const;
     std::optional<std::shared_ptr<object::AbstractObject>> getObject(Identity);
+
+    std::vector<common::ObjectType> getObjectsTypes(common::Coordinate) const;
+
     void addObject(const std::shared_ptr<object::AbstractObject>&);
 
 private:

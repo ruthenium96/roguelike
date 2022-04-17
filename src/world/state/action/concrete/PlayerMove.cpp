@@ -1,4 +1,5 @@
 #include "PlayerMove.h"
+#include <algorithm>
 
 namespace world::state::action {
     PlayerMove::PlayerMove(int32_t delta_x, int32_t delta_y) {
@@ -8,8 +9,11 @@ namespace world::state::action {
 
     bool PlayerMove::precondition(const object::Observer &objectObserver,
                                   const std::set<std::shared_ptr<AbstractAction>>&) {
-        // TODO: check if move is possible
-        return true;
+        auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
+        common::Coordinate wantedCoordinate = {playerCoordinate.x + delta_x_,
+                                               playerCoordinate.y + delta_y_};
+        auto objectTypes = objectObserver.getObjectsTypes(wantedCoordinate);
+        return std::find(objectTypes.begin(), objectTypes.end(), common::WALL) == objectTypes.end();
     }
 
     void PlayerMove::changeTarget(object::Observer &objectObserver, std::set<std::shared_ptr<AbstractAction>>&) {
