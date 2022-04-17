@@ -2,4 +2,7 @@
 
 namespace controller {
 
+void Controller::start() {
+
+}
 }

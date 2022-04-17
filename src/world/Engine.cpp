@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "Engine.h"
 
 #include "generator/OnTheFly.h"
@@ -56,7 +57,13 @@ namespace world {
         for (int32_t x = playerCoordinate.x - 10; x <= playerCoordinate.x + 10; ++x) {
             for (int32_t y = playerCoordinate.y - 10; y <= playerCoordinate.y + 10; ++y) {
                 common::Coordinate currentCoordinate = {x, y};
-                map[currentCoordinate] = state_.getObjectObserver().getObjectsTypes(currentCoordinate);
+                auto objects = state_.getObjectObserver().getObjects(currentCoordinate);
+                std::vector<common::ObjectType> objectsTypes(objects.size());
+                std::transform(objects.cbegin(),
+                               objects.cend(),
+                               objectsTypes.begin(),
+                               [](const auto& object){return object->getObjectType();});
+                map[currentCoordinate] = objectsTypes;
             }
         }
         return map;

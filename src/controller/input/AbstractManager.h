@@ -1,5 +1,4 @@
-#ifndef ARCH_ROGUELIKE_ABSTRACTMANAGER_H
-#define ARCH_ROGUELIKE_ABSTRACTMANAGER_H
+#pragma once
 
 #include "../../common/Command.h"
 
@@ -8,7 +7,6 @@ namespace controller::input {
 class AbstractManager {
 public:
     virtual common::Command readCommand() = 0;
+    virtual ~AbstractManager() = default;
 };
 }
-
-#endif //ARCH_ROGUELIKE_ABSTRACTMANAGER_H

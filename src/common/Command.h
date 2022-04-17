@@ -1,5 +1,4 @@
-#ifndef ARCH_ROGUELIKE_COMMAND_H
-#define ARCH_ROGUELIKE_COMMAND_H
+#pragma once
 
 // This class helps modules communicate each other.
 namespace common {
@@ -10,11 +9,4 @@ enum InputCommand {
     MOVE_RIGHT
 };
 
-class Command {
-public:
-    InputCommand inputCommand;
-
-};
 }
-
-#endif //ARCH_ROGUELIKE_COMMAND_H

@@ -12,8 +12,13 @@ namespace world::state::action {
         auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
         common::Coordinate wantedCoordinate = {playerCoordinate.x + delta_x_,
                                                playerCoordinate.y + delta_y_};
-        auto objectTypes = objectObserver.getObjectsTypes(wantedCoordinate);
-        return std::find(objectTypes.begin(), objectTypes.end(), common::WALL) == objectTypes.end();
+        auto objects = objectObserver.getObjects(wantedCoordinate);
+        for (const auto& object : objects) {
+            if (object->getObjectType() == common::ObjectType::WALL) {
+                return false;
+            }
+        }
+        return true;
     }
 
     void PlayerMove::changeTarget(object::Observer &objectObserver, std::set<std::shared_ptr<AbstractAction>>&) {
