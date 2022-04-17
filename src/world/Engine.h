@@ -13,7 +13,7 @@ class Engine {
 public:
     Engine();
     //common::Map
-    common::Map applyCommand(common::Command);
+    common::Map applyCommand(const common::ControllerCommand&);
 
 private:
     common::Map generateMap();

@@ -2,11 +2,13 @@
 
 // This class helps modules communicate each other.
 namespace common {
-enum InputCommand {
+
+enum class ControllerCommand {
     MOVE_TOP,
     MOVE_LEFT,
+    MOVE_RIGHT,
     MOVE_BOTTOM,
-    MOVE_RIGHT
+    EXIT
 };
 
 }

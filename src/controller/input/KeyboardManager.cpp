@@ -11,7 +11,9 @@ namespace {
 #include <unistd.h>
 #include <cstdio>
 
-char read_char_with_no_confirmation() {
+#include "../../common/Command.h"
+
+inline char read_char_with_no_confirmation() {
     termios oldattr{};
     termios newattr{};
     int ch;
@@ -27,12 +29,12 @@ char read_char_with_no_confirmation() {
 #elif _WIN32
 #include <conio.h>
 
-char read_char_with_no_confirmation() {
+inline char read_char_with_no_confirmation() {
     return getch();
 }
 
 #else
-char read_char_with_no_confirmation() {
+inline char read_char_with_no_confirmation() {
     throw std::runtime_error("Platform doesn't support");
 }
 #endif
@@ -40,10 +42,18 @@ char read_char_with_no_confirmation() {
 
 
 namespace controller::input {
-common::Command KeyboardManager::readCommand() {
-    char c;
-    while (c = read_char_with_no_confirmation()) {
-        std::cout << c << std::endl;
+common::ControllerCommand KeyboardManager::readCommand() {
+    char symbol = std::tolower(read_char_with_no_confirmation());
+    if (symbol == 'w') {
+        return common::ControllerCommand::MOVE_TOP;
+    } else if (symbol == 'd') {
+        return common::ControllerCommand::MOVE_RIGHT;
+    } else if (symbol == 's') {
+        return common::ControllerCommand::MOVE_BOTTOM;
+    } else if (symbol == 'a') {
+        return common::ControllerCommand::MOVE_LEFT;
+    } else if (symbol == 'q') {
+        return common::ControllerCommand::EXIT;
     }
     return {};
 }

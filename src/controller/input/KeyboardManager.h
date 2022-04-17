@@ -8,7 +8,7 @@ namespace controller::input {
 class KeyboardManager : public AbstractManager {
 public:
     KeyboardManager() = default;
-    common::Command readCommand() override;
+    common::ControllerCommand readCommand() override;
     ~KeyboardManager() override = default;
 };
 }
