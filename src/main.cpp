@@ -37,6 +37,7 @@ int main() {
             break;
         }
         if (azaza == 'W' || azaza == 'A' || azaza == 'S' || azaza == 'D') {
+            system("clear");
             common::Command command;
             if (azaza == 'W') {
                 command.inputCommand = common::InputCommand::MOVE_TOP;
