@@ -9,10 +9,12 @@
 #include "../common/Map.h"
 
 namespace world {
+// Engine corresponds for interaction of World with other modules.
 class Engine {
 public:
     Engine();
     //common::Map
+    // Applies ControllerCommand and returns common::Map.
     common::Map applyCommand(const common::ControllerCommand&);
 
 private:

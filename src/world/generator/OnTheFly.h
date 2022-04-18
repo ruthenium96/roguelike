@@ -5,7 +5,7 @@
 #include "AbstractGenerator.h"
 
 namespace world::generator {
-
+// On the fly implementation of AbstractGenerator, uses random generation
 class OnTheFly : public AbstractGenerator {
 public:
     std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) override;

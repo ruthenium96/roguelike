@@ -10,19 +10,18 @@
 #include "../state/object/Observer.h"
 
 namespace world::generator {
-
+// Suitable return type for generateObjects(), it has Object and its Actions.
 struct ObjectAndActions {
     std::shared_ptr<state::object::AbstractObject> object;
     std::vector<std::shared_ptr<state::action::AbstractAction>> actions;
 };
 
+// An abstract class for generation of the World.
 class AbstractGenerator {
 public:
+    // Generate Objects in Coordinate based on object::Observer information
     virtual std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) = 0;
     virtual ~AbstractGenerator() = default;
-
-private:
-    // TODO: should we keep Coordinates of already generated Coordinates?
 };
 }
 
