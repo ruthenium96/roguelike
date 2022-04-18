@@ -34,16 +34,16 @@ namespace world {
         }
     }
 
-    common::Map Engine::applyCommand(common::Command command) {
+    common::Map Engine::applyCommand(const common::ControllerCommand& command) {
         int32_t delta_x;
         int32_t delta_y;
-        if (command.inputCommand == common::InputCommand::MOVE_TOP) {
+        if (command == common::ControllerCommand::MOVE_TOP) {
             delta_x = 0; delta_y = -1;
-        } else if (command.inputCommand == common::InputCommand::MOVE_LEFT) {
+        } else if (command == common::ControllerCommand::MOVE_LEFT) {
             delta_x = -1; delta_y = 0;
-        } else if (command.inputCommand == common::InputCommand::MOVE_BOTTOM) {
+        } else if (command == common::ControllerCommand::MOVE_BOTTOM) {
             delta_x = 0; delta_y = 1;
-        } else if (command.inputCommand == common::InputCommand::MOVE_RIGHT) {
+        } else if (command == common::ControllerCommand::MOVE_RIGHT) {
             delta_x = 1; delta_y = 0;
         }
         auto action = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);

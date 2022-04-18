@@ -2,6 +2,6 @@
 
 namespace world::state::object {
 common::ObjectType Wall::getObjectType() const {
-    return common::WALL;
+    return common::ObjectType::WALL;
 }
 }
