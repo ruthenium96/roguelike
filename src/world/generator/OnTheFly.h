@@ -4,7 +4,9 @@
 #include <set>
 #include "AbstractGenerator.h"
 
-namespace world::generator {
+namespace world::generator
+{
+
 // On the fly implementation of AbstractGenerator, uses random generation
 class OnTheFly : public AbstractGenerator {
 public:
@@ -16,6 +18,7 @@ private:
     std::set<common::Coordinate> generated_coordinates_;
 
 };
-}
 
-#endif //ARCH_ROGUELIKE_ONTHEFLY_H
+} // namespace world::generator
+
+#endif // ARCH_ROGUELIKE_ONTHEFLY_H

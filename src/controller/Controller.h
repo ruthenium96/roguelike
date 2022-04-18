@@ -1,4 +1,4 @@
-#pragma once
+# pragma once // TODO: use guards instead
 
 #include "../ui/UI.h"
 #include "../world/Engine.h"
@@ -10,13 +10,20 @@ namespace controller
 class Controller {
 public:
     Controller() = default;
+    
+    // provide the main game loop
     void start();
+
+    // prints initial game logo and keys
     void init() {
-        // temp do nothing
+        // stub
     }
+
+    // prints final game logo and stats
     void finalize() {
-        // temp do nothing
+        // stub
     }
+
 private:
     world::Engine engine_;
     ui::UI ui_{engine_};

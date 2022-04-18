@@ -3,7 +3,9 @@
 
 #include "../AbstractAction.h"
 
-namespace world::state::action {
+namespace world::state::action
+{
+
 // Action of Player movement. Currently, can be applied only from external source.
 class PlayerMove : public AbstractAction {
 public:
@@ -18,6 +20,7 @@ private:
     int32_t delta_x_;
     int32_t delta_y_;
 };
-}
 
-#endif //ARCH_ROGUELIKE_PLAYERMOVE_H
+} // namespace world::state::action
+
+#endif // ARCH_ROGUELIKE_PLAYERMOVE_H

@@ -8,6 +8,7 @@
 
 #include <memory>
 
+
 namespace ui 
 {
 
@@ -15,17 +16,20 @@ class UI {
 public:
     UI(const world::Engine& engine);
 
+    // draw current game image 
     void draw() const;
 
-    // current stats type is stub
-    void drawStatsOnDisplay(int32_t stats) const;
-    
-    void drawMapOnDisplay(const common::Map& map) const;
+    // pushes the stats about game and player on display
+    // NB: current stats type is stub
+    void pushStatsOnDisplay(int32_t stats) const;
+
+    // pushes the current map on display
+    void pushMapOnDisplay(const common::Map& map) const;
 
 private:
-    std::unique_ptr<IStyle> style_{nullptr}; 
+    std::unique_ptr<IStyle> style_;; 
 
-    // TODO: make unique_ptr
+    // use shared_ptr?
     mutable ConsoleDisplay display_;
 
     // Think about it

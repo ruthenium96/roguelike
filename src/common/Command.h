@@ -1,7 +1,8 @@
 #pragma once
 
 // This class helps modules communicate each other.
-namespace common {
+namespace common
+{
 
 enum class ControllerCommand {
     UNKNOWN,
@@ -12,4 +13,4 @@ enum class ControllerCommand {
     EXIT
 };
 
-}
+} // namespace common

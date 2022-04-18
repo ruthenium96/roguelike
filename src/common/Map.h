@@ -11,6 +11,7 @@ namespace common
 
 using Map = std::map<common::Coordinate, std::vector<ObjectType>>;
 
+// TODO: refactor
 // namespace 
 // {
 // static constexpr size_t kDefaultMapHeight{21};

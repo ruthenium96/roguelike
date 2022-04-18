@@ -12,4 +12,4 @@ enum class ObjectType {
 
 } // namespace common
 
-#endif //ARCH_ROGUELIKE_OBJECTTYPE_H
+#endif // ARCH_ROGUELIKE_OBJECTTYPE_H

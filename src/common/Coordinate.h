@@ -3,7 +3,9 @@
 
 #include <cstdint>
 
-namespace common {
+namespace common
+{
+
 struct Coordinate {
     bool operator==(const Coordinate &rhs) const {
         return x == rhs.x &&
@@ -39,6 +41,7 @@ struct Coordinate {
     int32_t x = 0;
     int32_t y = 0;
 };
-}
 
-#endif //ARCH_ROGUELIKE_COORDINATE_H
+} // namespace common
+
+#endif // ARCH_ROGUELIKE_COORDINATE_H
