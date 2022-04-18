@@ -1,6 +1,5 @@
 #include "Controller.h"
 
-#include <iostream>
 #include <algorithm>
 
 namespace controller {

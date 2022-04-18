@@ -2,8 +2,6 @@
 
 #include "AbstractManager.h"
 
-#include <iostream>
-
 namespace controller::input {
 class KeyboardManager : public AbstractManager {
 public:
