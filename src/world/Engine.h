@@ -13,12 +13,12 @@ namespace world {
 class Engine {
 public:
     Engine();
-    //common::Map
     // Applies ControllerCommand and returns common::Map.
-    common::Map applyCommand(const common::ControllerCommand&);
+    void applyCommand(const common::ControllerCommand&);
+    // Generate current Map
+    common::Map getMap();
 
 private:
-    common::Map generateMap();
     void generateWorldAroundPlayer(common::Coordinate playerCoordinate);
 
     state::State state_;

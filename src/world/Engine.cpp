@@ -12,7 +12,7 @@ namespace world {
         generateWorldAroundPlayer({0,0});
     }
 
-    common::Map Engine::applyCommand(const common::ControllerCommand& command) {
+    void Engine::applyCommand(const common::ControllerCommand& command) {
         int32_t delta_x;
         int32_t delta_y;
         if (command == common::ControllerCommand::MOVE_TOP) {
@@ -28,11 +28,9 @@ namespace world {
         state_.applyAction(action);
 
         generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
-
-        return generateMap();
     }
 
-    common::Map Engine::generateMap() {
+    common::Map Engine::getMap() {
         common::Map map;
         auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
         int32_t VISIBILITY = 10;
