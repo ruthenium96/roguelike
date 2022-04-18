@@ -2,14 +2,14 @@
 
 #include <algorithm>
 
-namespace controller {
-
+namespace controller 
+{
 
 void Controller::start() {
-    system("clear");
-    auto map = engine_.getMap();
-    ui_.drawMap(map);
-    auto command = manager_.readCommand();
+    auto map = engine_.getMap(); // NB: copying is here, change to vector_view?
+    ui_.drawMap(map);  // TODO: ui_.draw(engine_ || world), controller should not know about what will be draw
+
+    auto command = manager_.readCommand();  // while (manager_.read_command())
     while (command != common::ControllerCommand::EXIT) {
         if (command == common::ControllerCommand::UNKNOWN) {
             command = manager_.readCommand();
@@ -17,12 +17,11 @@ void Controller::start() {
         }
         // TODO: encapsulate clear in terminal ui
         engine_.applyCommand(command);
-        system("clear");
         map = engine_.getMap();
         ui_.drawMap(map);
 
-        command = manager_.readCommand();
+        command = manager_.readCommand();  // move to while condition
     }
 }
 
-}
+} // namespace controller 
