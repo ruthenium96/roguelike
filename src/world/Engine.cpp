@@ -8,15 +8,6 @@ namespace world {
 
     Engine::Engine() {
         generator_ = std::make_unique<generator::OnTheFly>();
-//        // Here I create Player
-//        auto playerAndFloor = generator_->generateObjects({0, 0}, state_.getObjectObserver());
-//        for (const auto& objectAndActions : playerAndFloor) {
-//            state_.getObjectObserver().addObject(objectAndActions.object);
-//            for (const auto& action : objectAndActions.actions) {
-//                state_.addAction(action);
-//            }
-//            // TODO: implement adding of actions
-//        }
         // Here I create initial place:
         for (int32_t x = -10; x <= 10; ++x) {
             for (int32_t y = -10; y <= 10; ++y) {
