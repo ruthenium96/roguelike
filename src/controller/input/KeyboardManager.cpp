@@ -54,7 +54,8 @@ common::ControllerCommand KeyboardManager::readCommand() {
         return common::ControllerCommand::MOVE_LEFT;
     } else if (symbol == 'q') {
         return common::ControllerCommand::EXIT;
+    } else {
+        return common::ControllerCommand::UNKNOWN;
     }
-    return {};
 }
 }

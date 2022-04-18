@@ -4,6 +4,7 @@
 namespace common {
 
 enum class ControllerCommand {
+    UNKNOWN,
     MOVE_TOP,
     MOVE_LEFT,
     MOVE_RIGHT,
