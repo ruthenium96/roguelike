@@ -15,7 +15,7 @@ std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Ident
     if (identityObjectMap_.count(identity) == 0) {
         return std::nullopt;
     } else {
-        return identityObjectMap_[identity];
+        return identityObjectMap_.at(identity);
     }
 }
 

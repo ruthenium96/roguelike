@@ -8,6 +8,7 @@ class Identity {
 public:
     explicit Identity(uint32_t identity) : identity_(identity) {};
     Identity() = delete;
+    // TODO: Can we delete it? It necessary because we keep two copies of Identity.
     Identity(const Identity&) = default;
     Identity& operator=(const Identity&) = delete;
     Identity(Identity&&) = default;
