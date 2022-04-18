@@ -10,7 +10,9 @@
 *.o
 *.exe
 CMakeCache.txt
-CMakeFiles/*
+CMakeFiles
 cmake_install.cmake
-
-#*.txt
+_deps
+lib
+*.a
+*.so
