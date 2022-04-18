@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <stdexcept>
 #include "Engine.h"
 
 #include "generator/OnTheFly.h"
@@ -14,17 +15,28 @@ Engine::Engine() {
 }
 
 void Engine::applyCommand(const common::ControllerCommand& command) {
+    using common::ControllerCommand;
+
     int32_t delta_x;
     int32_t delta_y;
-    if (command == common::ControllerCommand::MOVE_TOP) {
-        delta_x = 0; delta_y = -1;
-    } else if (command == common::ControllerCommand::MOVE_LEFT) {
-        delta_x = -1; delta_y = 0;
-    } else if (command == common::ControllerCommand::MOVE_BOTTOM) {
-        delta_x = 0; delta_y = 1;
-    } else if (command == common::ControllerCommand::MOVE_RIGHT) {
-        delta_x = 1; delta_y = 0;
+    switch (command) {
+        case ControllerCommand::MOVE_TOP:
+            delta_x = 0; delta_y = -1;
+            break;
+        case ControllerCommand::MOVE_LEFT:
+            delta_x = -1; delta_y = 0;
+            break;
+        case ControllerCommand::MOVE_BOTTOM:
+            delta_x = 0; delta_y = 1;
+            break;
+        case ControllerCommand::MOVE_RIGHT:
+            delta_x = 1; delta_y = 0;
+            break;
+        default:
+            // throw is better than ignore
+            throw std::runtime_error("unknown command sent to engine");
     }
+
     auto action = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
     state_.applyAction(action);
 
