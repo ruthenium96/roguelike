@@ -13,19 +13,11 @@ namespace ui
 
 class UI {
 public:
-    UI(const world::Engine& engine)
-        : engine_{engine}
-    {
-        style_ = std::make_unique<DefaultStyle>();
-    }
+    UI(const world::Engine& engine);
 
-    void draw() const {
-        drawStatsOnDisplay(engine_.getStats());
-        drawMapOnDisplay(engine_.getMap());
-        display_.draw();
-    }
+    void draw() const;
 
-    // current type is stub now
+    // current stats type is stub
     void drawStatsOnDisplay(int32_t stats) const;
     
     void drawMapOnDisplay(const common::Map& map) const;
@@ -33,12 +25,13 @@ public:
 private:
     std::unique_ptr<IStyle> style_{nullptr}; 
 
-    // make unique_ptr
+    // TODO: make unique_ptr
     mutable ConsoleDisplay display_;
 
+    // Think about it
     const world::Engine& engine_;
 };
 
 } // namespace ui
 
-#endif //ARCH_ROGUELIKE_UI_H
+#endif // ARCH_ROGUELIKE_UI_H

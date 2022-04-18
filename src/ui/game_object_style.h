@@ -9,42 +9,32 @@ namespace ui
 {
 
 class IStyle {
+protected:
+    using ObjectType = common::ObjectType;
 public:
     virtual char getGameObjectsRepr(
-        const std::vector<common::ObjectType>& objects) const = 0;
+        const std::vector<ObjectType>& objects) const = 0;
 
-// protected: // TODO: read about using protected dtor with unique_ptr
+// should be protected due to CppCoreGuidelines
+// BUT: not work with unique_ptr. Read!
+// protected: 
     virtual ~IStyle() = default;
 };
 
+
 class DefaultStyle : public IStyle{
 public:
-
     char getGameObjectsRepr(
-        const std::vector<common::ObjectType>& objects) const override
-    {
-        using common::ObjectType;
-
-        if (std::find(objects.cbegin(), objects.cend(),
-                      ObjectType::PLAYER) != objects.end())
-        {
-            return getGameObjectRepr(ObjectType::PLAYER);
-        }
-
-        return getGameObjectRepr(objects.back());
-    }
-
-
-    char getGameObjectRepr(common::ObjectType type) const {
-        return object_styles_.at(type);
-    }
+        const std::vector<ObjectType>& objects) const override;
+        
+    char getGameObjectRepr(ObjectType type) const;
 
 private:
-    // make static
+    // TODO: make static
     const std::unordered_map<common::ObjectType, char> object_styles_{{
-        {common::ObjectType::PLAYER, 'P'},
-        {common::ObjectType::FLOOR,  '.'},
-        {common::ObjectType::WALL,   '#'},
+        {ObjectType::PLAYER, 'P'},
+        {ObjectType::FLOOR,  '.'},
+        {ObjectType::WALL,   '#'},
     }};
 
 };

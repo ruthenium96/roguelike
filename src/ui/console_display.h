@@ -8,61 +8,31 @@
 namespace ui 
 {
 
-static constexpr size_t kConsoleWidth = 120;
-static constexpr size_t kConsoleHeight = 30;
-
-
-
 class ConsoleDisplay {
 public:
-  ConsoleDisplay()
-    : width_{ kConsoleWidth }
-    , height_ { kConsoleHeight}
-    , os{std::cout}
-  {
-    clear_data();
-  }
+  ConsoleDisplay(std::ostream& os = std::cout);
 
-  void print() const {
-    for (const auto& line : data_) {
-      std::copy(line.begin(), line.end(), std::ostream_iterator<char>{ os, "" });
-      os << "\n";
-    }
-    os << std::flush;
-  }
+  void print() const;
 
-  void clear() const {
-#ifdef _WIN32
-    system("cls");
-#else // __linux__ or __APPLE__
-    system("clear");
-#endif
-  }
+  void clear() const;
 
-  void draw() const {
-    clear();
-    print();
-  }
+  void draw() const;
 
-  char& at(size_t height_i, size_t width_i) {
-    return data_.at(height_i).at(width_i);
-  }
+  char& at(size_t height_i, size_t width_i);
 
-  void clear_data() {
-    data_= std::vector<std::vector<char>>(
-      height_, 
-      std::vector<char>(width_, ' ')
-    );
-  }
+  void clear_data();
 
-  size_t width() const { return width_; }
-  size_t height() const { return height_; }
+  size_t height() const;
+  size_t width() const;
   
 private:
-  size_t width_;
   size_t height_;
-  std::vector<std::vector<char>> data_;  // TODO: replace char to tile/pixel
-  std::ostream& os;
+  size_t width_;
+  
+  // TODO: replace char to tile/pixel
+  std::vector<std::vector<char>> data_;
+  
+  std::ostream& os_;
 };
 
 } // namespace ui 

@@ -9,8 +9,21 @@
 namespace ui
 {
 
+UI::UI(const world::Engine& engine)
+    : engine_{engine}
+{
+    style_ = std::make_unique<DefaultStyle>();
+}
+
+void UI::draw() const {
+    drawStatsOnDisplay(engine_.getStats());
+    drawMapOnDisplay(engine_.getMap());
+    display_.draw();
+}
+
+
 void UI::drawStatsOnDisplay(int32_t) const {
-    std::string stats_str = "Hello in Roguelike game 3000! Level:1   HP:100%   Mana:100%   Exp:47%";
+    std::string stats_str = "Hello in Arch Roguelike 3000! Level:1   HP:100%   Mana:100%   Exp:47%";
     for (size_t i = 0; i != stats_str.size(); ++i) {
       constexpr auto kFirstLineIdx{0U};
       display_.at(kFirstLineIdx, i) = stats_str[i];
@@ -27,7 +40,7 @@ void UI::drawMapOnDisplay(const common::Map& map) const {
         display_.at(height_i, width_i) = style_->getGameObjectsRepr(objects);
 
         if (coordinate.y != initial_coordinate.y) {
-            width_i = 0;
+            width_i = 0U;
             ++height_i;
             initial_coordinate = coordinate;
         }
