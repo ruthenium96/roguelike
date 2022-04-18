@@ -19,7 +19,7 @@ public:
     }
 private:
     world::Engine engine_;
-    ui::UI ui_;
+    ui::UI ui_{engine_};
     controller::input::KeyboardManager manager_;
 };
 

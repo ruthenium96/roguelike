@@ -3,7 +3,9 @@
 
 #include <cstdint>
 
-namespace world::state::object {
+namespace world::state::object
+{
+
 class Identity {
 public:
     explicit Identity(uint32_t identity) : identity_(identity) {};
@@ -40,6 +42,7 @@ public:
 private:
     const uint32_t identity_;
 };
-}
 
-#endif //ARCH_ROGUELIKE_IDENTITY_H
+} // namespace world::state::object
+
+#endif // ARCH_ROGUELIKE_IDENTITY_H

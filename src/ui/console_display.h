@@ -39,7 +39,7 @@ public:
 #endif
   }
 
-  void display() const {
+  void draw() const {
     clear();
     print();
   }
@@ -50,7 +50,9 @@ public:
 
   void clear_data() {
     data_= std::vector<std::vector<char>>(
-      height_, std::vector<char>(width_, ' '));
+      height_, 
+      std::vector<char>(width_, ' ')
+    );
   }
 
   size_t width() const { return width_; }

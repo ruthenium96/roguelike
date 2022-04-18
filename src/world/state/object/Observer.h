@@ -9,7 +9,9 @@
 #include "concrete/Player.h"
 #include "../../../common/Map.h"
 
-namespace world::state::object {
+namespace world::state::object
+{
+
 // Helps to get Objects of interests.
 class Observer {
 public:
@@ -29,6 +31,7 @@ private:
 
     std::map<object::Identity, std::shared_ptr<object::AbstractObject>> identityObjectMap_;
 };
-}
 
-#endif //ARCH_ROGUELIKE_OBSERVER_H
+} // namespace world::state::object
+
+#endif // ARCH_ROGUELIKE_OBSERVER_H

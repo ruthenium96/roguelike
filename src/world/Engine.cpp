@@ -31,7 +31,7 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
     generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
 }
 
-common::Map Engine::getMap() {
+common::Map Engine::getMap() const {
     common::Map map;
     auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
     int32_t VISIBILITY = 10;

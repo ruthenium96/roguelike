@@ -8,15 +8,24 @@
 #include "../common/Command.h"
 #include "../common/Map.h"
 
-namespace world {
+namespace world
+{
+
 // Engine corresponds for interaction of World with other modules.
 class Engine {
 public:
     Engine();
-    // Applies ControllerCommand and returns common::Map.
+    // Applies ControllerCommand
     void applyCommand(const common::ControllerCommand&);
+
     // Generate current Map
-    common::Map getMap();
+    common::Map getMap() const;
+    
+    // stub now: return type should be class GameStats
+    int32_t getStats() const {
+        return 0;
+    }
+    
 
 private:
     void generateWorldAroundPlayer(common::Coordinate playerCoordinate);
@@ -24,6 +33,7 @@ private:
     state::State state_;
     std::unique_ptr<generator::AbstractGenerator> generator_;
 };
-}
 
-#endif //ARCH_ROGUELIKE_ENGINE_H
+} // namespace world 
+
+#endif // ARCH_ROGUELIKE_ENGINE_H
