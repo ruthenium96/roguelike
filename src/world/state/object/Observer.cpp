@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <stdexcept>
 #include "Observer.h"
 namespace world::state::object {
 
@@ -20,7 +22,9 @@ std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Ident
 }
 
     void Observer::addObject(const std::shared_ptr<object::AbstractObject>& object) {
-    // TODO: check if identity is already exists
+        if (identityObjectMap_.find(object->getIdentity()) != identityObjectMap_.end()) {
+            throw std::invalid_argument("Trying to add object with already existing Identity");
+        }
         identityObjectMap_[object->getIdentity()] = object;
     }
 
