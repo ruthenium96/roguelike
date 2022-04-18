@@ -1,10 +1,16 @@
 #include "OnTheFly.h"
 #include "../state/object/concrete/Wall.h"
 #include <random>
+#include <algorithm>
 
 namespace world::generator {
     std::vector<ObjectAndActions>
     OnTheFly::generateObjects(common::Coordinate coordinate, const state::object::Observer&) {
+
+        if (std::find(generated_coordinates_.begin(), generated_coordinates_.end(), coordinate) != generated_coordinates_.end()) {
+            // TODO: is it good idea to return empty vector instead of optional<vector> or something else?
+            return {};
+        }
 
         std::vector<ObjectAndActions> answer;
         if (coordinate.x == 0 && coordinate.y == 0) {
@@ -46,6 +52,8 @@ namespace world::generator {
                 answer.push_back(floor);
             }
         }
+
+        generated_coordinates_.insert(coordinate);
 
         return answer;
     }

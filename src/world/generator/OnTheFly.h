@@ -1,6 +1,7 @@
 #ifndef ARCH_ROGUELIKE_ONTHEFLY_H
 #define ARCH_ROGUELIKE_ONTHEFLY_H
 
+#include <set>
 #include "AbstractGenerator.h"
 
 namespace world::generator {
@@ -11,6 +12,8 @@ public:
 
 private:
     uint32_t generated_objects_ = 0;
+    // TODO: reimplement as unordered_set by implementing hash function
+    std::set<common::Coordinate> generated_coordinates_;
 
 };
 }
