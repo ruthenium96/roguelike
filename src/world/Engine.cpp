@@ -9,19 +9,7 @@ namespace world {
     Engine::Engine() {
         generator_ = std::make_unique<generator::OnTheFly>();
         // Here I create initial place:
-        for (int32_t x = -10; x <= 10; ++x) {
-            for (int32_t y = -10; y <= 10; ++y) {
-                common::Coordinate coordinate = {x, y};
-                auto objectsAndActionss = generator_->generateObjects(coordinate, state_.getObjectObserver());
-                for (const auto& objectAndActions : objectsAndActionss) {
-                    state_.getObjectObserver().addObject(objectAndActions.object);
-                    for (const auto& action : objectAndActions.actions) {
-                        state_.addAction(action);
-                    }
-                    // TODO: implement adding of actions
-                }
-            }
-        }
+        generateWorldAroundPlayer({0,0});
     }
 
     common::Map Engine::applyCommand(const common::ControllerCommand& command) {
@@ -38,15 +26,19 @@ namespace world {
         }
         auto action = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
         state_.applyAction(action);
+
+        generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
+
         return generateMap();
     }
 
     common::Map Engine::generateMap() {
         common::Map map;
         auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
-        for (int32_t x = playerCoordinate.x - 10; x <= playerCoordinate.x + 10; ++x) {
-            for (int32_t y = playerCoordinate.y - 10; y <= playerCoordinate.y + 10; ++y) {
-                common::Coordinate currentCoordinate = {x, y};
+        int32_t VISIBILITY = 10;
+        for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
+            for (int32_t dy = -VISIBILITY; dy <= VISIBILITY; ++dy) {
+                common::Coordinate currentCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
                 auto objects = state_.getObjectObserver().getObjects(currentCoordinate);
                 std::vector<common::ObjectType> objectsTypes(objects.size());
                 std::transform(objects.cbegin(),
@@ -57,5 +49,22 @@ namespace world {
             }
         }
         return map;
+    }
+
+    void Engine::generateWorldAroundPlayer(common::Coordinate playerCoordinate) {
+        int32_t GENSIZE = 10;
+        for (int32_t dx = -GENSIZE; dx <= GENSIZE; ++dx) {
+            for (int32_t dy = -GENSIZE; dy <= GENSIZE; ++dy) {
+                common::Coordinate coordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
+                auto objectsAndActionss = generator_->generateObjects(coordinate, state_.getObjectObserver());
+                for (const auto& objectAndActions : objectsAndActionss) {
+                    state_.getObjectObserver().addObject(objectAndActions.object);
+                    for (const auto& action : objectAndActions.actions) {
+                        state_.addAction(action);
+                    }
+                    // TODO: implement adding of actions
+                }
+            }
+        }
     }
 }

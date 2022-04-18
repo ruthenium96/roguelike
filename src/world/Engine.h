@@ -17,6 +17,7 @@ public:
 
 private:
     common::Map generateMap();
+    void generateWorldAroundPlayer(common::Coordinate playerCoordinate);
 
     state::State state_;
     std::unique_ptr<generator::AbstractGenerator> generator_;
