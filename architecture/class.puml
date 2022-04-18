@@ -3,8 +3,6 @@
 
 'The main class controlling game logic, UI and user input.
 class Controller {
-- Action changeWorldCommand(Command)
-- ??? changeUICommand(Command)
 'Start game.
 + void start()
 }
@@ -44,7 +42,7 @@ class UI {
 
 class GameEngine {
 'Takes Action from Controller and apply it to WorldState.
-+ void applyExternalAction(Action)
++ Command applyCommand(Command)
 'Get Map, based on WorldState.
 + Map getMap()
 'Get Inventory of Player, based on WorldState.
@@ -78,7 +76,6 @@ abstract class GameObject {
 + Identity getIdentity()
 - coordinate: Coordinate
 + Coordinate getCoordinate()
-+ Action[] getActions()
 - values: Value[]
 }
 
@@ -109,6 +106,6 @@ abstract class Action {
 }
 
 GameObject "1" o-- "*" Item
-GameObject "1" o-- "*" Action
+WorldState "1" o-- "*" Action
 
 @enduml

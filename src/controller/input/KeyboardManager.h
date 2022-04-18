@@ -1,14 +1,12 @@
-//
-// Created by eugen on 14.04.2022.
-//
+#pragma once
 
-#ifndef ARCH_ROGUELIKE_KEYBOARDMANAGER_H
-#define ARCH_ROGUELIKE_KEYBOARDMANAGER_H
+#include "AbstractManager.h"
 
 namespace controller::input {
-class KeyboardManager {
-
+class KeyboardManager : public AbstractManager {
+public:
+    KeyboardManager() = default;
+    common::ControllerCommand readCommand() override;
+    ~KeyboardManager() override = default;
 };
 }
-
-#endif //ARCH_ROGUELIKE_KEYBOARDMANAGER_H

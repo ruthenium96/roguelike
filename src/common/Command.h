@@ -1,11 +1,15 @@
-#ifndef ARCH_ROGUELIKE_COMMAND_H
-#define ARCH_ROGUELIKE_COMMAND_H
+#pragma once
 
 // This class helps modules communicate each other.
 namespace common {
-class Command {
 
+enum class ControllerCommand {
+    UNKNOWN,
+    MOVE_TOP,
+    MOVE_LEFT,
+    MOVE_RIGHT,
+    MOVE_BOTTOM,
+    EXIT
 };
-}
 
-#endif //ARCH_ROGUELIKE_COMMAND_H
+}
