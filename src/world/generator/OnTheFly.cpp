@@ -1,5 +1,7 @@
 #include "OnTheFly.h"
 #include "../state/object/concrete/Wall.h"
+#include "../state/object/concrete/Artefact.h"
+#include "../state/item/concrete/Stick.h"
 #include <random>
 #include <algorithm>
 
@@ -52,7 +54,7 @@ void OnTheFly::addFloor(common::Coordinate coordinate, std::vector<ObjectAndActi
     ObjectAndActions floor;
     floor.object = std::make_shared<state::object::Floor>(state::object::Identity(generated_objects_++));
     floor.object->getCoordinate() = coordinate;
-    // add no Floor objects
+    // add no Floor actions
     // ...
     answer.push_back(floor);
 }
@@ -62,9 +64,23 @@ void OnTheFly::addWall(common::Coordinate coordinate, std::vector<ObjectAndActio
     ObjectAndActions wall;
     wall.object = std::make_shared<state::object::Wall>(state::object::Identity(generated_objects_++));
     wall.object->getCoordinate() = coordinate;
-    // add no Wall objects
+    // add no Wall actions
     // ...
     answer.push_back(wall);
+}
+
+void OnTheFly::addArtefact(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+    // add Artefact
+    ObjectAndActions artefact;
+    artefact.object = std::make_shared<state::object::Artefact>(state::object::Identity(generated_objects_++));
+    artefact.object->getCoordinate() = coordinate;
+    // add Artefact item
+    artefact.object->getItems().push_back(std::make_unique<world::state::item::Stick>());
+    // add Artefact actions
+    // artefact.actions.push_back();
+    answer.push_back(artefact);
+
+
 }
 
 } // namespace world::generator

@@ -8,7 +8,7 @@ namespace world::state::object
 
 class Identity {
 public:
-    explicit Identity(uint32_t identity) : identity_(identity) {};
+    explicit Identity(uint64_t identity) : identity_(identity) {};
     Identity() = delete;
     // TODO: Can we delete it? It necessary because we keep two copies of Identity.
     Identity(const Identity&) = default;
@@ -40,7 +40,7 @@ public:
         return !(*this < rhs);
     };
 private:
-    const uint32_t identity_;
+    const uint64_t identity_;
 };
 
 } // namespace world::state::object

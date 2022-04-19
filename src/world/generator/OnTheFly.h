@@ -16,7 +16,7 @@ private:
     void addPlayer(common::Coordinate, std::vector<ObjectAndActions>&);
     void addFloor(common::Coordinate, std::vector<ObjectAndActions>&);
     void addWall(common::Coordinate, std::vector<ObjectAndActions>&);
-    uint32_t generated_objects_ = 0;
+    uint64_t generated_objects_ = 0;
     // TODO: reimplement as unordered_set by implementing hash function
     std::set<common::Coordinate> generated_coordinates_;
 
