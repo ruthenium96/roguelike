@@ -4,7 +4,7 @@
 #include <map>
 #include <memory>
 #include <optional>
-#include "Identity.h"
+#include "../Identity.h"
 #include "AbstractObject.h"
 #include "concrete/Player.h"
 #include "../../../common/Map.h"
@@ -29,7 +29,7 @@ public:
 
 private:
 
-    std::map<object::Identity, std::shared_ptr<object::AbstractObject>> identityObjectMap_;
+    std::map<Identity, std::shared_ptr<AbstractObject>> identityObjectMap_;
 };
 
 } // namespace world::state::object

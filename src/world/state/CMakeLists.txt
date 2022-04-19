@@ -3,8 +3,9 @@ add_library(state
         object/AbstractObject.cpp object/AbstractObject.h
         object/concrete/Player.cpp object/concrete/Player.h
         action/AbstractAction.h
-        object/Identity.h
+        Identity.h
         object/concrete/Floor.cpp object/concrete/Floor.h
         action/concrete/PlayerMove.cpp action/concrete/PlayerMove.h
         object/Observer.cpp object/Observer.h
-        object/concrete/Wall.cpp object/concrete/Wall.h)
+        object/concrete/Wall.cpp object/concrete/Wall.h
+        object/concrete/Artefact.cpp object/concrete/Artefact.h item/AbstractItem.cpp item/AbstractItem.h item/concrete/Stick.cpp item/concrete/Stick.h action/concrete/PlayerInteract.cpp action/concrete/PlayerInteract.h)

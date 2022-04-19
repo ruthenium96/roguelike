@@ -41,7 +41,7 @@ OnTheFly::generateObjects(common::Coordinate coordinate, const state::object::Ob
 void OnTheFly::addPlayer(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     ObjectAndActions player;
     // add Player object
-    player.object = std::make_shared<state::object::Player>(state::object::Identity(generated_objects_++));
+    player.object = std::make_shared<state::object::Player>(state::Identity(generated_identities_++));
     player.object->getCoordinate() = coordinate;
     // add no Player actions
     // ...
@@ -52,7 +52,7 @@ void OnTheFly::addPlayer(common::Coordinate coordinate, std::vector<ObjectAndAct
 void OnTheFly::addFloor(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     // add Floor
     ObjectAndActions floor;
-    floor.object = std::make_shared<state::object::Floor>(state::object::Identity(generated_objects_++));
+    floor.object = std::make_shared<state::object::Floor>(state::Identity(generated_identities_++));
     floor.object->getCoordinate() = coordinate;
     // add no Floor actions
     // ...
@@ -62,7 +62,7 @@ void OnTheFly::addFloor(common::Coordinate coordinate, std::vector<ObjectAndActi
 void OnTheFly::addWall(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     // add Wall
     ObjectAndActions wall;
-    wall.object = std::make_shared<state::object::Wall>(state::object::Identity(generated_objects_++));
+    wall.object = std::make_shared<state::object::Wall>(state::Identity(generated_identities_++));
     wall.object->getCoordinate() = coordinate;
     // add no Wall actions
     // ...
@@ -72,10 +72,12 @@ void OnTheFly::addWall(common::Coordinate coordinate, std::vector<ObjectAndActio
 void OnTheFly::addArtefact(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     // add Artefact
     ObjectAndActions artefact;
-    artefact.object = std::make_shared<state::object::Artefact>(state::object::Identity(generated_objects_++));
+    auto objectIdentity = state::Identity(generated_identities_++);
+    artefact.object = std::make_shared<state::object::Artefact>(objectIdentity);
     artefact.object->getCoordinate() = coordinate;
     // add Artefact item
-    artefact.object->getItems().push_back(std::make_unique<world::state::item::Stick>());
+    auto itemIdentity = state::Identity(generated_identities_++);
+    artefact.object->getItems().push_back(std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
     // add Artefact actions
     // artefact.actions.push_back();
     answer.push_back(artefact);
