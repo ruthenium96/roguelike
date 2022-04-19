@@ -40,6 +40,7 @@ private:
         {ObjectType::PLAYER, 'P'},
         {ObjectType::FLOOR,  '.'},
         {ObjectType::WALL,   '#'},
+        {ObjectType::ARTEFACT, 'I'},
     }};
 
 };

@@ -2,6 +2,7 @@
 #include "../state/object/concrete/Wall.h"
 #include "../state/object/concrete/Artefact.h"
 #include "../state/item/concrete/Stick.h"
+#include "../state/action/concrete/PickItem.h"
 #include <random>
 #include <algorithm>
 
@@ -25,11 +26,14 @@ OnTheFly::generateObjects(common::Coordinate coordinate, const state::object::Ob
         std::default_random_engine eng(rd());
         std::uniform_real_distribution<float> distr(0, 1);
 
-        float shouldCreateWall = distr(eng);
-        if (shouldCreateWall < 0.05) {
+        float probability = distr(eng);
+        if (probability < 0.05) {
             addWall(coordinate, answer);
         } else {
             addFloor(coordinate, answer);
+            if (probability > 0.99) {
+                addArtefact(coordinate, answer);
+            }
         }
     }
 
@@ -79,10 +83,13 @@ void OnTheFly::addArtefact(common::Coordinate coordinate, std::vector<ObjectAndA
     auto itemIdentity = state::Identity(generated_identities_++);
     artefact.object->getItems().push_back(std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
     // add Artefact actions
-    // artefact.actions.push_back();
+    auto actionIdentity = state::Identity(generated_identities_++);
+    auto actionOnInteraction = std::make_shared<state::action::PickItem>(actionIdentity);
+    actionOnInteraction->setCorrespondingItemIdentity(itemIdentity);
+    actionOnInteraction->setCorrespondingObjectIdentity(objectIdentity);
+    artefact.actions.push_back(actionOnInteraction);
+
     answer.push_back(artefact);
-
-
 }
 
 } // namespace world::generator

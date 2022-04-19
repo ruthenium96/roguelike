@@ -10,6 +10,7 @@ enum class ControllerCommand {
     MOVE_LEFT,
     MOVE_RIGHT,
     MOVE_BOTTOM,
+    INTERACT,
     EXIT
 };
 

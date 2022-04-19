@@ -4,7 +4,7 @@
 namespace world::state::action
 {
 
-PlayerMove::PlayerMove(int32_t delta_x, int32_t delta_y) {
+PlayerMove::PlayerMove(int32_t delta_x, int32_t delta_y) : AbstractAction(std::nullopt) {
     delta_x_ = delta_x;
     delta_y_ = delta_y;
 }

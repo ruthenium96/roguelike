@@ -18,11 +18,10 @@ namespace world::state::object {
 // An abstract class for all Objects. Object is something, that always have the Coordinate.
 class AbstractObject {
 public:
-    explicit AbstractObject(Identity&& identity) : identity_(identity) {};
-    explicit AbstractObject(const Identity& identity) : identity_(identity) {};
+    explicit AbstractObject(const Identity& identity) : selfIdentity_(identity) {};
     // Identity getter.
     const Identity& getIdentity() const {
-        return identity_;
+        return selfIdentity_;
     };
     // Coordinate getters.
     const common::Coordinate& getCoordinate() const {
@@ -40,17 +39,12 @@ public:
     const std::vector<std::unique_ptr<item::AbstractItem>>& getItems() const {
         return items_;
     }
-    std::optional<std::any> getProperty(const std::string& property_name) const {
-        if (property_.count(property_name) == 0) {
-            return std::nullopt;
-        } else {
-            return property_.at(property_name);
-        }
-    };
+    std::optional<std::any> getProperty(const std::string& property_name) const;
 
 private:
-    const Identity identity_;
+    const Identity selfIdentity_;
     common::Coordinate coordinate_;
+    // TODO: Can be replaced by std::vector<Identity>
     std::vector<std::unique_ptr<item::AbstractItem>> items_;
 protected:
     std::map<std::string, std::any> property_;

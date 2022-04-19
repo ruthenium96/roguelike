@@ -12,9 +12,9 @@ public:
     Identity() = delete;
     // TODO: Can we delete it? It necessary because we keep two copies of Identity.
     Identity(const Identity&) = default;
-    Identity& operator=(const Identity&) = delete;
+    Identity& operator=(const Identity&) = default;
     Identity(Identity&&) = default;
-    Identity& operator=(Identity&&) = delete;
+    Identity& operator=(Identity&&) = default;
 
     bool operator==(const Identity &rhs) const {
         return identity_ == rhs.identity_;
@@ -40,7 +40,7 @@ public:
         return !(*this < rhs);
     };
 private:
-    const uint64_t identity_;
+    uint64_t identity_;
 };
 
 } // namespace world::state::object

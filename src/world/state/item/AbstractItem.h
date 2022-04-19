@@ -8,12 +8,13 @@ namespace world::state::item {
 
 class AbstractItem {
 public:
-    AbstractItem(Identity&& itemIdentity, Identity&& objectHolderIdentity ) : itemIdentity_(itemIdentity), objectHolderIdentity_(objectHolderIdentity) {};
-    AbstractItem(Identity&& itemIdentity, const Identity& objectHolderIdentity ) : itemIdentity_(itemIdentity), objectHolderIdentity_(objectHolderIdentity) {};
-    AbstractItem(const Identity& itemIdentity, const Identity& objectHolderIdentity ) : itemIdentity_(itemIdentity), objectHolderIdentity_(objectHolderIdentity) {};
+    AbstractItem(const Identity& itemIdentity, const Identity& objectHolderIdentity ) : selfIdentity_(itemIdentity), objectHolderIdentity_(objectHolderIdentity) {};
 
+    void setNewHolderIdentity(const Identity& newHolderIdentity) {
+        objectHolderIdentity_ = newHolderIdentity;
+    }
 private:
-    Identity itemIdentity_;
+    const Identity selfIdentity_;
     Identity objectHolderIdentity_;
 };
 

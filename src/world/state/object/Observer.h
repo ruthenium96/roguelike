@@ -26,6 +26,8 @@ public:
 
     // Adds new object.
     void addObject(const std::shared_ptr<object::AbstractObject>&);
+    //
+    void deleteObject(Identity);
 
 private:
 
