@@ -47,4 +47,8 @@ std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Ident
         }
         return nullptr;
     }
+
+    void Observer::deleteObject(Identity identity) {
+        identityObjectMap_.erase(identity);
+    }
 }

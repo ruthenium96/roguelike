@@ -13,7 +13,11 @@ public:
     std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) override;
 
 private:
-    uint32_t generated_objects_ = 0;
+    void addPlayer(common::Coordinate, std::vector<ObjectAndActions>&);
+    void addFloor(common::Coordinate, std::vector<ObjectAndActions>&);
+    void addWall(common::Coordinate, std::vector<ObjectAndActions>&);
+    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&);
+    uint64_t generated_identities_ = 0;
     // TODO: reimplement as unordered_set by implementing hash function
     std::set<common::Coordinate> generated_coordinates_;
 

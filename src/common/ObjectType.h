@@ -8,6 +8,7 @@ enum class ObjectType {
     PLAYER,
     FLOOR,
     WALL,
+    ARTEFACT,
 };
 
 } // namespace common

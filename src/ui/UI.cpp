@@ -16,8 +16,8 @@ UI::UI(const world::Engine& engine)
 }
 
 void UI::draw() const {
-    pushStatsOnDisplay(engine_.getStats());
-    pushMapOnDisplay(engine_.getMap());
+//    pushStatsOnDisplay(engine_.getStats());
+    pushMapOnDisplay(engine_.getWorldUITransfer().map);
     display_.draw();
 }
 

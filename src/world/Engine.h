@@ -6,7 +6,7 @@
 #include "state/State.h"
 #include "generator/AbstractGenerator.h"
 #include "../common/Command.h"
-#include "../common/Map.h"
+#include "../common/WorldUITransfer.h"
 
 namespace world
 {
@@ -19,13 +19,8 @@ public:
     void applyCommand(const common::ControllerCommand&);
 
     // Generate current Map
-    common::Map getMap() const;
-    
-    // stub now: return type should be class GameStats
-    int32_t getStats() const {
-        return 0;
-    }
-    
+    common::WorldUITransfer getWorldUITransfer() const;
+
 
 private:
     void generateWorldAroundPlayer(common::Coordinate playerCoordinate);

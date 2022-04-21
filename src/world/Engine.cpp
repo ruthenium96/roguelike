@@ -4,6 +4,7 @@
 
 #include "generator/OnTheFly.h"
 #include "state/action/concrete/PlayerMove.h"
+#include "state/action/concrete/PlayerInteract.h"
 
 namespace world
 {
@@ -17,49 +18,79 @@ Engine::Engine() {
 void Engine::applyCommand(const common::ControllerCommand& command) {
     using common::ControllerCommand;
 
-    int32_t delta_x;
-    int32_t delta_y;
-    switch (command) {
-        case ControllerCommand::MOVE_TOP:
-            delta_x = 0; delta_y = -1;
-            break;
-        case ControllerCommand::MOVE_LEFT:
-            delta_x = -1; delta_y = 0;
-            break;
-        case ControllerCommand::MOVE_BOTTOM:
-            delta_x = 0; delta_y = 1;
-            break;
-        case ControllerCommand::MOVE_RIGHT:
-            delta_x = 1; delta_y = 0;
-            break;
-        default:
-            // throw is better than ignore
-            throw std::runtime_error("unknown command sent to engine");
+    std::shared_ptr<state::action::AbstractAction> action;
+    // TODO: refactor it
+    if (command == ControllerCommand::INTERACT) {
+        action = std::make_shared<state::action::PlayerInteract>();
+    } else {
+        int32_t delta_x;
+        int32_t delta_y;
+        switch (command) {
+            case ControllerCommand::MOVE_TOP:
+                delta_x = 0; delta_y = -1;
+                break;
+            case ControllerCommand::MOVE_LEFT:
+                delta_x = -1; delta_y = 0;
+                break;
+            case ControllerCommand::MOVE_BOTTOM:
+                delta_x = 0; delta_y = 1;
+                break;
+            case ControllerCommand::MOVE_RIGHT:
+                delta_x = 1; delta_y = 0;
+                break;
+            default:
+                // throw is better than ignore
+                throw std::runtime_error("unknown command sent to engine");
+        }
+        action = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
     }
 
-    auto action = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
     state_.applyAction(action);
 
     generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
 }
 
-common::Map Engine::getMap() const {
-    common::Map map;
-    auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
-    int32_t VISIBILITY = 10;
-    for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
-        for (int32_t dy = -VISIBILITY; dy <= VISIBILITY; ++dy) {
-            common::Coordinate currentCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
-            auto objects = state_.getObjectObserver().getObjects(currentCoordinate);
-            std::vector<common::ObjectType> objectsTypes(objects.size());
-            std::transform(objects.cbegin(),
-                            objects.cend(),
-                            objectsTypes.begin(),
-                            [](const auto& object){return object->getObjectType();});
-            map[currentCoordinate] = objectsTypes;
+common::WorldUITransfer Engine::getWorldUITransfer() const {
+    common::WorldUITransfer worldUiTransfer;
+
+    {
+        common::Map map;
+        auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
+        int32_t VISIBILITY = 10;
+        for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
+            for (int32_t dy = -VISIBILITY; dy <= VISIBILITY; ++dy) {
+                common::Coordinate currentCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
+                auto objects = state_.getObjectObserver().getObjects(currentCoordinate);
+                std::vector<common::ObjectType> objectsTypes(objects.size());
+                std::transform(objects.cbegin(),
+                               objects.cend(),
+                               objectsTypes.begin(),
+                               [](const auto& object){return object->getObjectType();});
+                map[currentCoordinate] = objectsTypes;
+            }
         }
+        worldUiTransfer.map = map;
     }
-    return map;
+    {
+        common::Inventory inventory;
+        for (const auto& item : state_.getObjectObserver().getPlayer()->getItems()) {
+            common::ItemData itemData;
+            itemData.itemType = item->getItemType();
+            // TODO: where should we keep description?
+            itemData.description = "";
+            inventory.push_back(itemData);
+        }
+        worldUiTransfer.inventory = inventory;
+    }
+    {
+        common::PlayerMetrics playerMetrics;
+        auto player = state_.getObjectObserver().getPlayer();
+        playerMetrics.hp = std::any_cast<int32_t>(player->getProperty("hp").value());
+        playerMetrics.lvl = std::any_cast<int32_t>(player->getProperty("lvl").value());
+        playerMetrics.exp = std::any_cast<int32_t>(player->getProperty("exp").value());
+        worldUiTransfer.playerMetrics = playerMetrics;
+    }
+    return worldUiTransfer;
 }
 
 void Engine::generateWorldAroundPlayer(common::Coordinate playerCoordinate) {
