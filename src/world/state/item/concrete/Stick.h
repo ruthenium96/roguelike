@@ -9,6 +9,10 @@ public:
     Stick(const Identity& itemIdentity, const Identity& objectHolderIdentity) : AbstractItem(itemIdentity, objectHolderIdentity) {};
     Stick(Identity&& itemIdentity, const Identity& objectHolderIdentity) : AbstractItem(std::move(itemIdentity), objectHolderIdentity) {};
 
+    common::ItemType getItemType() const override {
+        return common::ItemType::STICK;
+    };
+
 };
 }
 

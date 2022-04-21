@@ -50,23 +50,47 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
     generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
 }
 
-common::Map Engine::getMap() const {
-    common::Map map;
-    auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
-    int32_t VISIBILITY = 10;
-    for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
-        for (int32_t dy = -VISIBILITY; dy <= VISIBILITY; ++dy) {
-            common::Coordinate currentCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
-            auto objects = state_.getObjectObserver().getObjects(currentCoordinate);
-            std::vector<common::ObjectType> objectsTypes(objects.size());
-            std::transform(objects.cbegin(),
-                            objects.cend(),
-                            objectsTypes.begin(),
-                            [](const auto& object){return object->getObjectType();});
-            map[currentCoordinate] = objectsTypes;
+common::WorldUITransfer Engine::getWorldUITransfer() const {
+    common::WorldUITransfer worldUiTransfer;
+
+    {
+        common::Map map;
+        auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
+        int32_t VISIBILITY = 10;
+        for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
+            for (int32_t dy = -VISIBILITY; dy <= VISIBILITY; ++dy) {
+                common::Coordinate currentCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
+                auto objects = state_.getObjectObserver().getObjects(currentCoordinate);
+                std::vector<common::ObjectType> objectsTypes(objects.size());
+                std::transform(objects.cbegin(),
+                               objects.cend(),
+                               objectsTypes.begin(),
+                               [](const auto& object){return object->getObjectType();});
+                map[currentCoordinate] = objectsTypes;
+            }
         }
+        worldUiTransfer.map = map;
     }
-    return map;
+    {
+        common::Inventory inventory;
+        for (const auto& item : state_.getObjectObserver().getPlayer()->getItems()) {
+            common::ItemData itemData;
+            itemData.itemType = item->getItemType();
+            // TODO: where should we keep description?
+            itemData.description = "";
+            inventory.push_back(itemData);
+        }
+        worldUiTransfer.inventory = inventory;
+    }
+    {
+        common::PlayerMetrics playerMetrics;
+        auto player = state_.getObjectObserver().getPlayer();
+        playerMetrics.hp = std::any_cast<int32_t>(player->getProperty("hp").value());
+        playerMetrics.lvl = std::any_cast<int32_t>(player->getProperty("lvl").value());
+        playerMetrics.exp = std::any_cast<int32_t>(player->getProperty("exp").value());
+        worldUiTransfer.playerMetrics = playerMetrics;
+    }
+    return worldUiTransfer;
 }
 
 void Engine::generateWorldAroundPlayer(common::Coordinate playerCoordinate) {

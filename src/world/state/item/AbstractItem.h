@@ -3,6 +3,7 @@
 
 #include "../Identity.h"
 #include <utility>
+#include "../../../common/ItemType.h"
 
 namespace world::state::item {
 
@@ -13,6 +14,7 @@ public:
     void setNewHolderIdentity(const Identity& newHolderIdentity) {
         objectHolderIdentity_ = newHolderIdentity;
     }
+    virtual common::ItemType getItemType() const = 0;
 private:
     const Identity selfIdentity_;
     Identity objectHolderIdentity_;
