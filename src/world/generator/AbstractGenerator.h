@@ -23,6 +23,11 @@ class AbstractGenerator {
     // Generate Objects in Coordinate based on object::Observer information
     virtual std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) = 0;
     virtual ~AbstractGenerator() = default;
+protected:
+    void addPlayer(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
+    void addFloor(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
+    void addWall(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
+    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
 };
 
 }  // namespace world::generator

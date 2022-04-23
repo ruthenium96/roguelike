@@ -1,8 +1,5 @@
 #include "OnTheFly.h"
-#include "../state/action/concrete/PickItem.h"
-#include "../state/item/concrete/Stick.h"
-#include "../state/object/concrete/Artefact.h"
-#include "../state/object/concrete/Wall.h"
+#include <random>
 #include <algorithm>
 #include <random>
 
@@ -18,8 +15,8 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
 
     std::vector<ObjectAndActions> answer;
     if (coordinate.x == 0 && coordinate.y == 0) {
-        addPlayer(coordinate, answer);
-        addFloor(coordinate, answer);
+        addPlayer(coordinate, answer, generated_identities_);
+        addFloor(coordinate, answer, generated_identities_);
     } else {
         std::random_device rd;
         std::default_random_engine eng(rd());
@@ -27,11 +24,11 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
 
         float probability = distr(eng);
         if (probability < 0.05) {
-            addWall(coordinate, answer);
+            addWall(coordinate, answer, generated_identities_);
         } else {
-            addFloor(coordinate, answer);
+            addFloor(coordinate, answer, generated_identities_);
             if (probability > 0.99) {
-                addArtefact(coordinate, answer);
+                addArtefact(coordinate, answer, generated_identities_);
             }
         }
     }
@@ -41,53 +38,4 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
     return answer;
 }
 
-void OnTheFly::addPlayer(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
-    ObjectAndActions player;
-    // add Player object
-    player.object = std::make_shared<state::object::Player>(state::Identity(generated_identities_++));
-    player.object->getCoordinate() = coordinate;
-    // add no Player actions
-    // ...
-    answer.push_back(player);
-}
-
-void OnTheFly::addFloor(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
-    // add Floor
-    ObjectAndActions floor;
-    floor.object = std::make_shared<state::object::Floor>(state::Identity(generated_identities_++));
-    floor.object->getCoordinate() = coordinate;
-    // add no Floor actions
-    // ...
-    answer.push_back(floor);
-}
-
-void OnTheFly::addWall(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
-    // add Wall
-    ObjectAndActions wall;
-    wall.object = std::make_shared<state::object::Wall>(state::Identity(generated_identities_++));
-    wall.object->getCoordinate() = coordinate;
-    // add no Wall actions
-    // ...
-    answer.push_back(wall);
-}
-
-void OnTheFly::addArtefact(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
-    // add Artefact
-    ObjectAndActions artefact;
-    auto objectIdentity = state::Identity(generated_identities_++);
-    artefact.object = std::make_shared<state::object::Artefact>(objectIdentity);
-    artefact.object->getCoordinate() = coordinate;
-    // add Artefact item
-    auto itemIdentity = state::Identity(generated_identities_++);
-    artefact.object->getItems().push_back(std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
-    // add Artefact actions
-    auto actionIdentity = state::Identity(generated_identities_++);
-    auto actionOnInteraction = std::make_shared<state::action::PickItem>(actionIdentity);
-    actionOnInteraction->setCorrespondingItemIdentity(itemIdentity);
-    actionOnInteraction->setCorrespondingObjectIdentity(objectIdentity);
-    artefact.actions.push_back(actionOnInteraction);
-
-    answer.push_back(artefact);
-}
-
-}  // namespace world::generator
+} // namespace world::generator
