@@ -25,7 +25,7 @@ class State {
 
   private:
     object::Observer objectObserver_;
-    std::set<std::shared_ptr<action::AbstractAction>> actions_;
+    action::Observer actionObserver_;
 };
 
 }  // namespace world::state

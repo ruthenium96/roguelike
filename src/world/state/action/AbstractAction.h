@@ -2,29 +2,24 @@
 #define ARCH_ROGUELIKE_ABSTRACTACTION_H
 
 #include "../object/Observer.h"
-#include <set>
+#include "Observer.h"
 
-namespace world::state::action {
+namespace world::state::action
+{
+class Observer;
 
 // Abstract class of Action -- something that changes Objects or other Actions.
 class AbstractAction {
   public:
     explicit AbstractAction(std::optional<Identity> selfIdentity) : selfIdentity_(selfIdentity){};
     // It is precondition: should this Action be applied or not.
-    virtual bool precondition(const object::Observer&, const std::set<std::shared_ptr<AbstractAction>>&) = 0;
+    virtual bool precondition(const object::Observer&, const action::Observer&) = 0;
 
     // Changes Object and Actions of interest.
-    virtual void changeTarget(object::Observer&, std::set<std::shared_ptr<AbstractAction>>&) = 0;
+    virtual void changeTarget(object::Observer&, action::Observer &) = 0;
 
     // Delete itself from set of Actions
-    void deleteItselfFromSet(std::set<std::shared_ptr<AbstractAction>>& set) {
-        for (const auto& action : set) {
-            if (action->getSelfIdentity() == getSelfIdentity()) {
-                set.erase(action);
-                break;
-            }
-        }
-    }
+    void deleteItselfFromActionObserver(action::Observer& actionObserver);
 
     const std::optional<Identity>& getSelfIdentity() const { return selfIdentity_; }
 

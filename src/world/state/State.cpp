@@ -11,12 +11,12 @@ object::Observer& State::getObjectObserver() {
 }
 
 void State::addAction(const std::shared_ptr<action::AbstractAction>& action) {
-    actions_.insert(action);
+    actionObserver_.addAction(action);
 }
 
-void State::applyAction(const std::shared_ptr<action::AbstractAction>& action) {
-    if (action->precondition(objectObserver_, actions_)) {
-        action->changeTarget(objectObserver_, actions_);
+void State::applyAction(const std::shared_ptr<action::AbstractAction> & action) {
+    if (action->precondition(objectObserver_, actionObserver_)) {
+        action->changeTarget(objectObserver_, actionObserver_);
     }
 }
 

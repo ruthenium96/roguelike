@@ -8,8 +8,8 @@ PlayerMove::PlayerMove(int32_t delta_x, int32_t delta_y) : AbstractAction(std::n
     delta_y_ = delta_y;
 }
 
-bool PlayerMove::precondition(const object::Observer& objectObserver,
-                              const std::set<std::shared_ptr<AbstractAction>>&) {
+bool PlayerMove::precondition(const object::Observer &objectObserver,
+                                const action::Observer&) {
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     common::Coordinate wantedCoordinate = {playerCoordinate.x + delta_x_,
                                             playerCoordinate.y + delta_y_};
@@ -22,7 +22,7 @@ bool PlayerMove::precondition(const object::Observer& objectObserver,
     return true;
 }
 
-void PlayerMove::changeTarget(object::Observer& objectObserver, std::set<std::shared_ptr<AbstractAction>>&) {
+void PlayerMove::changeTarget(object::Observer &objectObserver, Observer &) {
     auto player = objectObserver.getPlayer();
     player->getCoordinate().x += delta_x_;
     player->getCoordinate().y += delta_y_;

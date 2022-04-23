@@ -8,9 +8,12 @@ class PickItem : public AbstractAction {
   public:
     explicit PickItem(const std::optional<Identity>& selfIdentity);
 
-    bool precondition(const object::Observer& observer, const std::set<std::shared_ptr<AbstractAction>>& set) override;
+    bool precondition(const object::Observer&,
+                      const action::Observer&) override;
 
-    void changeTarget(object::Observer& observer, std::set<std::shared_ptr<AbstractAction>>& set) override;
+    void changeTarget(object::Observer &observer,
+                      action::Observer &set) override;
+
 };
 }  // namespace world::state::action
 

@@ -11,9 +11,9 @@ class PlayerMove : public AbstractAction {
     PlayerMove(int32_t delta_x, int32_t delta_y);
 
     bool precondition(const object::Observer& objectObserver,
-                      const std::set<std::shared_ptr<AbstractAction>>&) override;
+                      const action::Observer&) override;
 
-    void changeTarget(object::Observer&, std::set<std::shared_ptr<AbstractAction>>&) override;
+    void changeTarget(object::Observer&, action::Observer &) override;
 
   private:
     int32_t delta_x_;

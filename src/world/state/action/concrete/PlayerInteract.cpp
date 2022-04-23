@@ -3,7 +3,7 @@
 
 namespace world::state::action {
     bool PlayerInteract::precondition(const object::Observer &objectObserver,
-                                      const std::set<std::shared_ptr<AbstractAction>> &set) {
+                                      const action::Observer &actionObserver) {
         auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
         auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
         if (findInteractableObject(objects) != std::nullopt) {
@@ -13,7 +13,7 @@ namespace world::state::action {
         }
     }
 
-    void PlayerInteract::changeTarget(object::Observer &objectObserver, std::set<std::shared_ptr<AbstractAction>> &set) {
+    void PlayerInteract::changeTarget(object::Observer &objectObserver, action::Observer &actionObserver) {
         auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
         auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
         auto interactableObject = findInteractableObject(objects).value();
@@ -24,12 +24,13 @@ namespace world::state::action {
 
         auto interactableObjectIdentity = interactableObject->getIdentity();
 
-    auto maybe_action = findInteraction(interactableObjectIdentity, set);
-    if (!maybe_action.has_value()) {
-        return;
-    }
-    auto action = maybe_action.value();
-    action->changeTarget(objectObserver, set);
+        auto maybe_action = actionObserver.getActionByCorrespondingObjectIdentity(interactableObjectIdentity);
+        if (!maybe_action.has_value()) {
+            return;
+        }
+        auto action = maybe_action.value();
+        action->changeTarget(objectObserver, actionObserver);
+
 }
 
 std::optional<std::shared_ptr<object::AbstractObject>> PlayerInteract::findInteractableObject(
@@ -39,17 +40,5 @@ std::optional<std::shared_ptr<object::AbstractObject>> PlayerInteract::findInter
             return object;
         }
     }
-    return std::nullopt;
-}
-
-std::optional<std::shared_ptr<action::AbstractAction>> PlayerInteract::findInteraction(
-    Identity objectIdentity,
-    const std::set<std::shared_ptr<AbstractAction>>& set) {
-    for (auto& action : set) {
-        if (action->getCorrespondingObjectIdentity() == objectIdentity) {
-            return action;
-        }
     }
-    return std::nullopt;
 }
-}  // namespace world::state::action

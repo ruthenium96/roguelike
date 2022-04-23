@@ -1,5 +1,5 @@
-#ifndef ARCH_ROGUELIKE_OBSERVER_H
-#define ARCH_ROGUELIKE_OBSERVER_H
+#ifndef ARCH_ROGUELIKE_OBJECT_OBSERVER_H
+#define ARCH_ROGUELIKE_OBJECT_OBSERVER_H
 
 #include "../../../common/Map.h"
 #include "../Identity.h"
@@ -35,4 +35,4 @@ class Observer {
 
 }  // namespace world::state::object
 
-#endif  // ARCH_ROGUELIKE_OBSERVER_H
+#endif // ARCH_ROGUELIKE_OBJECT_OBSERVER_H
