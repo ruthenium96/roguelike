@@ -15,7 +15,8 @@ class AbstractItem {
     void setNewHolderIdentity(const Identity& newHolderIdentity) { objectHolderIdentity_ = newHolderIdentity; }
     virtual common::ItemType getItemType() const = 0;
 
-  private:
+    virtual ~AbstractItem() = default;
+private:
     const Identity selfIdentity_;
     Identity objectHolderIdentity_;
 };

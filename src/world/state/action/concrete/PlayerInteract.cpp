@@ -2,27 +2,27 @@
 #include "PickItem.h"
 
 namespace world::state::action {
-bool PlayerInteract::precondition(const object::Observer& objectObserver,
-                                  const std::set<std::shared_ptr<AbstractAction>>& set) {
-    auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
-    auto objects = objectObserver.getObjects(playerCoordinate);
-    if (findInteractableObject(objects) != std::nullopt) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-void PlayerInteract::changeTarget(object::Observer& objectObserver, std::set<std::shared_ptr<AbstractAction>>& set) {
-    auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
-    auto objects = objectObserver.getObjects(playerCoordinate);
-    auto interactableObject = findInteractableObject(objects).value();
-    if (interactableObject->getObjectType() != common::ObjectType::ARTEFACT) {
-        // do not support other ObjectTypes now
-        return;
+    bool PlayerInteract::precondition(const object::Observer &objectObserver,
+                                      const std::set<std::shared_ptr<AbstractAction>> &set) {
+        auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
+        auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
+        if (findInteractableObject(objects) != std::nullopt) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    auto interactableObjectIdentity = interactableObject->getIdentity();
+    void PlayerInteract::changeTarget(object::Observer &objectObserver, std::set<std::shared_ptr<AbstractAction>> &set) {
+        auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
+        auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
+        auto interactableObject = findInteractableObject(objects).value();
+        if (interactableObject->getObjectType() != common::ObjectType::ARTEFACT) {
+            // do not support other ObjectTypes now
+            return;
+        }
+
+        auto interactableObjectIdentity = interactableObject->getIdentity();
 
     auto maybe_action = findInteraction(interactableObjectIdentity, set);
     if (!maybe_action.has_value()) {

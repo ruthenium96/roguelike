@@ -11,8 +11,9 @@ PlayerMove::PlayerMove(int32_t delta_x, int32_t delta_y) : AbstractAction(std::n
 bool PlayerMove::precondition(const object::Observer& objectObserver,
                               const std::set<std::shared_ptr<AbstractAction>>&) {
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
-    common::Coordinate wantedCoordinate = {playerCoordinate.x + delta_x_, playerCoordinate.y + delta_y_};
-    auto objects = objectObserver.getObjects(wantedCoordinate);
+    common::Coordinate wantedCoordinate = {playerCoordinate.x + delta_x_,
+                                            playerCoordinate.y + delta_y_};
+    auto objects = objectObserver.getObjectsAtCoordinate(wantedCoordinate);
     for (const auto& object : objects) {
         if (object->getObjectType() == common::ObjectType::WALL) {
             return false;

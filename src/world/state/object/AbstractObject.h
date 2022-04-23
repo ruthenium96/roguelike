@@ -30,7 +30,9 @@ class AbstractObject {
     const std::vector<std::unique_ptr<item::AbstractItem>>& getItems() const { return items_; }
     std::optional<std::any> getProperty(const std::string& property_name) const;
 
-  private:
+    virtual ~AbstractObject() = default;
+
+private:
     const Identity selfIdentity_;
     common::Coordinate coordinate_;
     // TODO: Can be replaced by std::vector<Identity>

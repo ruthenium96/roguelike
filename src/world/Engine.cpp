@@ -62,7 +62,7 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
         for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
             for (int32_t dy = -VISIBILITY; dy <= VISIBILITY; ++dy) {
                 common::Coordinate currentCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
-                auto objects = state_.getObjectObserver().getObjects(currentCoordinate);
+                auto objects = state_.getObjectObserver().getObjectsAtCoordinate(currentCoordinate);
                 std::vector<common::ObjectType> objectsTypes(objects.size());
                 std::transform(objects.cbegin(), objects.cend(), objectsTypes.begin(), [](const auto& object) {
                     return object->getObjectType();
@@ -99,8 +99,8 @@ void Engine::generateWorldAroundPlayer(common::Coordinate playerCoordinate) {
     for (int32_t dx = -GENSIZE; dx <= GENSIZE; ++dx) {
         for (int32_t dy = -GENSIZE; dy <= GENSIZE; ++dy) {
             common::Coordinate coordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
-            auto objectsAndActionss = generator_->generateObjects(coordinate, state_.getObjectObserver());
-            for (const auto& objectAndActions : objectsAndActionss) {
+            auto objectsAndActions = generator_->generateObjects(coordinate, state_.getObjectObserver());
+            for (const auto& objectAndActions : objectsAndActions) {
                 state_.getObjectObserver().addObject(objectAndActions.object);
                 for (const auto& action : objectAndActions.actions) {
                     state_.addAction(action);

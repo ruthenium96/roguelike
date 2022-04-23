@@ -21,7 +21,8 @@ class Observer {
     std::optional<std::shared_ptr<object::AbstractObject>> getObject(Identity);
 
     // Get all Objects using their Coordinate.
-    std::vector<std::shared_ptr<AbstractObject>> getObjects(common::Coordinate) const;
+    std::vector<std::shared_ptr<AbstractObject>> getObjectsAtCoordinate(common::Coordinate coordinate) const;
+    std::vector<std::shared_ptr<AbstractObject>> getAllObjects() const;
 
     // Adds new object.
     void addObject(const std::shared_ptr<object::AbstractObject>&);
