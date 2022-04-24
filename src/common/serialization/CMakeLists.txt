@@ -11,9 +11,8 @@ ELSE()
             GIT_TAG        "v3.20.1"
             SOURCE_SUBDIR cmake
     )
-    option(protobuf_USE_EXTERNAL_GTEST "Use external Google Test (i.e. not the one in third_party/googletest)" ON)
+    set(protobuf_BUILD_TESTS OFF)
     FetchContent_MakeAvailable(protobuf)
-    option(protobuf_USE_EXTERNAL_GTEST "Use external Google Test (i.e. not the one in third_party/googletest)" ON)
     include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
 ENDIF()
 
