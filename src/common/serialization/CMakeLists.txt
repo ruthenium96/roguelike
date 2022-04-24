@@ -12,9 +12,9 @@ ELSE()
             SOURCE_SUBDIR cmake
     )
     set(protobuf_BUILD_TESTS OFF)
-    set(protobuf_BUILD_EXPORT OFF)
     FetchContent_MakeAvailable(protobuf)
     include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
+    set(protobuf_BUILD_TESTS OFF)
 ENDIF()
 
 set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/common/serialization)
