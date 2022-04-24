@@ -2,6 +2,8 @@
 #define ARCH_ROGUELIKE_INVENTORY_H
 
 #include "ItemType.h"
+#include <string>
+#include <vector>
 
 namespace common {
 struct ItemData {
