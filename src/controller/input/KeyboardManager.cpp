@@ -1,19 +1,19 @@
 #include "KeyboardManager.h"
-
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
-namespace {
+namespace
+{
 // this function takes a character from the console without confirmation
 #ifdef linux
 
+#include "../../common/Command.h"
 #include <termios.h>
 #include <unistd.h>
 #include <cstdio>
 
-#include "../../common/Command.h"
-
-inline char read_char_with_no_confirmation() {
+inline char read_char_with_no_confirmation()
+{
     termios oldattr{};
     termios newattr{};
     int ch;
@@ -29,35 +29,51 @@ inline char read_char_with_no_confirmation() {
 #elif _WIN32
 #include <conio.h>
 
-inline char read_char_with_no_confirmation() {
+inline char read_char_with_no_confirmation()
+{
     return getch();
 }
 
 #else
-inline char read_char_with_no_confirmation() {
+inline char read_char_with_no_confirmation()
+{
     throw std::runtime_error("Platform doesn't support");
 }
 #endif
-}
+}  // namespace
 
-
-namespace controller::input {
-common::ControllerCommand KeyboardManager::readCommand() {
+namespace controller::input
+{
+common::ControllerCommand KeyboardManager::readCommand()
+{
     char symbol = std::tolower(read_char_with_no_confirmation());
-    if (symbol == 'w') {
+    if (symbol == 'w')
+    {
         return common::ControllerCommand::MOVE_TOP;
-    } else if (symbol == 'd') {
+    }
+    else if (symbol == 'd')
+    {
         return common::ControllerCommand::MOVE_RIGHT;
-    } else if (symbol == 's') {
+    }
+    else if (symbol == 's')
+    {
         return common::ControllerCommand::MOVE_BOTTOM;
-    } else if (symbol == 'a') {
+    }
+    else if (symbol == 'a')
+    {
         return common::ControllerCommand::MOVE_LEFT;
-    } else if (symbol == 'q') {
+    }
+    else if (symbol == 'q')
+    {
         return common::ControllerCommand::EXIT;
-    } else if (symbol == 'e') {
+    }
+    else if (symbol == 'e')
+    {
         return common::ControllerCommand::INTERACT;
-    } else {
+    }
+    else
+    {
         return common::ControllerCommand::UNKNOWN;
     }
 }
-}
+}  // namespace controller::input

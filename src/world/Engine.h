@@ -1,19 +1,19 @@
 #ifndef ARCH_ROGUELIKE_ENGINE_H
 #define ARCH_ROGUELIKE_ENGINE_H
 
-#include <memory>
-
-#include "state/State.h"
-#include "generator/AbstractGenerator.h"
 #include "../common/Command.h"
 #include "../common/WorldUITransfer.h"
+#include "generator/AbstractGenerator.h"
+#include "state/State.h"
+#include <memory>
 
 namespace world
 {
 
 // Engine corresponds for interaction of World with other modules.
-class Engine {
-public:
+class Engine
+{
+  public:
     Engine();
     // Applies ControllerCommand
     void applyCommand(const common::ControllerCommand&);
@@ -21,14 +21,13 @@ public:
     // Generate current Map
     common::WorldUITransfer getWorldUITransfer() const;
 
-
-private:
+  private:
     void generateWorldAroundPlayer(common::Coordinate playerCoordinate);
 
     state::State state_;
     std::unique_ptr<generator::AbstractGenerator> generator_;
 };
 
-} // namespace world 
+}  // namespace world
 
-#endif // ARCH_ROGUELIKE_ENGINE_H
+#endif  // ARCH_ROGUELIKE_ENGINE_H

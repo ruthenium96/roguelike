@@ -4,7 +4,8 @@
 namespace common
 {
 
-enum class ControllerCommand {
+enum class ControllerCommand
+{
     UNKNOWN,
     MOVE_TOP,
     MOVE_LEFT,
@@ -14,4 +15,4 @@ enum class ControllerCommand {
     EXIT
 };
 
-} // namespace common
+}  // namespace common

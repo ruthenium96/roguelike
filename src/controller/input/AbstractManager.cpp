@@ -1,5 +1,6 @@
 #include "AbstractManager.h"
 
-namespace controller::input {
+namespace controller::input
+{
 
 }

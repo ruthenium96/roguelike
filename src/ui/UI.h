@@ -3,20 +3,19 @@
 
 #include "../common/Map.h"
 #include "../world/Engine.h"
-#include "game_object_style.h"
 #include "console_display.h"
-
+#include "game_object_style.h"
 #include <memory>
 
-
-namespace ui 
+namespace ui
 {
 
-class UI {
-public:
+class UI
+{
+  public:
     UI(const world::Engine& engine);
 
-    // draw current game image 
+    // draw current game image
     void draw() const;
 
     // pushes the stats about game and player on display
@@ -26,8 +25,9 @@ public:
     // pushes the current map on display
     void pushMapOnDisplay(const common::Map& map) const;
 
-private:
-    std::unique_ptr<IStyle> style_;; 
+  private:
+    std::unique_ptr<IStyle> style_;
+    ;
 
     // use shared_ptr?
     mutable ConsoleDisplay display_;
@@ -36,6 +36,6 @@ private:
     const world::Engine& engine_;
 };
 
-} // namespace ui
+}  // namespace ui
 
-#endif // ARCH_ROGUELIKE_UI_H
+#endif  // ARCH_ROGUELIKE_UI_H

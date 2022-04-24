@@ -7,8 +7,9 @@ namespace world::state::action
 {
 
 // Action of Player movement. Currently, can be applied only from external source.
-class PlayerMove : public AbstractAction {
-public:
+class PlayerMove : public AbstractAction
+{
+  public:
     PlayerMove(int32_t delta_x, int32_t delta_y);
 
     bool precondition(const object::Observer& objectObserver,
@@ -16,11 +17,11 @@ public:
 
     void changeTarget(object::Observer&, std::set<std::shared_ptr<AbstractAction>>&) override;
 
-private:
+  private:
     int32_t delta_x_;
     int32_t delta_y_;
 };
 
-} // namespace world::state::action
+}  // namespace world::state::action
 
-#endif // ARCH_ROGUELIKE_PLAYERMOVE_H
+#endif  // ARCH_ROGUELIKE_PLAYERMOVE_H

@@ -2,5 +2,5 @@
 
 namespace common
 {
-    
-} // namespace common
+
+}  // namespace common
