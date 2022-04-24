@@ -11,10 +11,10 @@ ELSE()
             GIT_TAG        "v3.20.1"
             SOURCE_SUBDIR cmake
     )
-    set(protobuf_USE_EXTERNAL_GTEST ON)
+    option(protobuf_USE_EXTERNAL_GTEST "Use external Google Test (i.e. not the one in third_party/googletest)" ON)
     FetchContent_MakeAvailable(protobuf)
+    option(protobuf_USE_EXTERNAL_GTEST "Use external Google Test (i.e. not the one in third_party/googletest)" ON)
     include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
-    set(protobuf_USE_EXTERNAL_GTEST ON)
 ENDIF()
 
 set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/common/serialization)
