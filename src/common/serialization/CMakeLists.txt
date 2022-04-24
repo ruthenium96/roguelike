@@ -12,6 +12,7 @@ ELSE()
             SOURCE_SUBDIR cmake
     )
     set(protobuf_BUILD_TESTS OFF)
+    set(protobuf_BUILD_EXPORT OFF)
     FetchContent_MakeAvailable(protobuf)
     include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
 ENDIF()
