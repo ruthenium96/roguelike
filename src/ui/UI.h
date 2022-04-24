@@ -1,18 +1,38 @@
 #ifndef ARCH_ROGUELIKE_UI_H
 #define ARCH_ROGUELIKE_UI_H
 
-#include "../common/Map.h"
-
+#include "../common/WorldUITransfer.h"
+#include "console_display.h"
+#include "game_object_style.h"
+#include <memory>
 
 namespace ui {
+
 class UI {
-public:
-    void drawMap(const common::Map& map);
-private:
-    // TODO: Should be moved to children of AbstractUI - ConsoleUI or TerminalUI
-    char getRepresentation(const common::ObjectType& type) const;
+  public:
+    UI(const std::string& style = "default");  // TODO: add style set
 
+    // draw current game image
+    void draw(const common::WorldUITransfer& world_state);
+
+  private:
+    // pushes the stats about game and player on display
+    // NB: current stats type is stub
+    void pushStatsOnDisplay(const common::PlayerMetrics& player_stats);
+
+    // pushes the current map on display
+    void pushMapOnDisplay(const common::Map& map) const;
+
+    // pushes player inventory on display
+    void pushInventoryOnDisplay(const common::Inventory& inventory);
+
+  private:
+    std::unique_ptr<IStyle> style_;
+
+    // use shared_ptr?
+    ConsoleDisplay display_;
 };
-}
 
-#endif //ARCH_ROGUELIKE_UI_H
+}  // namespace ui
+
+#endif  // ARCH_ROGUELIKE_UI_H

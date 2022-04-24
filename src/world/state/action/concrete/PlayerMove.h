@@ -4,9 +4,10 @@
 #include "../AbstractAction.h"
 
 namespace world::state::action {
+
 // Action of Player movement. Currently, can be applied only from external source.
 class PlayerMove : public AbstractAction {
-public:
+  public:
     PlayerMove(int32_t delta_x, int32_t delta_y);
 
     bool precondition(const object::Observer& objectObserver,
@@ -14,10 +15,11 @@ public:
 
     void changeTarget(object::Observer&, std::set<std::shared_ptr<AbstractAction>>&) override;
 
-private:
+  private:
     int32_t delta_x_;
     int32_t delta_y_;
 };
-}
 
-#endif //ARCH_ROGUELIKE_PLAYERMOVE_H
+}  // namespace world::state::action
+
+#endif  // ARCH_ROGUELIKE_PLAYERMOVE_H

@@ -6,12 +6,14 @@
 namespace world::state::object {
 
 class Player : public AbstractObject {
-public:
-    explicit Player(Identity&& identity) : AbstractObject(std::move(identity)) {};
+  public:
+    explicit Player(Identity&& identity);
+    ;
     common::ObjectType getObjectType() const override;
-private:
+
+  private:
 };
 
-}
+}  // namespace world::state::object
 
-#endif //ARCH_ROGUELIKE_PLAYER_H
+#endif  // ARCH_ROGUELIKE_PLAYER_H

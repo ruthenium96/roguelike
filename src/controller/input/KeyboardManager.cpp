@@ -1,17 +1,15 @@
 #include "KeyboardManager.h"
-
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
 namespace {
 // this function takes a character from the console without confirmation
 #ifdef linux
 
+#include "../../common/Command.h"
 #include <termios.h>
 #include <unistd.h>
 #include <cstdio>
-
-#include "../../common/Command.h"
 
 inline char read_char_with_no_confirmation() {
     termios oldattr{};
@@ -38,8 +36,7 @@ inline char read_char_with_no_confirmation() {
     throw std::runtime_error("Platform doesn't support");
 }
 #endif
-}
-
+}  // namespace
 
 namespace controller::input {
 common::ControllerCommand KeyboardManager::readCommand() {
@@ -54,8 +51,10 @@ common::ControllerCommand KeyboardManager::readCommand() {
         return common::ControllerCommand::MOVE_LEFT;
     } else if (symbol == 'q') {
         return common::ControllerCommand::EXIT;
+    } else if (symbol == 'e') {
+        return common::ControllerCommand::INTERACT;
     } else {
         return common::ControllerCommand::UNKNOWN;
     }
 }
-}
+}  // namespace controller::input

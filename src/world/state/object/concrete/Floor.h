@@ -5,12 +5,12 @@
 
 namespace world::state::object {
 class Floor : public AbstractObject {
-public:
-    explicit Floor(Identity&& identity) : AbstractObject(std::move(identity)) {};
+  public:
+    explicit Floor(Identity&& identity) : AbstractObject(std::move(identity)){};
     common::ObjectType getObjectType() const override;
-private:
 
+  private:
 };
-}
+}  // namespace world::state::object
 
-#endif //ARCH_ROGUELIKE_FLOOR_H
+#endif  // ARCH_ROGUELIKE_FLOOR_H

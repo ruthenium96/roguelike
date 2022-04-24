@@ -1,18 +1,19 @@
 #ifndef ARCH_ROGUELIKE_OBSERVER_H
 #define ARCH_ROGUELIKE_OBSERVER_H
 
+#include "../../../common/Map.h"
+#include "../Identity.h"
+#include "AbstractObject.h"
+#include "concrete/Player.h"
 #include <map>
 #include <memory>
 #include <optional>
-#include "Identity.h"
-#include "AbstractObject.h"
-#include "concrete/Player.h"
-#include "../../../common/Map.h"
 
 namespace world::state::object {
+
 // Helps to get Objects of interests.
 class Observer {
-public:
+  public:
     // Player getters:
     std::shared_ptr<object::Player> getPlayer();
     std::shared_ptr<const object::Player> getPlayer() const;
@@ -24,11 +25,13 @@ public:
 
     // Adds new object.
     void addObject(const std::shared_ptr<object::AbstractObject>&);
+    //
+    void deleteObject(Identity);
 
-private:
-
-    std::map<object::Identity, std::shared_ptr<object::AbstractObject>> identityObjectMap_;
+  private:
+    std::map<Identity, std::shared_ptr<AbstractObject>> identityObjectMap_;
 };
-}
 
-#endif //ARCH_ROGUELIKE_OBSERVER_H
+}  // namespace world::state::object
+
+#endif  // ARCH_ROGUELIKE_OBSERVER_H

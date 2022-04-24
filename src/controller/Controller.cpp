@@ -1,28 +1,30 @@
 #include "Controller.h"
-
+#include "../common/Command.h"
 #include <algorithm>
 
 namespace controller {
 
-
 void Controller::start() {
-    system("clear");
-    auto map = engine_.getMap();
-    ui_.drawMap(map);
-    auto command = manager_.readCommand();
-    while (command != common::ControllerCommand::EXIT) {
-        if (command == common::ControllerCommand::UNKNOWN) {
-            command = manager_.readCommand();
-            continue;
-        }
-        // TODO: encapsulate clear in terminal ui
-        engine_.applyCommand(command);
-        system("clear");
-        map = engine_.getMap();
-        ui_.drawMap(map);
+    // use us_.draw_init();
+
+    using common::ControllerCommand;
+
+    ControllerCommand command;
+    do {
+        auto world_state = engine_.getWorldUITransfer();
+        ui_.draw(world_state);
 
         command = manager_.readCommand();
-    }
+
+        if (command == ControllerCommand::UNKNOWN || command == ControllerCommand::EXIT) {
+            continue;
+        }
+
+        engine_.applyCommand(command);
+
+    } while (command != ControllerCommand::EXIT);
+
+    // us_.draw_final();
 }
 
-}
+}  // namespace controller
