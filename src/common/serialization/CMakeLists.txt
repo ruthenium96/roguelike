@@ -11,7 +11,7 @@ ELSE()
             GIT_TAG        "v3.20.1"
     )
     FetchContent_MakeAvailable(protobuf)
-    include_directories(${CMAKE_SOURCE_DIR}/libs/googletest/googletest/include)
+    include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
 ENDIF()
 
 set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/common/serialization)

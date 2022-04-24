@@ -1,0 +1,35 @@
+name: Unit Tests
+
+on: push
+
+jobs:
+
+  build-cmake-installation:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build project
+        run: |
+          mkdir ${{github.workspace}}/build
+          cd ${{github.workspace}}/build
+          cmake ..
+          cmake --build .
+
+  build-apt-installation:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies using apt
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            protobuf-compiler \
+            libgtest-dev
+      - name: Build project
+        run: |
+          mkdir ${{github.workspace}}/build
+          cd ${{github.workspace}}/build
+          cmake ..
+          cmake --build .

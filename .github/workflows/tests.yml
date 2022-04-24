@@ -1,19 +1,14 @@
 name: Unit Tests
 
-on: [push, pull_request]
+on: push
 
 jobs:
 
-  google-tests:
+  unit-tests:
     runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y \
-            protobuf-compiler
       - name: Build project
         run: |
           mkdir ${{github.workspace}}/build
