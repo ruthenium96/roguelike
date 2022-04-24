@@ -35,4 +35,4 @@ class Observer {
 
 }  // namespace world::state::object
 
-#endif // ARCH_ROGUELIKE_OBJECT_OBSERVER_H
+#endif  // ARCH_ROGUELIKE_OBJECT_OBSERVER_H

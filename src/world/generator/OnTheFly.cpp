@@ -1,5 +1,4 @@
 #include "OnTheFly.h"
-#include <random>
 #include <algorithm>
 #include <random>
 
@@ -38,4 +37,4 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
     return answer;
 }
 
-} // namespace world::generator
+}  // namespace world::generator

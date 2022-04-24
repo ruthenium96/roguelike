@@ -32,7 +32,7 @@ class AbstractObject {
 
     virtual ~AbstractObject() = default;
 
-private:
+  private:
     const Identity selfIdentity_;
     common::Coordinate coordinate_;
     // TODO: Can be replaced by std::vector<Identity>

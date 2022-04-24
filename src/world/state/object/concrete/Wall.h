@@ -5,8 +5,8 @@
 
 namespace world::state::object {
 class Wall : public AbstractObject {
-public:
-    explicit Wall(const Identity& identity) : AbstractObject(identity) {};
+  public:
+    explicit Wall(const Identity& identity) : AbstractObject(identity){};
     common::ObjectType getObjectType() const override;
 };
 }  // namespace world::state::object

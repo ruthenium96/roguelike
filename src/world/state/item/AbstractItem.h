@@ -16,7 +16,8 @@ class AbstractItem {
     virtual common::ItemType getItemType() const = 0;
 
     virtual ~AbstractItem() = default;
-private:
+
+  private:
     const Identity selfIdentity_;
     Identity objectHolderIdentity_;
 };

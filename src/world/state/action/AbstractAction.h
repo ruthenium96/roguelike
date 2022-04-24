@@ -4,8 +4,7 @@
 #include "../object/Observer.h"
 #include "Observer.h"
 
-namespace world::state::action
-{
+namespace world::state::action {
 class Observer;
 
 // Abstract class of Action -- something that changes Objects or other Actions.
@@ -16,7 +15,7 @@ class AbstractAction {
     virtual bool precondition(const object::Observer&, const action::Observer&) = 0;
 
     // Changes Object and Actions of interest.
-    virtual void changeTarget(object::Observer&, action::Observer &) = 0;
+    virtual void changeTarget(object::Observer&, action::Observer&) = 0;
 
     // Delete itself from set of Actions
     void deleteItselfFromActionObserver(action::Observer& actionObserver);

@@ -28,34 +28,34 @@ void Observer::addObject(const std::shared_ptr<object::AbstractObject>& object) 
     identityObjectMap_[object->getIdentity()] = object;
 }
 
-    std::vector<std::shared_ptr<AbstractObject>> Observer::getObjectsAtCoordinate(common::Coordinate coordinate) const {
-        std::vector<std::shared_ptr<AbstractObject>> answer;
-        for (const auto& [_, object] : identityObjectMap_) {
-            if (object->getCoordinate() == coordinate) {
-                answer.push_back(object);
-            }
+std::vector<std::shared_ptr<AbstractObject>> Observer::getObjectsAtCoordinate(common::Coordinate coordinate) const {
+    std::vector<std::shared_ptr<AbstractObject>> answer;
+    for (const auto& [_, object] : identityObjectMap_) {
+        if (object->getCoordinate() == coordinate) {
+            answer.push_back(object);
         }
-        return answer;
     }
+    return answer;
+}
 
-    std::vector<std::shared_ptr<AbstractObject>> Observer::getAllObjects() const {
-        std::vector<std::shared_ptr<AbstractObject>> objects;
-        objects.reserve(identityObjectMap_.size());
-        for (const auto& [_, object] : identityObjectMap_) {
-            objects.push_back(object);
-        }
-        return objects;
+std::vector<std::shared_ptr<AbstractObject>> Observer::getAllObjects() const {
+    std::vector<std::shared_ptr<AbstractObject>> objects;
+    objects.reserve(identityObjectMap_.size());
+    for (const auto& [_, object] : identityObjectMap_) {
+        objects.push_back(object);
     }
+    return objects;
+}
 
-    std::shared_ptr<const object::Player> Observer::getPlayer() const {
-        for (const auto& [_, object] : identityObjectMap_) {
-            if (object->getObjectType() == common::ObjectType::PLAYER) {
-                auto ptrToPlayer = std::dynamic_pointer_cast<Player>(object);
-                return ptrToPlayer;
-            }
+std::shared_ptr<const object::Player> Observer::getPlayer() const {
+    for (const auto& [_, object] : identityObjectMap_) {
+        if (object->getObjectType() == common::ObjectType::PLAYER) {
+            auto ptrToPlayer = std::dynamic_pointer_cast<Player>(object);
+            return ptrToPlayer;
         }
-        return nullptr;
     }
+    return nullptr;
+}
 
 void Observer::deleteObject(Identity identity) {
     identityObjectMap_.erase(identity);

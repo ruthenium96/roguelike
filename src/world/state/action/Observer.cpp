@@ -1,12 +1,12 @@
 #include "Observer.h"
 
 namespace world::state::action {
-void Observer::addAction(const std::shared_ptr<action::AbstractAction> &action) {
+void Observer::addAction(const std::shared_ptr<action::AbstractAction>& action) {
     actions_.insert(action);
 }
 
-std::optional<std::shared_ptr<action::AbstractAction>>
-Observer::getActionByCorrespondingObjectIdentity(Identity objectIdentity) {
+std::optional<std::shared_ptr<action::AbstractAction>> Observer::getActionByCorrespondingObjectIdentity(
+    Identity objectIdentity) {
     for (auto& action : actions_) {
         if (action->getCorrespondingObjectIdentity() == objectIdentity) {
             return action;
@@ -23,4 +23,4 @@ void Observer::deleteAction(Identity actionIdentity) {
         }
     }
 }
-}
+}  // namespace world::state::action

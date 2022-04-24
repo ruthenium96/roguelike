@@ -11,8 +11,10 @@ class PlayerInteract : public AbstractAction {
     bool precondition(const object::Observer&, const action::Observer&) override;
 
     void changeTarget(object::Observer&, action::Observer&) override;
-private:
-    std::optional<std::shared_ptr<object::AbstractObject>> findInteractableObject(const std::vector<std::shared_ptr<object::AbstractObject>>& objects);
+
+  private:
+    std::optional<std::shared_ptr<object::AbstractObject>> findInteractableObject(
+        const std::vector<std::shared_ptr<object::AbstractObject>>& objects);
 };
 }  // namespace world::state::action
 
