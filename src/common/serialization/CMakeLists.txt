@@ -1,5 +1,8 @@
 MESSAGE(STATUS "Generating protobuf files.")
 
+find_package(Protobuf REQUIRED)
+include_directories(${Protobuf_INCLUDE_DIRS})
+
 set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/common/serialization)
 
 # TODO: handle non zero return code

@@ -9,6 +9,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            protobuf-compiler
       - name: Build project
         run: |
           mkdir ${{github.workspace}}/build
