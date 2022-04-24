@@ -1,3 +1,5 @@
+find_package (Threads REQUIRED)
+
 find_package(GTest)
 IF(GTest_FOUND)
     include_directories(${GTest_INCLUDE_DIRS})

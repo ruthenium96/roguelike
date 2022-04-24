@@ -26,7 +26,8 @@ jobs:
           sudo apt update
           sudo apt install -y \
             protobuf-compiler \
-            libgtest-dev
+            libgtest-dev \
+            libpthread-stubs0-dev
       - name: Build project
         run: |
           mkdir ${{github.workspace}}/build
