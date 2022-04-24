@@ -15,13 +15,13 @@ UI::UI(const std::string& style) {
     }
 }
 
-void UI::draw(const common::WorldUITransfer& world_state) const {
+void UI::draw(const common::WorldUITransfer& world_state) {
     pushStatsOnDisplay(world_state.playerMetrics);
     pushMapOnDisplay(world_state.map);
     display_.draw();
 }
 
-void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) const {
+void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) {
     std::string stats_str{
         "Hello in Arch Roguelike 3000! "
         "Level:1   HP:100%   Mana:100%   Exp:47%"};
@@ -32,7 +32,7 @@ void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) const {
     }
 }
 
-void UI::pushMapOnDisplay(const common::Map& map) const {
+void UI::pushMapOnDisplay(const common::Map& map) {
     auto initial_coordinate = map.begin()->first;
     auto width_i = 0U;
     auto height_i = 1U;

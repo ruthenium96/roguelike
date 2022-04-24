@@ -13,24 +13,24 @@ class UI {
     UI(const std::string& style = "default");  // TODO: add style set
 
     // draw current game image
-    void draw(const common::WorldUITransfer& world_state) const;
+    void draw(const common::WorldUITransfer& world_state);
 
   private:
     // pushes the stats about game and player on display
     // NB: current stats type is stub
-    void pushStatsOnDisplay(const common::PlayerMetrics& player_stats) const;
+    void pushStatsOnDisplay(const common::PlayerMetrics& player_stats);
 
     // pushes the current map on display
     void pushMapOnDisplay(const common::Map& map) const;
 
     // pushes player inventory on display
-    void pushInventoryOnDisplay(const common::Inventory& inventory) const;
+    void pushInventoryOnDisplay(const common::Inventory& inventory);
 
   private:
     std::unique_ptr<IStyle> style_;
 
     // use shared_ptr?
-    mutable ConsoleDisplay display_;
+    ConsoleDisplay display_;
 };
 
 }  // namespace ui
