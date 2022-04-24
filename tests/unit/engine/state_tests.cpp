@@ -3,6 +3,7 @@
 #include "../../../src/world/generator/AbstractGenerator.h"
 #include "../../../src/world/state/State.h"
 #include "../../../src/world/state/action/concrete/PlayerMove.h"
+#include "../../../src/world/state/action/concrete/PlayerInteract.h"
 
 namespace world::generator {
 class GeneratorForTests : public AbstractGenerator {
@@ -118,4 +119,32 @@ TEST(state_tests, cannotWalkIntoWall) {
     moveAction = std::make_shared<world::state::action::PlayerMove>(0, -1);
     state.applyAction(moveAction);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
+}
+
+TEST(state_tests, interactWithArtefact) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 0}, answer, generated_identities);
+    generator.addArtefactPublic({0, 0}, answer, generated_identities);
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 3);
+    ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
+    // TODO: find Action corresponding to Artefact/Item
+
+    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+    state.applyAction(interactAction);
+
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
+    ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 1);
 }
