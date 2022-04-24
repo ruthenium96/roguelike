@@ -11,10 +11,10 @@ ELSE()
             GIT_TAG        "v3.20.1"
             SOURCE_SUBDIR cmake
     )
-    set(protobuf_BUILD_TESTS OFF)
+    set(protobuf_USE_EXTERNAL_GTEST ON)
     FetchContent_MakeAvailable(protobuf)
     include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
-    set(protobuf_BUILD_TESTS OFF)
+    set(protobuf_USE_EXTERNAL_GTEST ON)
 ENDIF()
 
 set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/common/serialization)
