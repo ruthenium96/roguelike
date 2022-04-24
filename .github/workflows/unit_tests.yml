@@ -1,0 +1,19 @@
+name: Unit Tests
+
+on: [push, pull_request]
+
+jobs:
+
+  google-tests:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build project
+        run: |
+          mkdir ${{github.workspace}}/build
+          cd ${{github.workspace}}/build
+          cmake ..
+          cmake --build .
+      - name: Run google Tests
+        run: ${{github.workspace}}/build/tests/unit/unit_tests
