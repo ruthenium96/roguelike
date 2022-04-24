@@ -3,19 +3,16 @@
 
 #include <cstdint>
 
-namespace common
-{
+namespace common {
 
-struct Coordinate
-{
+struct Coordinate {
     bool operator==(const Coordinate& rhs) const { return x == rhs.x && y == rhs.y; }
 
     bool operator!=(const Coordinate& rhs) const { return !(rhs == *this); }
 
     // At first, comparing vertical, then horizontal component
     // I guess, it can help to UI
-    bool operator<(const Coordinate& rhs) const
-    {
+    bool operator<(const Coordinate& rhs) const {
         if (y < rhs.y)
             return true;
         if (rhs.y < y)

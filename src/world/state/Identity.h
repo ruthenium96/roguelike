@@ -3,11 +3,9 @@
 
 #include <cstdint>
 
-namespace world::state
-{
+namespace world::state {
 // Identity of Objects, Actions and Items
-class Identity
-{
+class Identity {
   public:
     explicit Identity(uint64_t identity) : identity_(identity){};
     Identity() = delete;

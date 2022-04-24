@@ -7,11 +7,9 @@
 #include "game_object_style.h"
 #include <memory>
 
-namespace ui
-{
+namespace ui {
 
-class UI
-{
+class UI {
   public:
     UI(const world::Engine& engine);
 

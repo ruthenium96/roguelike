@@ -4,11 +4,9 @@
 #include <iostream>
 #include <vector>
 
-namespace ui
-{
+namespace ui {
 
-class ConsoleDisplay
-{
+class ConsoleDisplay {
   public:
     ConsoleDisplay(std::ostream& os = std::cout);
 

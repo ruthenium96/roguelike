@@ -5,10 +5,8 @@
 #include "Map.h"
 #include "PlayerMetrics.h"
 
-namespace common
-{
-struct WorldUITransfer
-{
+namespace common {
+struct WorldUITransfer {
     Map map;
     PlayerMetrics playerMetrics;
     Inventory inventory;

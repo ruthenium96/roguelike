@@ -3,10 +3,8 @@
 
 #include "../AbstractAction.h"
 
-namespace world::state::action
-{
-class PlayerInteract : public AbstractAction
-{
+namespace world::state::action {
+class PlayerInteract : public AbstractAction {
   public:
     PlayerInteract() : AbstractAction(std::nullopt){};
 

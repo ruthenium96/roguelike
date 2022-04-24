@@ -4,12 +4,10 @@
 #include <unordered_map>
 #include <vector>
 
-namespace ui
-{
+namespace ui {
 
 // interface that provide styles for GameObjects when draw to UI
-class IStyle
-{
+class IStyle {
   protected:
     using ObjectType = common::ObjectType;
 
@@ -24,8 +22,7 @@ class IStyle
 
 // Default Game Object style for ConsoleDisplay
 // Uses simple chars
-class DefaultStyle : public IStyle
-{
+class DefaultStyle : public IStyle {
   public:
     // get the char for the whole game objects on tile
     char getGameObjectsRepr(const std::vector<ObjectType>& objects) const override;

@@ -7,20 +7,7 @@ AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 BinPackArguments: false
 BinPackParameters: false
-BraceWrapping:
-  AfterCaseLabel: true
-  AfterClass: true
-  AfterControlStatement: true
-  AfterEnum: true
-  AfterFunction: true
-  AfterNamespace: true
-  AfterObjCDeclaration: true
-  AfterStruct: true
-  AfterUnion: true
-  BeforeCatch: true
-  BeforeElse: true
-  IndentBraces: false
-BreakBeforeBraces: Custom
+BreakBeforeBraces: Attach
 ColumnLimit: 120
 DerivePointerAlignment: false
 IncludeBlocks: Merge

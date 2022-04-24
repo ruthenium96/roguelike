@@ -1,6 +1,3 @@
 #include "AbstractItem.h"
 
-namespace world::state::item
-{
-
-}
+namespace world::state::item {}

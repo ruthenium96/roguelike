@@ -3,10 +3,8 @@
 
 #include "../AbstractObject.h"
 
-namespace world::state::object
-{
-class Floor : public AbstractObject
-{
+namespace world::state::object {
+class Floor : public AbstractObject {
   public:
     explicit Floor(Identity&& identity) : AbstractObject(std::move(identity)){};
     common::ObjectType getObjectType() const override;

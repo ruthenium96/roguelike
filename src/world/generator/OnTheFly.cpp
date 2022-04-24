@@ -6,41 +6,31 @@
 #include <algorithm>
 #include <random>
 
-namespace world::generator
-{
+namespace world::generator {
 
-std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coordinate, const state::object::Observer&)
-{
+std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coordinate, const state::object::Observer&) {
 
     if (std::find(generated_coordinates_.begin(), generated_coordinates_.end(), coordinate) !=
-        generated_coordinates_.end())
-    {
+        generated_coordinates_.end()) {
         // TODO: is it good idea to return empty vector instead of optional<vector> or something else?
         return {};
     }
 
     std::vector<ObjectAndActions> answer;
-    if (coordinate.x == 0 && coordinate.y == 0)
-    {
+    if (coordinate.x == 0 && coordinate.y == 0) {
         addPlayer(coordinate, answer);
         addFloor(coordinate, answer);
-    }
-    else
-    {
+    } else {
         std::random_device rd;
         std::default_random_engine eng(rd());
         std::uniform_real_distribution<float> distr(0, 1);
 
         float probability = distr(eng);
-        if (probability < 0.05)
-        {
+        if (probability < 0.05) {
             addWall(coordinate, answer);
-        }
-        else
-        {
+        } else {
             addFloor(coordinate, answer);
-            if (probability > 0.99)
-            {
+            if (probability > 0.99) {
                 addArtefact(coordinate, answer);
             }
         }
@@ -51,8 +41,7 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
     return answer;
 }
 
-void OnTheFly::addPlayer(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer)
-{
+void OnTheFly::addPlayer(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     ObjectAndActions player;
     // add Player object
     player.object = std::make_shared<state::object::Player>(state::Identity(generated_identities_++));
@@ -62,8 +51,7 @@ void OnTheFly::addPlayer(common::Coordinate coordinate, std::vector<ObjectAndAct
     answer.push_back(player);
 }
 
-void OnTheFly::addFloor(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer)
-{
+void OnTheFly::addFloor(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     // add Floor
     ObjectAndActions floor;
     floor.object = std::make_shared<state::object::Floor>(state::Identity(generated_identities_++));
@@ -73,8 +61,7 @@ void OnTheFly::addFloor(common::Coordinate coordinate, std::vector<ObjectAndActi
     answer.push_back(floor);
 }
 
-void OnTheFly::addWall(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer)
-{
+void OnTheFly::addWall(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     // add Wall
     ObjectAndActions wall;
     wall.object = std::make_shared<state::object::Wall>(state::Identity(generated_identities_++));
@@ -84,8 +71,7 @@ void OnTheFly::addWall(common::Coordinate coordinate, std::vector<ObjectAndActio
     answer.push_back(wall);
 }
 
-void OnTheFly::addArtefact(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer)
-{
+void OnTheFly::addArtefact(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     // add Artefact
     ObjectAndActions artefact;
     auto objectIdentity = state::Identity(generated_identities_++);

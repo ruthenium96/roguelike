@@ -1,10 +1,8 @@
 #ifndef ARCH_ROGUELIKE_ITEMTYPE_H
 #define ARCH_ROGUELIKE_ITEMTYPE_H
 
-namespace common
-{
-enum class ItemType
-{
+namespace common {
+enum class ItemType {
     STICK,
     RING,
 };

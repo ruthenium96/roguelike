@@ -1,11 +1,9 @@
 #ifndef ARCH_ROGUELIKE_OBJECTTYPE_H
 #define ARCH_ROGUELIKE_OBJECTTYPE_H
 
-namespace common
-{
+namespace common {
 
-enum class ObjectType
-{
+enum class ObjectType {
     PLAYER,
     FLOOR,
     WALL,

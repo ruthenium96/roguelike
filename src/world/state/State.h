@@ -7,12 +7,10 @@
 #include <memory>
 #include <set>
 
-namespace world::state
-{
+namespace world::state {
 
 // State of World. Keeps Objects in object::Observer and Actions.
-class State
-{
+class State {
   public:
     State() = default;
     // Const and non-const getters of object::Observer

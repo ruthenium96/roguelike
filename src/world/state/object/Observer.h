@@ -9,12 +9,10 @@
 #include <memory>
 #include <optional>
 
-namespace world::state::object
-{
+namespace world::state::object {
 
 // Helps to get Objects of interests.
-class Observer
-{
+class Observer {
   public:
     // Player getters:
     std::shared_ptr<object::Player> getPlayer();

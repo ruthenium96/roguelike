@@ -3,10 +3,8 @@
 
 #include "../AbstractItem.h"
 
-namespace world::state::item
-{
-class Stick : public AbstractItem
-{
+namespace world::state::item {
+class Stick : public AbstractItem {
   public:
     Stick(const Identity& itemIdentity, const Identity& objectHolderIdentity)
         : AbstractItem(itemIdentity, objectHolderIdentity){};

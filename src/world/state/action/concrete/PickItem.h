@@ -3,10 +3,8 @@
 
 #include "../AbstractAction.h"
 
-namespace world::state::action
-{
-class PickItem : public AbstractAction
-{
+namespace world::state::action {
+class PickItem : public AbstractAction {
   public:
     explicit PickItem(const std::optional<Identity>& selfIdentity);
 

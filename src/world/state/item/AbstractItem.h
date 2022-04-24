@@ -5,11 +5,9 @@
 #include "../Identity.h"
 #include <utility>
 
-namespace world::state::item
-{
+namespace world::state::item {
 
-class AbstractItem
-{
+class AbstractItem {
   public:
     AbstractItem(const Identity& itemIdentity, const Identity& objectHolderIdentity)
         : selfIdentity_(itemIdentity), objectHolderIdentity_(objectHolderIdentity){};

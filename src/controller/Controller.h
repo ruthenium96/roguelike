@@ -4,11 +4,9 @@
 #include "../world/Engine.h"
 #include "input/KeyboardManager.h"
 
-namespace controller
-{
+namespace controller {
 
-class Controller
-{
+class Controller {
   public:
     Controller() = default;
 
@@ -16,14 +14,12 @@ class Controller
     void start();
 
     // prints initial game logo and keys
-    void init()
-    {
+    void init() {
         // stub
     }
 
     // prints final game logo and stats
-    void finalize()
-    {
+    void finalize() {
         // stub
     }
 

@@ -3,11 +3,9 @@
 
 #include "../AbstractObject.h"
 
-namespace world::state::object
-{
+namespace world::state::object {
 
-class Player : public AbstractObject
-{
+class Player : public AbstractObject {
   public:
     explicit Player(Identity&& identity);
     ;

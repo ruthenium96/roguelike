@@ -13,11 +13,9 @@
 #include <string>
 #include <vector>
 
-namespace world::state::object
-{
+namespace world::state::object {
 // An abstract class for all Objects. Object is something, that always have the Coordinate.
-class AbstractObject
-{
+class AbstractObject {
   public:
     explicit AbstractObject(const Identity& identity) : selfIdentity_(identity){};
     // Identity getter.

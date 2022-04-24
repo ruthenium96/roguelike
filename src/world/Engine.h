@@ -7,12 +7,10 @@
 #include "state/State.h"
 #include <memory>
 
-namespace world
-{
+namespace world {
 
 // Engine corresponds for interaction of World with other modules.
-class Engine
-{
+class Engine {
   public:
     Engine();
     // Applies ControllerCommand
