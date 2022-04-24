@@ -25,7 +25,7 @@ class Controller {
 
   private:
     world::Engine engine_;
-    ui::UI ui_{engine_};
+    ui::UI ui_;
     controller::input::KeyboardManager manager_;
 };
 

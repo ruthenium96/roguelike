@@ -2,21 +2,26 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include <string>
 
 namespace ui {
 
-UI::UI(const world::Engine& engine) : engine_{engine} {
-    style_ = std::make_unique<DefaultStyle>();
+UI::UI(const std::string& style) {
+    if (style == "default") {
+        style_ = std::make_unique<DefaultStyle>();
+    } else {
+        throw std::runtime_error("Style " + style + " is not implemented in UI.");
+    }
 }
 
-void UI::draw() const {
-    //    pushStatsOnDisplay(engine_.getStats());
-    pushMapOnDisplay(engine_.getWorldUITransfer().map);
+void UI::draw(const common::WorldUITransfer& world_state) const {
+    pushStatsOnDisplay(world_state.playerMetrics);
+    pushMapOnDisplay(world_state.map);
     display_.draw();
 }
 
-void UI::pushStatsOnDisplay(int32_t) const {
+void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) const {
     std::string stats_str{
         "Hello in Arch Roguelike 3000! "
         "Level:1   HP:100%   Mana:100%   Exp:47%"};
