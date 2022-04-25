@@ -21,7 +21,7 @@ class UI {
     void pushStatsOnDisplay(const common::PlayerMetrics& player_stats);
 
     // pushes the current map on display
-    void pushMapOnDisplay(const common::Map& map) const;
+    void pushMapOnDisplay(const common::Map& map);
 
     // pushes player inventory on display
     void pushInventoryOnDisplay(const common::Inventory& inventory);
