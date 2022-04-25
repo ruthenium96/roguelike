@@ -20,4 +20,12 @@ void State::applyAction(const std::shared_ptr<action::AbstractAction>& action) {
     }
 }
 
+const action::Observer &State::getActionObserver() const {
+    return actionObserver_;
+}
+
+action::Observer &State::getActionObserver() {
+    return actionObserver_;
+}
+
 }  // namespace world::state

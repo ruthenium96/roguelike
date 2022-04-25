@@ -16,3 +16,5 @@ _deps
 lib
 *.a
 *.so
+*.pb.cc
+*.pb.h
