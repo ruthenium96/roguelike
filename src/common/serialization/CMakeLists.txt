@@ -10,8 +10,6 @@ execute_process(
 
 add_library(serializer
         serialization.cpp
-        serialization.h
-        proto/state.pb.cc
-        proto/state.pb.h)
+        serialization.h)
 
 target_link_libraries(world common state)
