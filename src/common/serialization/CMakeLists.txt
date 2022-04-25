@@ -4,16 +4,18 @@ find_package(Protobuf)
 IF(Protobuf_FOUND)
     include_directories(${Protobuf_INCLUDE_DIRS})
 ELSE()
-    include(FetchContent)
-    FetchContent_Declare(
-            protobuf
-            GIT_REPOSITORY https://github.com/protocolbuffers/protobuf.git
-            GIT_TAG        "v3.20.1"
-            SOURCE_SUBDIR cmake
-    )
-    set(protobuf_BUILD_TESTS OFF)
-    FetchContent_MakeAvailable(protobuf)
-    include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
+    # TODO: make fetch installation works
+
+    #    include(FetchContent)
+#    FetchContent_Declare(
+#            protobuf
+#            GIT_REPOSITORY https://github.com/protocolbuffers/protobuf.git
+#            GIT_TAG        "v3.20.1"
+#            SOURCE_SUBDIR cmake
+#    )
+#    set(protobuf_BUILD_TESTS OFF)
+#    FetchContent_MakeAvailable(protobuf)
+#    include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
 ENDIF()
 
 set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/common/serialization)

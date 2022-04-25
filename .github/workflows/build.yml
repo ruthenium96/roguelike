@@ -4,17 +4,18 @@ on: push
 
 jobs:
 
-  build-cmake-installation:
-    runs-on: ubuntu-20.04
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build project
-        run: |
-          mkdir ${{github.workspace}}/build
-          cd ${{github.workspace}}/build
-          cmake ..
-          cmake --build .
+# TODO: make cmake-only installation works
+#  build-cmake-installation:
+#    runs-on: ubuntu-20.04
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Build project
+#        run: |
+#          mkdir ${{github.workspace}}/build
+#          cd ${{github.workspace}}/build
+#          cmake ..
+#          cmake --build .
 
   build-apt-installation:
     runs-on: ubuntu-20.04
