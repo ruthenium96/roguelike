@@ -1,10 +1,6 @@
-set(TEST_NAME roguelike_unit_tests)
+add_executable(unit_tests
+        ${CMAKE_SOURCE_DIR}/tests/unit/main.cpp
+        ${CMAKE_SOURCE_DIR}/tests/unit/engine/state_tests.cpp
+        )
 
-enable_testing()
-
-include_directories(${gtest_SOURCE_DIR}/include/ ${gtest_SOURCE_DIR})
-
-add_executable(${TEST_NAME} ${TEST_SRC_FILES})
-
-target_link_libraries(${TEST_NAME} gtest gtest_main)
-target_link_libraries(${TEST_NAME} world)
+target_link_libraries(unit_tests gtest gtest_main world Threads::Threads)
