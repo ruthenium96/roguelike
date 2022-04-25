@@ -16,6 +16,9 @@ class State {
     // Const and non-const getters of object::Observer
     const object::Observer& getObjectObserver() const;
     object::Observer& getObjectObserver();
+    // Const and non-const getters of action::Observer
+    const action::Observer& getActionObserver() const;
+    action::Observer& getActionObserver();
 
     // Add action to array of Actions
     void addAction(const std::shared_ptr<action::AbstractAction>&);
