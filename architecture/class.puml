@@ -1,0 +1,114 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'The main class controlling game logic, UI and user input.
+class Controller {
+- Action changeWorldCommand(Command)
+- ??? changeUICommand(Command)
+'Start game.
++ void start()
+}
+
+Controller "1" o-- "1" GameEngine
+Controller "1" o-- "1" UI
+Controller "1" o-- "1" InputManager
+
+'INPUT SECTION:
+abstract InputManager {
+'This function waits for user input and returns Command.
++Command readCommand()
+}
+
+InputManager -.|> KeyboardManager
+
+class Command {
+}
+
+Command "1" o-- "1" CommandType
+
+enum CommandType {
+ChangeWorld
+ChangeUI
+TerminateGame
+Unknown
+}
+
+'UI SECTION:
+
+class UI {
+'Draws game, based on Map and Inventory information.
++void draw(Map, Inventory)
+}
+
+'WORLD LOGIC SECTION
+
+class GameEngine {
+'Takes Action from Controller and apply it to WorldState.
++ void applyExternalAction(Action)
+'Get Map, based on WorldState.
++ Map getMap()
+'Get Inventory of Player, based on WorldState.
++ Inventory getPlayerInventory()
+}
+
+GameEngine "1" o-- "1" WorldState
+GameEngine "1" o-- "1" WorldGenerator
+
+abstract WorldGenerator {
+'Return GameObjects on new Coordinate, using information from Map.
++ GameObject[] generateObjects(Coordinate, Map)
+}
+
+WorldGenerator -.|> WorldGeneratorFromFile
+WorldGenerator -.|> WorldGeneratorOnTheFly
+
+class WorldState {
+'Return Map.
++ Map getMap()
+'Return Inventory of Player.
++ Inventory getPlayerInventory()
+}
+
+WorldState "1" o-- "*" GameObject
+WorldState "1" o-- "*" Player
+
+'Object is something with Coordinate, Item[], Action[]
+abstract class GameObject {
+- identity: Identity
++ Identity getIdentity()
+- coordinate: Coordinate
++ Coordinate getCoordinate()
++ Action[] getActions()
+- values: Value[]
+}
+
+'Player is self-explaining
+class Player {
++Inventory getInventory()
+}
+'Tile is something like floor, each coordinate has to have one Tile
+class Tile
+'Artefact is something able to hold Item (like chest or just item).
+'It is required because Item is not GameObject.
+class Artefact
+
+GameObject --.|> Tile
+GameObject .|> Player
+GameObject --.|> Artefact
+
+'Item is self-explaining
+class Item
+'Action is attempt of GameObject to change the World (including itself)
+abstract class Action {
+- id: Identity
++ Identity getIdentityOfAuthor()
+- targets: Targets[]
++ Targets[] getTargets()
+- ifStatements: IfStatement[]
+- changeTarget: LambdaFunction GameObject->void
+}
+
+GameObject "1" o-- "*" Item
+GameObject "1" o-- "*" Action
+
+@enduml
