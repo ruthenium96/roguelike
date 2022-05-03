@@ -148,3 +148,30 @@ TEST(state_tests, interactWithArtefact) {
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 1);
 }
+
+TEST(state_tests, interactWithNothing) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 0}, answer, generated_identities);
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
+    ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
+    // TODO: find Action corresponding to Artefact/Item
+
+    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+    state.applyAction(interactAction);
+
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
+    ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
+}

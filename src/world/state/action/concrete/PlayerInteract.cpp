@@ -38,5 +38,6 @@ std::optional<std::shared_ptr<object::AbstractObject>> PlayerInteract::findInter
             return object;
         }
     }
+    return std::nullopt;
 }
 }  // namespace world::state::action
