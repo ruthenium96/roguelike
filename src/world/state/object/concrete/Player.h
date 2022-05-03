@@ -8,10 +8,9 @@ namespace world::state::object {
 class Player : public AbstractObject {
   public:
     explicit Player(Identity&& identity);
-    ;
     common::ObjectType getObjectType() const override;
 
-  private:
+    void change_hp(int32_t value);
 };
 
 }  // namespace world::state::object
