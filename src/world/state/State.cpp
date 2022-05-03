@@ -20,11 +20,11 @@ void State::applyAction(const std::shared_ptr<action::AbstractAction>& action) {
     }
 }
 
-const action::Observer &State::getActionObserver() const {
+const action::Observer& State::getActionObserver() const {
     return actionObserver_;
 }
 
-action::Observer &State::getActionObserver() {
+action::Observer& State::getActionObserver() {
     return actionObserver_;
 }
 

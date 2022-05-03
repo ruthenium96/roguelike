@@ -11,9 +11,9 @@ namespace {
 template <class ProtoType, class GameType>
 class ProtoToGameTypeMapper {
   public:
-    ProtoType get_proto_associated_type_with(GameType type) { return gameToProto[type]; }
+    ProtoType get_proto_associated_type_with(GameType type) const { return gameToProto.at(type); }
 
-    GameType get_game_associated_type_with(ProtoType type) { return protoToGame[type]; }
+    GameType get_game_associated_type_with(ProtoType type) const { return protoToGame.at(type); }
 
     void associate_types(ProtoType proto_type, GameType game_type) {
         protoToGame[proto_type] = game_type;

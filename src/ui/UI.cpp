@@ -18,6 +18,7 @@ UI::UI(const std::string& style) {
 void UI::draw(const common::WorldUITransfer& world_state) {
     pushStatsOnDisplay(world_state.playerMetrics);
     pushMapOnDisplay(world_state.map);
+    pushInventoryOnDisplay(world_state.inventory);
     display_.draw();
 }
 
@@ -50,5 +51,8 @@ void UI::pushMapOnDisplay(const common::Map& map) {
         }
     }
 }
+
+// pushes player inventory on a display
+void UI::pushInventoryOnDisplay(const common::Inventory& inventory) {}
 
 }  // namespace ui

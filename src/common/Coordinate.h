@@ -2,6 +2,7 @@
 #define ARCH_ROGUELIKE_COORDINATE_H
 
 #include <cstdint>
+#include <tuple>
 
 namespace common {
 
@@ -12,13 +13,7 @@ struct Coordinate {
 
     // At first, comparing vertical, then horizontal component
     // I guess, it can help to UI
-    bool operator<(const Coordinate& rhs) const {
-        if (y < rhs.y)
-            return true;
-        if (rhs.y < y)
-            return false;
-        return x < rhs.x;
-    }
+    bool operator<(const Coordinate& rhs) const { return std::tie(y, x) < std::tie(rhs.y, rhs.x); }
 
     bool operator>(const Coordinate& rhs) const { return rhs < *this; }
 
