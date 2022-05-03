@@ -47,7 +47,7 @@ class DefaultStyle : public IStyle {
 
     const std::unordered_map<ItemType, char> item_styles_{{
         {ItemType::STICK, '|'},
-        {ItemType::RING, '0'},
+        {ItemType::RING, 'O'},
     }};
 };
 
