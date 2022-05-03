@@ -49,11 +49,15 @@ void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) {
     stats_display.put_string("Stats", 1U, 4U);
     stats_display.put_line_hor(2U, 0U, stats_display.width());
 
+    const auto player_lvl = std::to_string(player_stats.lvl);
+    const auto player_hp = std::to_string(player_stats.hp);
+    const auto player_exp = std::to_string(player_stats.exp);
+
     size_t curr_display_height = 3;
-    stats_display.put_string("Lvl  : 1  ", curr_display_height++, 2U);
-    stats_display.put_string("HP   : 78%", curr_display_height++, 2U);
-    stats_display.put_string("Mana : 39%", curr_display_height++, 2U);
-    stats_display.put_string("Wxp  : 47%", curr_display_height++, 2U);
+    stats_display.put_string("Lvl  : " + player_lvl, curr_display_height++, 2U);
+    stats_display.put_string("Wxp  : " + player_exp, curr_display_height++, 2U);
+    stats_display.put_string("HP   : " + player_hp, curr_display_height++, 2U);
+    // stats_display.put_string("Mana : " + player_mana, curr_display_height++, 2U);
 
     const size_t game_board_stats_height_pos = 8U;
     const size_t game_board_stats_width_pos = 35U;
