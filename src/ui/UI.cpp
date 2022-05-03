@@ -55,7 +55,7 @@ void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) {
 
     size_t curr_display_height = 3;
     stats_display.put_string("Lvl  : " + player_lvl, curr_display_height++, 2U);
-    stats_display.put_string("Wxp  : " + player_exp, curr_display_height++, 2U);
+    stats_display.put_string("Exp  : " + player_exp, curr_display_height++, 2U);
     stats_display.put_string("HP   : " + player_hp, curr_display_height++, 2U);
     // stats_display.put_string("Mana : " + player_mana, curr_display_height++, 2U);
 

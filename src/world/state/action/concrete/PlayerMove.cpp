@@ -24,6 +24,9 @@ void PlayerMove::changeTarget(object::Observer& objectObserver, Observer&) {
     auto player = objectObserver.getPlayer();
     player->getCoordinate().x += delta_x_;
     player->getCoordinate().y += delta_y_;
+
+    const int32_t hp_change_when_move{1};
+    player->change_hp(hp_change_when_move);
 }
 
 }  // namespace world::state::action
