@@ -2,6 +2,8 @@
 #define ARCH_ROGUELIKE_DISPLAY_H
 
 #include <cassert>
+#include <cstddef>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
