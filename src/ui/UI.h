@@ -16,6 +16,9 @@ class UI {
     void draw(const common::WorldUITransfer& world_state);
 
   private:
+    // pushes hello line on display
+    void pushHelloOnDisplay();
+
     // pushes the stats about game and player on display
     // NB: current stats type is stub
     void pushStatsOnDisplay(const common::PlayerMetrics& player_stats);
