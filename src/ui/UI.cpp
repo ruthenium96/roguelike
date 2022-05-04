@@ -101,6 +101,7 @@ void UI::pushInventoryOnDisplay(const common::Inventory& inventory) {
     inventory_display.put_string("Inventory", 1U, 2U);
     inventory_display.put_line_hor(2U, 0U, inventory_display.width());
 
+    // TODO: move counting to Engine, change Inventory struct.
     std::unordered_map<common::ItemType, size_t> items;
     for (const auto& item : inventory) {
         items[item.itemType] += 1;

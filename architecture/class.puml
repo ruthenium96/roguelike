@@ -67,8 +67,9 @@ class WorldState {
 + Inventory getPlayerInventory()
 }
 
-WorldState "1" o-- "*" GameObject
-WorldState "1" o-- "*" Player
+WorldState "1" o-- "1" ObjectObserver
+ObjectObserver "1" o-- "*" GameObject
+
 
 'Object is something with Coordinate, Item[], Action[]
 abstract class GameObject {
@@ -90,22 +91,20 @@ class Tile
 class Artefact
 
 GameObject --.|> Tile
-GameObject .|> Player
+GameObject --.|> Player
 GameObject --.|> Artefact
 
 'Item is self-explaining
 class Item
 'Action is attempt of GameObject to change the World (including itself)
 abstract class Action {
-- id: Identity
-+ Identity getIdentityOfAuthor()
-- targets: Targets[]
-+ Targets[] getTargets()
-- ifStatements: IfStatement[]
-- changeTarget: LambdaFunction GameObject->void
++ bool precondition(ObjectObserver, ActionObserver)
++ void changeTarget(ObjectObserver, ActionObserver)
 }
 
 GameObject "1" o-- "*" Item
-WorldState "1" o-- "*" Action
+
+WorldState "1" o-- "1" ActionObserver
+ActionObserver "1" o-- "*" Action
 
 @enduml

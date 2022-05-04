@@ -47,7 +47,9 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
         action = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
     }
 
+    // TODO: return description string if an external action has false precondition
     state_.applyAction(action);
+    // TODO: activate here all internal actions
 
     generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
 }
