@@ -1,6 +1,7 @@
 #include "KeyboardManager.h"
 #include <chrono>
 #include <iostream>
+#include <stdexcept>
 
 namespace {
 // this function takes a character from the console without confirmation
@@ -55,8 +56,20 @@ ControllerCommand KeyboardManager::readCommand() {
         return ControllerCommand::EXIT;
     } else if (symbol == 'e') {
         return ControllerCommand::INTERACT;
+
+    } else if (symbol == 'r') {
+        return ControllerCommand::UI_ACTIVATE_INVENTORY;
+    } else if (symbol == 'g') {
+        return ControllerCommand::UI_INVENTORY_DOWN;
+    } else if (symbol == 't') {
+        return ControllerCommand::UI_INVENTORY_UP;
+    } else if (symbol == 'f') {
+        return ControllerCommand::UI_INVENTORY_APPLY;
+
     } else {
         return ControllerCommand::UNKNOWN;
     }
+
+    throw std::runtime_error("ControllerCommand was not generated");
 }
 }  // namespace controller::input
