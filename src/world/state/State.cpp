@@ -30,4 +30,10 @@ action::Observer& State::getActionObserver() {
     return actionObserver_;
 }
 
+void State::applyEveryTurnInternalActions() {
+    for (auto& internalAction : getActionObserver().getEveryTurnActions()) {
+        applyAction(internalAction);
+    }
+}
+
 }  // namespace world::state

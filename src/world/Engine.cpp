@@ -16,10 +16,10 @@ Engine::Engine() {
 void Engine::applyCommand(const common::ControllerCommand& command) {
     using common::ControllerCommand;
 
-    std::shared_ptr<state::action::AbstractAction> action;
+    std::shared_ptr<state::action::AbstractAction> externalAction;
     // TODO: refactor it
     if (command == ControllerCommand::INTERACT) {
-        action = std::make_shared<state::action::PlayerInteract>();
+        externalAction = std::make_shared<state::action::PlayerInteract>();
     } else {
         int32_t delta_x;
         int32_t delta_y;
@@ -44,16 +44,15 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
                 // throw is better than ignore
                 throw std::runtime_error("unknown command sent to engine");
         }
-        action = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
+        externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
     }
 
-    // TODO: return description string if an external action has false precondition
-    bool isExternalActionApplied = state_.applyAction(action);
-    //    if (isExternalActionApplied) {
-    //        // TODO: activate here all "waiting" internal actions
-    //    } else {
-    //        // TODO: return somehow error message, for example, "NOTHING TO INTERACT"
-    //    }
+    bool isExternalActionApplied = state_.applyAction(externalAction);
+    if (isExternalActionApplied) {
+        state_.applyEveryTurnInternalActions();
+    } else {
+        // TODO: return description string if an external action has false precondition
+    }
 
     generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
 }

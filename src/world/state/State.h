@@ -27,6 +27,8 @@ class State {
     // Returns true if Action was applied
     bool applyAction(const std::shared_ptr<action::AbstractAction>&);
 
+    void applyEveryTurnInternalActions();
+
   private:
     object::Observer objectObserver_;
     action::Observer actionObserver_;

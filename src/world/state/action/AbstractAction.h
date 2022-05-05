@@ -17,6 +17,10 @@ class AbstractAction {
     // Changes Object and Actions of interest.
     virtual void changeTarget(object::Observer&, action::Observer&) = 0;
 
+    // Should this action trying to apply every turn?
+    // False by default.
+    bool isEveryTurn() const {return everyTurn_;}
+
     // Delete itself from set of Actions
     void deleteItselfFromActionObserver(action::Observer& actionObserver);
 
@@ -36,6 +40,7 @@ class AbstractAction {
     const std::optional<Identity> selfIdentity_;
     std::optional<Identity> correspondingObjectIdentity_;
     std::optional<Identity> correspondingItemIdentity_;
+    bool everyTurn_ = false;
 };
 
 }  // namespace world::state::action

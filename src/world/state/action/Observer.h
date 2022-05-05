@@ -12,10 +12,13 @@ class Observer {
     void addAction(const std::shared_ptr<action::AbstractAction>& action);
     void deleteAction(Identity actionIdentity);
     std::optional<std::shared_ptr<action::AbstractAction>> getActionByCorrespondingObjectIdentity(
-        Identity objectIdentity);
+        Identity objectIdentity) const;
+    const std::vector<std::shared_ptr<AbstractAction>>& getEveryTurnActions() const;
 
   private:
-    std::set<std::shared_ptr<AbstractAction>> actions_;
+    std::set<std::shared_ptr<AbstractAction>> allActions_;
+    std::vector<std::shared_ptr<AbstractAction>> everyMoveActions_;
+    void updateRepresentations();
 };
 }  // namespace world::state::action
 
