@@ -48,8 +48,12 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
     }
 
     // TODO: return description string if an external action has false precondition
-    state_.applyAction(action);
-    // TODO: activate here all internal actions
+    bool isExternalActionApplied = state_.applyAction(action);
+    //    if (isExternalActionApplied) {
+    //        // TODO: activate here all "waiting" internal actions
+    //    } else {
+    //        // TODO: return somehow error message, for example, "NOTHING TO INTERACT"
+    //    }
 
     generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
 }

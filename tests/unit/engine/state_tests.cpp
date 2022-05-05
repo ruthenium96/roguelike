@@ -61,23 +61,23 @@ TEST(state_tests, canWalkOntoFloor) {
     auto moveActionUp = std::make_shared<world::state::action::PlayerMove>(0, -1);
     auto moveActionDown = std::make_shared<world::state::action::PlayerMove>(0, 1);
 
-    state.applyAction(moveActionRight);
+    ASSERT_EQ(state.applyAction(moveActionRight), true);
     expectedCoordinate.x += 1;
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
-    state.applyAction(moveActionUp);
+    ASSERT_EQ(state.applyAction(moveActionUp), true);
     expectedCoordinate.y -= 1;
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
-    state.applyAction(moveActionUp);
+    ASSERT_EQ(state.applyAction(moveActionUp), true);
     expectedCoordinate.y -= 1;
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
-    state.applyAction(moveActionLeft);
+    ASSERT_EQ(state.applyAction(moveActionLeft), true);
     expectedCoordinate.x -= 1;
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
-    state.applyAction(moveActionDown);
+    ASSERT_EQ(state.applyAction(moveActionDown), true);
     expectedCoordinate.y += 1;
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 }
@@ -108,16 +108,16 @@ TEST(state_tests, cannotWalkIntoWall) {
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
     auto moveAction = std::make_shared<world::state::action::PlayerMove>(1, 0);
-    state.applyAction(moveAction);
+    ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
     moveAction = std::make_shared<world::state::action::PlayerMove>(-1, 0);
-    state.applyAction(moveAction);
+    ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
     moveAction = std::make_shared<world::state::action::PlayerMove>(0, 1);
-    state.applyAction(moveAction);
+    ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
     moveAction = std::make_shared<world::state::action::PlayerMove>(0, -1);
-    state.applyAction(moveAction);
+    ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 }
 
@@ -143,7 +143,7 @@ TEST(state_tests, interactWithArtefact) {
     // TODO: find Action corresponding to Artefact/Item
 
     auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
-    state.applyAction(interactAction);
+    ASSERT_EQ(state.applyAction(interactAction), true);
 
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 1);
@@ -170,7 +170,7 @@ TEST(state_tests, interactWithNothing) {
     // TODO: find Action corresponding to Artefact/Item
 
     auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
-    state.applyAction(interactAction);
+    ASSERT_EQ(state.applyAction(interactAction), false);
 
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);

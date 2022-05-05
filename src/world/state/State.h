@@ -24,7 +24,8 @@ class State {
     void addAction(const std::shared_ptr<action::AbstractAction>&);
 
     // Apply Action to array of Actions and object::Observer
-    void applyAction(const std::shared_ptr<action::AbstractAction>&);
+    // Returns true if Action was applied
+    bool applyAction(const std::shared_ptr<action::AbstractAction>&);
 
   private:
     object::Observer objectObserver_;
