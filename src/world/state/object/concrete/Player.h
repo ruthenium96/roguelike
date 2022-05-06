@@ -9,8 +9,6 @@ class Player : public AbstractObject {
   public:
     explicit Player(const Identity& identity);
     common::ObjectType getObjectType() const override;
-
-    void change_hp(int32_t value);
 };
 
 }  // namespace world::state::object

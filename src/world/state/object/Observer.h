@@ -15,8 +15,8 @@ namespace world::state::object {
 class Observer {
   public:
     // Player getters:
-    std::shared_ptr<object::Player> getPlayer();
-    std::shared_ptr<const object::Player> getPlayer() const;
+    std::shared_ptr<object::AbstractObject> getPlayer();
+    std::shared_ptr<const object::AbstractObject> getPlayer() const;
     // Get object using its Identity.
     std::optional<std::shared_ptr<object::AbstractObject>> getObject(Identity);
 
@@ -31,6 +31,7 @@ class Observer {
 
   private:
     std::map<Identity, std::shared_ptr<AbstractObject>> identityObjectMap_;
+    std::shared_ptr<object::AbstractObject> player_ = nullptr;
 };
 
 }  // namespace world::state::object

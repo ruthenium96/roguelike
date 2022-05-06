@@ -38,8 +38,6 @@ class AbstractObject {
     common::Coordinate coordinate_;
     // TODO: Can be replaced by std::vector<Identity>
     std::vector<std::unique_ptr<item::AbstractItem>> items_;
-
-  protected:
     std::map<std::string, std::any> property_;
 };
 }  // namespace world::state::object
