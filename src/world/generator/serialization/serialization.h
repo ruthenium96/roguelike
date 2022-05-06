@@ -1,12 +1,13 @@
 #ifndef ARCH_ROGUELIKE_SERIALIZATION_H
 #define ARCH_ROGUELIKE_SERIALIZATION_H
 
-#include "../../world/state/object/Observer.h"
+#include "../../state/object/Observer.h"
 #include "proto/state.pb.h"
 #include <filesystem>
 #include <unordered_map>
 #include <utility>
 
+// TODO: create world::generator::serialization namespace
 namespace {
 template <class ProtoType, class GameType>
 class ProtoToGameTypeMapper {

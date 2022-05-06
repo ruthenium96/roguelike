@@ -18,7 +18,7 @@ ELSE()
 #    include_directories(${CMAKE_SOURCE_DIR}/libs/protobuf/protobuf/include)
 ENDIF()
 
-set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/common/serialization)
+set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/world/generator/serialization)
 
 # TODO: handle non zero return code
 
@@ -29,5 +29,3 @@ execute_process(
 add_library(serializer
         serialization.cpp
         serialization.h)
-
-target_link_libraries(world common state)

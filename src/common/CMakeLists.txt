@@ -1,5 +1,3 @@
-add_subdirectory(serialization)
-
 add_library(common
         Command.cpp Command.h
         Map.h

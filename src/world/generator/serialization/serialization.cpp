@@ -1,8 +1,8 @@
 #include "serialization.h"
-#include "../../world/state/item/concrete/Stick.h"
-#include "../../world/state/object/concrete/Artefact.h"
-#include "../../world/state/object/concrete/Floor.h"
-#include "../../world/state/object/concrete/Wall.h"
+#include "../../state/item/concrete/Stick.h"
+#include "../../state/object/concrete/Artefact.h"
+#include "../../state/object/concrete/Floor.h"
+#include "../../state/object/concrete/Wall.h"
 #include <fstream>
 #include <memory>
 
