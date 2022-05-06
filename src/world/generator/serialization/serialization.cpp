@@ -120,8 +120,8 @@ world::state::State Serializer::deserialize() {
     ProtoSerializer::State proto_state;
     proto_state.ParseFromIstream(&deserialize_stream);
 
+    // Objects and Items
     int objects_size = proto_state.objects_size();
-
     for (int index = 0; index < objects_size; ++index) {
         const ProtoSerializer::Object& proto_object = proto_state.objects(index);
         common::ObjectType game_object_type = object_mapper_.get_game_associated_type_with(proto_object.type());
@@ -145,19 +145,19 @@ world::state::State Serializer::deserialize() {
         shared_object->getCoordinate().y = proto_object.coords().y();
         // properties
         if (proto_object.properties().has_hp()) {
-            shared_object->setProperty("hp", proto_object.properties().hp());
+            shared_object->setProperty("hp", proto_object.properties().hp().value());
         }
         if (proto_object.properties().has_xp()) {
-            shared_object->setProperty("xp", proto_object.properties().xp());
+            shared_object->setProperty("xp", proto_object.properties().xp().value());
         }
         if (proto_object.properties().has_lvl()) {
-            shared_object->setProperty("lvl", proto_object.properties().lvl());
+            shared_object->setProperty("lvl", proto_object.properties().lvl().value());
         }
         if (proto_object.properties().has_blocking()) {
-            shared_object->setProperty("blocking", proto_object.properties().blocking());
+            shared_object->setProperty("blocking", proto_object.properties().blocking().value());
         }
         if (proto_object.properties().has_interactable()) {
-            shared_object->setProperty("interactable", proto_object.properties().interactable());
+            shared_object->setProperty("interactable", proto_object.properties().interactable().value());
         }
         // items
         int items_size = proto_object.items_size();
@@ -171,11 +171,53 @@ world::state::State Serializer::deserialize() {
             } else if (game_item_type == common::ItemType::RING) {
                 shared_object->getItems().push_back(std::make_unique<world::state::item::Ring>(itemIdentity, ownerIdentity));
             } else {
-                throw std::runtime_error("handle unknown object type during deserialization");
+                throw std::runtime_error("handle unknown item type during deserialization");
             }
         }
         state.getObjectObserver().addObject(shared_object);
     }
-    // TODO: deserialize actions.
+    // actions
+    int actions_size = proto_state.actions_size();
+    for (int action_index = 0; action_index < actions_size; ++action_index) {
+        const ProtoSerializer::Action& proto_action = proto_state.actions(action_index);
+        // type, identity
+        auto action_type = proto_action.type();
+        std::shared_ptr<world::state::action::AbstractAction> shared_action;
+        auto actionIdentity = world::state::Identity(proto_action.selfidentity());
+        if (action_type == ProtoSerializer::Action_ActionType_PICKITEM) {
+            shared_action = std::make_shared<world::state::action::PickItem>(actionIdentity);
+        } else if (action_type == ProtoSerializer::Action_ActionType_POISON) {
+            shared_action = std::make_shared<world::state::action::Poison>(actionIdentity);
+        } else {
+            throw std::runtime_error("handle unknown action type during deserialization");
+        }
+        // object identity:
+        if (proto_action.has_objectidentity()) {
+            auto objectIdentity = world::state::Identity(proto_action.objectidentity().value());
+            shared_action->setCorrespondingObjectIdentity(objectIdentity);
+        }
+        // item identity:
+        if (proto_action.has_itemidentity()) {
+            auto itemIdentity = world::state::Identity(proto_action.itemidentity().value());
+            shared_action->setCorrespondingItemIdentity(itemIdentity);
+        }
+        // properties:
+        if (proto_action.properties().has_dx()) {
+            shared_action->setProperty("dx", proto_action.properties().dx().value());
+        }
+        if (proto_action.properties().has_dy()) {
+            shared_action->setProperty("dy", proto_action.properties().dy().value());
+        }
+        if (proto_action.properties().has_dhp()) {
+            shared_action->setProperty("dhp", proto_action.properties().dhp().value());
+        }
+        if (proto_action.properties().has_duration()) {
+            shared_action->setProperty("duration", proto_action.properties().duration().value());
+        }
+        if (proto_action.properties().has_every_turn()) {
+            shared_action->setProperty("every_turn", proto_action.properties().every_turn().value());
+        }
+        state.getActionObserver().addAction(shared_action);
+    }
     return state;
 }

@@ -2,7 +2,7 @@
 
 namespace world::state::action {
 
-Poison::Poison(Identity selfIdentity, int32_t hp_decrease, int32_t duration) : AbstractAction(selfIdentity) {
+Poison::Poison(std::optional<Identity> selfIdentity, int32_t hp_decrease, int32_t duration) : AbstractAction(selfIdentity) {
     setProperty("every_turn", std::make_any<bool>(true));
     setProperty("dhp", std::make_any<int32_t>(hp_decrease));
     setProperty("duration", std::make_any<int32_t>(duration));
@@ -30,4 +30,6 @@ void Poison::changeTarget(object::Observer &objectObserver, action::Observer &ac
         deleteItselfFromActionObserver(actionObserver);
     }
 }
+
+Poison::Poison(std::optional<Identity> selfIdentity) : Poison(selfIdentity, 0, 0) {}
 }

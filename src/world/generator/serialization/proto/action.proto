@@ -1,13 +1,15 @@
 syntax = "proto3";
 
+import "google/protobuf/wrappers.proto";
+
 package ProtoSerializer;
 
 message ActionProperties {
-    int32 dx = 1;
-    int32 dy = 2;
-    int32 dhp = 3;
-    int32 duration = 4;
-    int32 every_turn = 5;
+  google.protobuf.Int32Value dx = 1;
+  google.protobuf.Int32Value dy = 2;
+  google.protobuf.Int32Value dhp = 3;
+  google.protobuf.Int32Value duration = 4;
+  google.protobuf.Int32Value every_turn = 5;
 }
 
 
@@ -19,7 +21,7 @@ message Action {
 
   ActionType type = 1;
   uint64 selfIdentity = 2;
-  uint64 objectIdentity = 3;
-  uint64 itemIdentity = 4;
+  google.protobuf.UInt64Value objectIdentity = 3;
+  google.protobuf.UInt64Value itemIdentity = 4;
   ActionProperties properties = 5;
 }

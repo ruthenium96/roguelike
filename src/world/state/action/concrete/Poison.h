@@ -6,7 +6,9 @@
 namespace world::state::action {
 class Poison : public AbstractAction {
 public:
-    Poison(Identity selfIdentity, int32_t hp_decrease, int32_t duration);
+    // default constructor
+    explicit Poison(std::optional<Identity> selfIdentity);
+    Poison(std::optional<Identity> selfIdentity, int32_t hp_decrease, int32_t duration);
 
     bool precondition(const object::Observer &observer, const Observer &observer1) override;
 
