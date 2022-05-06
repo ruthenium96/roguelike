@@ -29,7 +29,11 @@ class State {
 
     void applyEveryTurnInternalActions();
 
-  private:
+    bool operator==(const State &rhs) const;
+
+    bool operator!=(const State &rhs) const;
+
+private:
     object::Observer objectObserver_;
     action::Observer actionObserver_;
 };

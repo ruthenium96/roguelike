@@ -39,4 +39,12 @@ void Observer::updateRepresentations() {
         }
     }
 }
+
+bool Observer::operator==(const Observer &rhs) const {
+    return allActions_ == rhs.allActions_;
+}
+
+bool Observer::operator!=(const Observer &rhs) const {
+    return !(rhs == *this);
+}
 }  // namespace world::state::action

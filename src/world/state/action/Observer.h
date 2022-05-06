@@ -15,7 +15,10 @@ class Observer {
         Identity objectIdentity) const;
     const std::vector<std::shared_ptr<AbstractAction>>& getEveryTurnActions() const;
 
-  private:
+    bool operator==(const Observer &rhs) const;
+    bool operator!=(const Observer &rhs) const;
+
+private:
     std::set<std::shared_ptr<AbstractAction>> allActions_;
     std::vector<std::shared_ptr<AbstractAction>> everyMoveActions_;
     void updateRepresentations();

@@ -55,4 +55,12 @@ std::vector<std::shared_ptr<AbstractObject>> Observer::getAllObjects() const {
 void Observer::deleteObject(Identity identity) {
     identityObjectMap_.erase(identity);
 }
+
+bool Observer::operator==(const Observer &rhs) const {
+    return identityObjectMap_ == rhs.identityObjectMap_;
+}
+
+bool Observer::operator!=(const Observer &rhs) const {
+    return !(rhs == *this);
+}
 }  // namespace world::state::object

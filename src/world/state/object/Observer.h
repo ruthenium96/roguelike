@@ -29,6 +29,9 @@ class Observer {
     //
     void deleteObject(Identity);
 
+    bool operator==(const Observer &rhs) const;
+    bool operator!=(const Observer &rhs) const;
+
   private:
     std::map<Identity, std::shared_ptr<AbstractObject>> identityObjectMap_;
     std::shared_ptr<object::AbstractObject> player_ = nullptr;
