@@ -7,7 +7,7 @@ message Coordinates {
   int32 y = 2;
 }
 
-message Properties {
+message ObjectProperties {
   int32 hp = 2;
   int32 lvl = 3;
   int32 xp = 4;
@@ -37,6 +37,6 @@ message Object {
   uint64 selfIdentity = 1;
   ObjectType type = 2;
   Coordinates coords = 3;
-  Properties properties = 4;
+  ObjectProperties properties = 4;
   repeated Item items = 5;
 }

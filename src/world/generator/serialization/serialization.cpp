@@ -1,4 +1,6 @@
 #include "serialization.h"
+#include "../../state/action/concrete/PickItem.h"
+#include "../../state/action/concrete/Poison.h"
 #include "../../state/item/concrete/Stick.h"
 #include "../../state/item/concrete/Ring.h"
 #include "../../state/object/concrete/Artefact.h"
@@ -58,7 +60,7 @@ void Serializer::serialize(const world::state::State& state) {
             } else if (key == "interactable") {
                 proto_properties->set_interactable(std::any_cast<bool>(value));
             } else {
-                throw std::invalid_argument("Unknown key");
+                throw std::invalid_argument("Unknown key: " + key);
             }
         }
         new_proto_object->set_allocated_properties(proto_properties);
@@ -73,25 +75,40 @@ void Serializer::serialize(const world::state::State& state) {
             new_proto_item->set_owner_id(item_ptr->getObjectHolderIdentity().asNumber());
         }
     }
+
     // Serialize all Actions
-    for (const auto& action_ptr : state.getActionObserver().)
-
-
-    for (auto& object_ptr : observer.getAllObjects()) {
-        ProtoSerializer::Object::ObjectType proto_type =
-            object_mapper_.get_proto_associated_type_with(object_ptr->getObjectType());
-        ProtoSerializer::Object* new_proto_object = proto_state.add_objects();
-        new_proto_object->set_type(proto_type);
-        auto map = new_proto_object->mutable_properties();
-        //new_proto_object->mutable_properties()->insert(object_ptr->getAllProperties().cbegin(), object_ptr->getAllProperties().cend());
-
-        common::Coordinate coords = object_ptr->getCoordinate();
-
-        auto* proto_coords = new_proto_object->mutable_coords();
-        proto_coords->set_x(coords.x);
-        proto_coords->set_y(coords.y);
-
-        new_proto_object->set_allocated_coords(proto_coords);
+    for (const auto& action_ptr : state.getActionObserver().getAllActions()) {
+        ProtoSerializer::Action* new_proto_action = proto_state.add_actions();
+        // self-Identity:
+        if (action_ptr->getSelfIdentity().has_value()) {
+            new_proto_action->set_selfidentity(action_ptr->getSelfIdentity().value().asNumber());
+        }
+        // Object Identity:
+        if (action_ptr->getCorrespondingObjectIdentity().has_value()) {
+            new_proto_action->set_objectidentity(action_ptr->getCorrespondingObjectIdentity().value().asNumber());
+        }
+        // Item Identity:
+        if (action_ptr->getCorrespondingItemIdentity().has_value()) {
+            new_proto_action->set_itemidentity(action_ptr->getCorrespondingItemIdentity().value().asNumber());
+        }
+        // properties:
+        auto* proto_properties = new_proto_action->mutable_properties();
+        for (const auto& [key, value] : action_ptr->getAllProperties()) {
+            if (key == "dx") {
+                proto_properties->set_dx(std::any_cast<int32_t>(value));
+            } else if (key == "dy") {
+                proto_properties->set_dy(std::any_cast<int32_t>(value));
+            } else if (key == "dhp") {
+                proto_properties->set_dhp(std::any_cast<int32_t>(value));
+            } else if (key == "duration") {
+                proto_properties->set_duration(std::any_cast<int32_t>(value));
+            } else if (key == "every_turn") {
+                proto_properties->set_every_turn(std::any_cast<bool>(value));
+            } else {
+                throw std::invalid_argument("Unknown key: " + key);
+            }
+        }
+        new_proto_action->set_allocated_properties(proto_properties);
     }
     std::fstream serialize_stream(path_.string(), std::ios::out | std::ios::trunc | std::ios::binary);
     proto_state.SerializeToOstream(&serialize_stream);

@@ -2,14 +2,14 @@ syntax = "proto3";
 
 package ProtoSerializer;
 
-message PickItemData {
-
+message ActionProperties {
+    int32 dx = 1;
+    int32 dy = 2;
+    int32 dhp = 3;
+    int32 duration = 4;
+    int32 every_turn = 5;
 }
 
-message PoisonActionData {
-  int32 hp_decrease = 1;
-  int32 duration = 2;
-}
 
 message Action {
   enum ActionType {
@@ -22,8 +22,4 @@ message Action {
   uint64 objectIdentity = 3;
   uint64 itemIdentity = 4;
   bool everyTurn = 5;
-  oneof data_oneof {
-    PickItemData pickItemData = 6;
-    PoisonActionData poisonData = 7;
-  }
 }
