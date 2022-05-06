@@ -1,5 +1,6 @@
 #include "AbstractGenerator.h"
 #include "../../common/ItemType.h"
+#include "../state/action/concrete/Poison.h"
 #include "../state/action/concrete/PickItem.h"
 #include "../state/item/concrete/Ring.h"
 #include "../state/item/concrete/Stick.h"
@@ -14,10 +15,14 @@ void AbstractGenerator::addPlayer(common::Coordinate coordinate,
                                   std::vector<ObjectAndActions>& answer,
                                   uint64_t& generated_identities_) {
     ObjectAndActions player;
+    auto playerIdentity = state::Identity(generated_identities_++);
     // add Player object
-    player.object = std::make_shared<state::object::Player>(state::Identity(generated_identities_++));
+    player.object = std::make_shared<state::object::Player>(playerIdentity);
     player.object->getCoordinate() = coordinate;
-    // add no Player actions
+    // add Player actions
+    auto actionIdentity = state::Identity(generated_identities_++);
+    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, playerIdentity, 1, 100000);
+    player.actions.push_back(poisonAction);
     // ...
     answer.push_back(player);
 }

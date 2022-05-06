@@ -40,6 +40,7 @@ class AbstractAction {
     const std::optional<Identity> selfIdentity_;
     std::optional<Identity> correspondingObjectIdentity_;
     std::optional<Identity> correspondingItemIdentity_;
+  protected:
     bool everyTurn_ = false;
 };
 

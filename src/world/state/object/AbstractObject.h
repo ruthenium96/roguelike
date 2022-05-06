@@ -29,6 +29,7 @@ class AbstractObject {
     std::vector<std::unique_ptr<item::AbstractItem>>& getItems() { return items_; }
     const std::vector<std::unique_ptr<item::AbstractItem>>& getItems() const { return items_; }
     std::optional<std::any> getProperty(const std::string& property_name) const;
+    void setProperty(const std::string& property_name, std::any value);
 
     virtual ~AbstractObject() = default;
 
