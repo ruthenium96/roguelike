@@ -42,4 +42,8 @@ void AbstractAction::setProperty(const std::string &property_name, std::any valu
 bool AbstractAction::isEveryTurn() const {
     return getProperty("every_turn") != std::nullopt;
 }
+
+const std::map<std::string, std::any> &AbstractAction::getAllProperties() const {
+    return property_;
+}
 }  // namespace world::state::action

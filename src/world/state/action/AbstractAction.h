@@ -34,6 +34,7 @@ class AbstractAction {
 
     std::optional<std::any> getProperty(const std::string& property_name) const;
     void setProperty(const std::string& property_name, std::any value);
+    const std::map<std::string, std::any>& getAllProperties() const;
 
   private:
     const std::optional<Identity> selfIdentity_;
