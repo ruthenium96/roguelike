@@ -12,7 +12,10 @@ class AbstractItem {
     AbstractItem(const Identity& itemIdentity, const Identity& objectHolderIdentity)
         : selfIdentity_(itemIdentity), objectHolderIdentity_(objectHolderIdentity){};
 
-    void setNewHolderIdentity(const Identity& newHolderIdentity) { objectHolderIdentity_ = newHolderIdentity; }
+    const Identity& getSelfIdentity() const;
+    const Identity& getObjectHolderIdentity() const;
+
+    void setNewHolderIdentity(const Identity& newHolderIdentity);
     virtual common::ItemType getItemType() const = 0;
 
     virtual ~AbstractItem() = default;

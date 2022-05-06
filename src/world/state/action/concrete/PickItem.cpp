@@ -12,6 +12,7 @@ void PickItem::changeTarget(object::Observer& objectObserver, action::Observer& 
     auto artefactIdentity = getCorrespondingObjectIdentity();
     auto artefact = objectObserver.getObject(artefactIdentity.value()).value();
     auto item = std::move(artefact->getItems()[0]);
+    item->setNewHolderIdentity(objectObserver.getPlayer()->getIdentity());
     objectObserver.getPlayer()->getItems().push_back(std::move(item));
     // secondly, delete Artefact from ObjectObserver
     objectObserver.deleteObject(artefactIdentity.value());
