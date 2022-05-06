@@ -17,6 +17,7 @@ message Coordinates {
 message Item {
   enum ItemType {
     STICK = 0;
+    RING = 1;
   }
 
   ItemType type = 1;

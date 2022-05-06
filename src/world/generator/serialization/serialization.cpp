@@ -1,5 +1,6 @@
 #include "serialization.h"
 #include "../../state/item/concrete/Stick.h"
+#include "../../state/item/concrete/Ring.h"
 #include "../../state/object/concrete/Artefact.h"
 #include "../../state/object/concrete/Floor.h"
 #include "../../state/object/concrete/Wall.h"
@@ -8,6 +9,7 @@
 
 void Serializer::associate_item_types() {
     item_mapper_.associate_types(ProtoSerializer::Item::STICK, common::ItemType::STICK);
+    item_mapper_.associate_types(ProtoSerializer::Item::RING, common::ItemType::RING);
 }
 
 void Serializer::associate_object_types() {
@@ -99,6 +101,8 @@ world::state::object::Observer Serializer::deserialize() {
         world::state::Identity object_identity{++identity_start};
         if (game_item_type == common::ItemType::STICK) {
             items.push_back(std::make_unique<world::state::item::Stick>(item_identity, object_identity));
+        } else if (game_item_type == common::ItemType::RING) {
+            items.push_back(std::make_unique<world::state::item::Ring>(item_identity, object_identity));
         } else {
             throw std::runtime_error("handle unknown object type during deserialization");
         }
