@@ -23,7 +23,12 @@ set(SERIALIZATION_FOLDER_PATH ${PROJECT_SOURCE_DIR}/src/world/generator/serializ
 # TODO: handle non zero return code
 
 execute_process(
-        COMMAND ${Protobuf_PROTOC_EXECUTABLE} -I=${SERIALIZATION_FOLDER_PATH}/proto/ --cpp_out=${SERIALIZATION_FOLDER_PATH}/proto/ ${SERIALIZATION_FOLDER_PATH}/proto/state.proto
+        COMMAND ${Protobuf_PROTOC_EXECUTABLE}
+        -I=${SERIALIZATION_FOLDER_PATH}/proto/
+        --cpp_out=${SERIALIZATION_FOLDER_PATH}/proto/
+        ${SERIALIZATION_FOLDER_PATH}/proto/action.proto
+        ${SERIALIZATION_FOLDER_PATH}/proto/state.proto
+        ${SERIALIZATION_FOLDER_PATH}/proto/object.proto
         RESULT_VARIABLE _EXIT_CODE)
 
 add_library(serializer
