@@ -13,7 +13,7 @@ bool PlayerMove::precondition(const object::Observer& objectObserver, const acti
     common::Coordinate wantedCoordinate = {playerCoordinate.x + delta_x_, playerCoordinate.y + delta_y_};
     auto objects = objectObserver.getObjectsAtCoordinate(wantedCoordinate);
     for (const auto& object : objects) {
-        if (object->getObjectType() == common::ObjectType::WALL) {
+        if (object->getProperty("blocking") != std::nullopt) {
             return false;
         }
     }
