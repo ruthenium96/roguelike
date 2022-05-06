@@ -50,15 +50,15 @@ void Serializer::serialize(const world::state::State& state) {
         auto* proto_properties = new_proto_object->mutable_properties();
         for (const auto& [key, value] : object_ptr->getAllProperties()) {
             if (key == "hp") {
-                proto_properties->set_hp(std::any_cast<int32_t>(value));
+                proto_properties->mutable_hp()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "xp") {
-                proto_properties->set_xp(std::any_cast<int32_t>(value));
+                proto_properties->mutable_xp()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "lvl") {
-                proto_properties->set_lvl(std::any_cast<int32_t>(value));
+                proto_properties->mutable_lvl()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "blocking") {
-                proto_properties->set_blocking(std::any_cast<bool>(value));
+                proto_properties->mutable_blocking()->set_value(std::any_cast<bool>(value));
             } else if (key == "interactable") {
-                proto_properties->set_interactable(std::any_cast<bool>(value));
+                proto_properties->mutable_interactable()->set_value(std::any_cast<bool>(value));
             } else {
                 throw std::invalid_argument("Unknown key: " + key);
             }
@@ -115,52 +115,67 @@ void Serializer::serialize(const world::state::State& state) {
 }
 
 world::state::State Serializer::deserialize() {
-//    world::state::object::Observer observer;
-//    std::fstream deserialize_stream(path_.string(), std::ios::in | std::ios::binary);
-//    ProtoSerializer::State proto_state;
-//    proto_state.ParseFromIstream(&deserialize_stream);
-//
-//    uint64_t identity_start = 0;
-//
-//    int objects_size = proto_state.objects_size();
-//
-//    for (int index = 0; index < objects_size; ++index) {
-//        const ProtoSerializer::Object& proto_object = proto_state.objects(index);
-//        common::ObjectType game_object_type = object_mapper_.get_game_associated_type_with(proto_object.type());
-//
-//        std::shared_ptr<world::state::object::AbstractObject> shared_object;
-//        world::state::Identity identity(identity_start + index);
-//        if (game_object_type == common::ObjectType::ARTEFACT) {
-//            shared_object = std::make_shared<world::state::object::Artefact>(identity);
-//        } else if (game_object_type == common::ObjectType::WALL) {
-//            shared_object = std::make_shared<world::state::object::Wall>(identity);
-//        } else if (game_object_type == common::ObjectType::FLOOR) {
-//            shared_object = std::make_shared<world::state::object::Floor>(identity);
-//        } else {
-//            throw std::runtime_error("handle unknown object type during deserialization");
-//        }
-//        shared_object->getCoordinate().x = proto_object.coords().x();
-//        shared_object->getCoordinate().y = proto_object.coords().y();
-//        observer.addObject(shared_object);
-//    }
-//
-//    identity_start += objects_size;
-//    auto player = std::make_shared<world::state::object::Player>(world::state::Identity{++identity_start});
-//
-//    auto& items = player->getItems();
-//    int items_size = proto_state.items_size();
-//    for (int index = 0; index < items_size; ++index) {
-//        const ProtoSerializer::Item& item_proto = proto_state.items(index);
-//        common::ItemType game_item_type = item_mapper_.get_game_associated_type_with(item_proto.type());
-//        world::state::Identity item_identity{++identity_start};
-//        world::state::Identity object_identity{++identity_start};
-//        if (game_item_type == common::ItemType::STICK) {
-//            items.push_back(std::make_unique<world::state::item::Stick>(item_identity, object_identity));
-//        } else if (game_item_type == common::ItemType::RING) {
-//            items.push_back(std::make_unique<world::state::item::Ring>(item_identity, object_identity));
-//        } else {
-//            throw std::runtime_error("handle unknown object type during deserialization");
-//        }
-//    }
-//    return observer;
+    world::state::State state;
+    std::fstream deserialize_stream(path_.string(), std::ios::in | std::ios::binary);
+    ProtoSerializer::State proto_state;
+    proto_state.ParseFromIstream(&deserialize_stream);
+
+    int objects_size = proto_state.objects_size();
+
+    for (int index = 0; index < objects_size; ++index) {
+        const ProtoSerializer::Object& proto_object = proto_state.objects(index);
+        common::ObjectType game_object_type = object_mapper_.get_game_associated_type_with(proto_object.type());
+
+        // type and identity
+        std::shared_ptr<world::state::object::AbstractObject> shared_object;
+        auto objectIdentity = world::state::Identity(proto_object.selfidentity());
+        if (game_object_type == common::ObjectType::PLAYER) {
+            shared_object = std::make_shared<world::state::object::Player>(objectIdentity);
+        } else if (game_object_type == common::ObjectType::ARTEFACT) {
+            shared_object = std::make_shared<world::state::object::Artefact>(objectIdentity);
+        } else if (game_object_type == common::ObjectType::WALL) {
+            shared_object = std::make_shared<world::state::object::Wall>(objectIdentity);
+        } else if (game_object_type == common::ObjectType::FLOOR) {
+            shared_object = std::make_shared<world::state::object::Floor>(objectIdentity);
+        } else {
+            throw std::runtime_error("handle unknown object type during deserialization");
+        }
+        // coordinates
+        shared_object->getCoordinate().x = proto_object.coords().x();
+        shared_object->getCoordinate().y = proto_object.coords().y();
+        // properties
+        if (proto_object.properties().has_hp()) {
+            shared_object->setProperty("hp", proto_object.properties().hp());
+        }
+        if (proto_object.properties().has_xp()) {
+            shared_object->setProperty("xp", proto_object.properties().xp());
+        }
+        if (proto_object.properties().has_lvl()) {
+            shared_object->setProperty("lvl", proto_object.properties().lvl());
+        }
+        if (proto_object.properties().has_blocking()) {
+            shared_object->setProperty("blocking", proto_object.properties().blocking());
+        }
+        if (proto_object.properties().has_interactable()) {
+            shared_object->setProperty("interactable", proto_object.properties().interactable());
+        }
+        // items
+        int items_size = proto_object.items_size();
+        for (int item_index = 0; item_index < items_size; ++item_index) {
+            const ProtoSerializer::Item& item_proto = proto_object.items(index);
+            common::ItemType game_item_type = item_mapper_.get_game_associated_type_with(item_proto.type());
+            auto itemIdentity = world::state::Identity(item_proto.self_id());
+            auto ownerIdentity = world::state::Identity(item_proto.owner_id());
+            if (game_item_type == common::ItemType::STICK) {
+                shared_object->getItems().push_back(std::make_unique<world::state::item::Stick>(itemIdentity, ownerIdentity));
+            } else if (game_item_type == common::ItemType::RING) {
+                shared_object->getItems().push_back(std::make_unique<world::state::item::Ring>(itemIdentity, ownerIdentity));
+            } else {
+                throw std::runtime_error("handle unknown object type during deserialization");
+            }
+        }
+        state.getObjectObserver().addObject(shared_object);
+    }
+    // TODO: deserialize actions.
+    return state;
 }

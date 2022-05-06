@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/wrappers.proto";
+
 package ProtoSerializer;
 
 message Coordinates {
@@ -8,11 +10,11 @@ message Coordinates {
 }
 
 message ObjectProperties {
-  int32 hp = 2;
-  int32 lvl = 3;
-  int32 xp = 4;
-  bool blocking = 5;
-  bool interactable = 6;
+  google.protobuf.Int32Value hp = 2;
+  google.protobuf.Int32Value lvl = 3;
+  google.protobuf.Int32Value xp = 4;
+  google.protobuf.BoolValue blocking = 5;
+  google.protobuf.BoolValue interactable = 6;
 }
 
 message Item {

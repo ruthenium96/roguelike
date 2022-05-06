@@ -21,5 +21,5 @@ message Action {
   uint64 selfIdentity = 2;
   uint64 objectIdentity = 3;
   uint64 itemIdentity = 4;
-  bool everyTurn = 5;
+  ActionProperties properties = 5;
 }
