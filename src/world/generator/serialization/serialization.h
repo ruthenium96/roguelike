@@ -1,8 +1,8 @@
 #ifndef ARCH_ROGUELIKE_SERIALIZATION_H
 #define ARCH_ROGUELIKE_SERIALIZATION_H
 
-#include "../../state/object/Observer.h"
 #include "proto/state.pb.h"
+#include "../../state/State.h"
 #include <filesystem>
 #include <unordered_map>
 #include <utility>
@@ -31,8 +31,8 @@ class Serializer {
   public:
     explicit Serializer(const std::filesystem::path& path);
 
-    void serialize(const world::state::object::Observer& observer);
-    world::state::object::Observer deserialize();
+    void serialize(const world::state::State& state);
+    world::state::State deserialize();
 
   private:
     void associate_item_types();

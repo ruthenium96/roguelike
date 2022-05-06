@@ -15,4 +15,8 @@ void AbstractObject::setProperty(const std::string& property_name, std::any valu
     // TODO: avoid changing of value type?
     property_[property_name] = std::move(value);
 }
+
+const std::map<std::string, std::any> &AbstractObject::getAllProperties() const {
+    return property_;
+}
 }  // namespace world::state::object
