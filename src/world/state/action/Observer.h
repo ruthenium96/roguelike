@@ -14,6 +14,7 @@ class Observer {
     std::optional<std::shared_ptr<action::AbstractAction>> getActionByCorrespondingObjectIdentity(
         Identity objectIdentity) const;
     const std::vector<std::shared_ptr<AbstractAction>>& getEveryTurnActions() const;
+    const std::set<std::shared_ptr<AbstractAction>>& getAllActions() const;
 
     bool operator==(const Observer &rhs) const;
     bool operator!=(const Observer &rhs) const;

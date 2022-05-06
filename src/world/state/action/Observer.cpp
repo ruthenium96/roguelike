@@ -47,4 +47,8 @@ bool Observer::operator==(const Observer &rhs) const {
 bool Observer::operator!=(const Observer &rhs) const {
     return !(rhs == *this);
 }
+
+const std::set<std::shared_ptr<AbstractAction>> &Observer::getAllActions() const {
+    return allActions_;
+}
 }  // namespace world::state::action
