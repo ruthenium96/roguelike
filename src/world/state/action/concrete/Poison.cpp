@@ -2,8 +2,8 @@
 
 namespace world::state::action {
 
-Poison::Poison(Identity selfIdentity, Identity objectIdentity, int32_t hp_decrease, int32_t duration) :
-    AbstractAction(selfIdentity), objectIdentity_(objectIdentity), hp_decrease_(hp_decrease), duration_(duration) {
+Poison::Poison(Identity selfIdentity, int32_t hp_decrease, int32_t duration) :
+    AbstractAction(selfIdentity), hp_decrease_(hp_decrease), duration_(duration) {
     everyTurn_ = true;
 }
 
@@ -12,7 +12,7 @@ bool Poison::precondition(const object::Observer &observer, const Observer &obse
 }
 
 void Poison::changeTarget(object::Observer &objectObserver, action::Observer &actionObserver) {
-    auto maybe_object = objectObserver.getObject(objectIdentity_);
+    auto maybe_object = objectObserver.getObject(getCorrespondingObjectIdentity().value());
     if (maybe_object.has_value()) {
         auto object = maybe_object.value();
         if (object->getProperty("hp").has_value()) {

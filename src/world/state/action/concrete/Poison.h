@@ -6,14 +6,13 @@
 namespace world::state::action {
 class Poison : public AbstractAction {
 public:
-    Poison(Identity selfIdentity, Identity objectIdentity, int32_t hp_decrease, int32_t duration);
+    Poison(Identity selfIdentity, int32_t hp_decrease, int32_t duration);
 
     bool precondition(const object::Observer &observer, const Observer &observer1) override;
 
     void changeTarget(object::Observer &observer, Observer &observer1) override;
 
 private:
-    Identity objectIdentity_;
     int32_t hp_decrease_;
     int32_t duration_;
 };

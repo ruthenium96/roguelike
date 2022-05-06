@@ -21,7 +21,8 @@ void AbstractGenerator::addPlayer(common::Coordinate coordinate,
     player.object->getCoordinate() = coordinate;
     // add Player actions
     auto actionIdentity = state::Identity(generated_identities_++);
-    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, playerIdentity, 1, 100000);
+    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, 1, 100000);
+    poisonAction->setCorrespondingObjectIdentity(playerIdentity);
     player.actions.push_back(poisonAction);
     // ...
     answer.push_back(player);
