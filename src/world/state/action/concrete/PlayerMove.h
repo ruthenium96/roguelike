@@ -13,10 +13,6 @@ class PlayerMove : public AbstractAction {
     bool precondition(const object::Observer& objectObserver, const action::Observer&) override;
 
     void changeTarget(object::Observer&, action::Observer&) override;
-
-  private:
-    int32_t delta_x_;
-    int32_t delta_y_;
 };
 
 }  // namespace world::state::action

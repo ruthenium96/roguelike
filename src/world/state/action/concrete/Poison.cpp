@@ -2,9 +2,10 @@
 
 namespace world::state::action {
 
-Poison::Poison(Identity selfIdentity, int32_t hp_decrease, int32_t duration) :
-    AbstractAction(selfIdentity), hp_decrease_(hp_decrease), duration_(duration) {
-    everyTurn_ = true;
+Poison::Poison(Identity selfIdentity, int32_t hp_decrease, int32_t duration) : AbstractAction(selfIdentity) {
+    setProperty("every_turn", std::make_any<bool>(true));
+    setProperty("dhp", std::make_any<int32_t>(hp_decrease));
+    setProperty("duration", std::make_any<int32_t>(duration));
 }
 
 bool Poison::precondition(const object::Observer &observer, const Observer &observer1) {
@@ -16,13 +17,16 @@ void Poison::changeTarget(object::Observer &objectObserver, action::Observer &ac
     if (maybe_object.has_value()) {
         auto object = maybe_object.value();
         if (object->getProperty("hp").has_value()) {
+            auto dhp = std::any_cast<int32_t>(getProperty("dhp").value());
             auto old_hp = std::any_cast<int32_t>(object->getProperty("hp").value());
-            auto new_hp = std::make_any<int32_t>(old_hp - hp_decrease_);
+            auto new_hp = std::make_any<int32_t>(old_hp + dhp);
             object->setProperty("hp", new_hp);
         }
     }
-    --duration_;
-    if (duration_ <= 0) {
+    auto duration = std::any_cast<int32_t>(getProperty("duration").value());
+    --duration;
+    setProperty("duration", std::make_any<int32_t>(duration));
+    if (duration <= 0) {
         deleteItselfFromActionObserver(actionObserver);
     }
 }

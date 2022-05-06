@@ -19,29 +19,27 @@ class AbstractAction {
 
     // Should this action trying to apply every turn?
     // False by default.
-    bool isEveryTurn() const {return everyTurn_;}
+    bool isEveryTurn() const;
 
     // Delete itself from set of Actions
     void deleteItselfFromActionObserver(action::Observer& actionObserver);
 
-    const std::optional<Identity>& getSelfIdentity() const { return selfIdentity_; }
+    const std::optional<Identity>& getSelfIdentity() const;
 
-    const std::optional<Identity>& getCorrespondingObjectIdentity() const { return correspondingObjectIdentity_; }
-    void setCorrespondingObjectIdentity(const std::optional<Identity>& correspondingObjectIdentity) {
-        correspondingObjectIdentity_ = correspondingObjectIdentity;
-    }
+    const std::optional<Identity>& getCorrespondingObjectIdentity() const;
+    void setCorrespondingObjectIdentity(const std::optional<Identity>& correspondingObjectIdentity);
 
-    const std::optional<Identity>& getCorrespondingItemIdentity() const { return correspondingItemIdentity_; }
-    void setCorrespondingItemIdentity(const std::optional<Identity>& correspondingItemIdentity) {
-        correspondingItemIdentity_ = correspondingItemIdentity;
-    }
+    const std::optional<Identity>& getCorrespondingItemIdentity() const;
+    void setCorrespondingItemIdentity(const std::optional<Identity>& correspondingItemIdentity);
+
+    std::optional<std::any> getProperty(const std::string& property_name) const;
+    void setProperty(const std::string& property_name, std::any value);
 
   private:
     const std::optional<Identity> selfIdentity_;
     std::optional<Identity> correspondingObjectIdentity_;
     std::optional<Identity> correspondingItemIdentity_;
-  protected:
-    bool everyTurn_ = false;
+    std::map<std::string, std::any> property_;
 };
 
 }  // namespace world::state::action

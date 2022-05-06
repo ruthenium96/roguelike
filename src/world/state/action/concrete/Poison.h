@@ -11,10 +11,6 @@ public:
     bool precondition(const object::Observer &observer, const Observer &observer1) override;
 
     void changeTarget(object::Observer &observer, Observer &observer1) override;
-
-private:
-    int32_t hp_decrease_;
-    int32_t duration_;
 };
 }
 
