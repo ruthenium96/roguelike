@@ -5,7 +5,7 @@ namespace common {
 struct PlayerMetrics {
     int32_t hp;
     int32_t lvl;
-    int32_t exp;
+    int32_t xp;
 };
 }  // namespace common
 
