@@ -48,10 +48,8 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
         new_proto_object->set_type(object_proto_type);
         // coordinate:
         common::Coordinate coords = object_ptr->getCoordinate();
-        auto* proto_coords = new_proto_object->mutable_coords();
-        proto_coords->set_x(coords.x);
-        proto_coords->set_y(coords.y);
-        new_proto_object->set_allocated_coords(proto_coords);
+        new_proto_object->mutable_coords()->set_x(coords.x);
+        new_proto_object->mutable_coords()->set_y(coords.y);
         // properties:
         auto* proto_properties = new_proto_object->mutable_properties();
         for (const auto& [key, value] : object_ptr->getAllProperties()) {
@@ -69,7 +67,6 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
                 throw std::invalid_argument("Unknown key: " + key);
             }
         }
-        new_proto_object->set_allocated_properties(proto_properties);
 
         // ... and their Items
         for (const auto& item_ptr : object_ptr->getItems()) {
@@ -111,10 +108,9 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
             } else if (key == "every_turn") {
                 proto_properties->mutable_every_turn()->set_value(std::any_cast<bool>(value));
             } else {
-//                throw std::invalid_argument("Unknown key: " + key);
+                throw std::invalid_argument("Unknown key: " + key);
             }
         }
-        new_proto_action->set_allocated_properties(proto_properties);
     }
     return proto_state;
 }
@@ -124,8 +120,8 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
 
     // Objects and Items
     int objects_size = proto_state.objects_size();
-    for (int index = 0; index < objects_size; ++index) {
-        const ProtoSerializer::Object& proto_object = proto_state.objects(index);
+    for (int object_index = 0; object_index < objects_size; ++object_index) {
+        const ProtoSerializer::Object& proto_object = proto_state.objects(object_index);
         common::ObjectType game_object_type = object_mapper_.get_game_associated_type_with(proto_object.type());
 
         // type and identity
@@ -154,7 +150,7 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
         // items
         int items_size = proto_object.items_size();
         for (int item_index = 0; item_index < items_size; ++item_index) {
-            const ProtoSerializer::Item& item_proto = proto_object.items(index);
+            const ProtoSerializer::Item& item_proto = proto_object.items(item_index);
             common::ItemType game_item_type = item_mapper_.get_game_associated_type_with(item_proto.type());
             auto itemIdentity = world::state::Identity(item_proto.self_id());
             auto ownerIdentity = world::state::Identity(item_proto.owner_id());

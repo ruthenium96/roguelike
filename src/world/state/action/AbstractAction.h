@@ -36,7 +36,11 @@ class AbstractAction {
     void setProperty(const std::string& property_name, std::any value);
     const std::map<std::string, std::any>& getAllProperties() const;
 
-  private:
+    bool operator==(const AbstractAction &rhs) const;
+
+    bool operator!=(const AbstractAction &rhs) const;
+
+private:
     const std::optional<Identity> selfIdentity_;
     std::optional<Identity> correspondingObjectIdentity_;
     std::optional<Identity> correspondingItemIdentity_;

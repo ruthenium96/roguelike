@@ -41,7 +41,19 @@ void Observer::updateRepresentations() {
 }
 
 bool Observer::operator==(const Observer &rhs) const {
-    return allActions_ == rhs.allActions_;
+    if (allActions_.size() != rhs.allActions_.size()) {
+        return false;
+    }
+    auto liter = allActions_.begin();
+    auto riter = rhs.allActions_.begin();
+    while (liter != allActions_.end()) {
+        if (**(liter) != **(riter)) {
+            return false;
+        }
+        ++liter;
+        ++riter;
+    }
+    return true;
 }
 
 bool Observer::operator!=(const Observer &rhs) const {

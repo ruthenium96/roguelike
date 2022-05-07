@@ -35,6 +35,10 @@ class AbstractObject {
 
     virtual ~AbstractObject() = default;
 
+    bool operator==(const AbstractObject &rhs) const;
+
+    bool operator!=(const AbstractObject &rhs) const;
+
   private:
     const Identity selfIdentity_;
     common::Coordinate coordinate_;

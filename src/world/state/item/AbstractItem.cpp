@@ -1,3 +1,4 @@
+#include <tuple>
 #include "AbstractItem.h"
 
 namespace world::state::item {
@@ -11,5 +12,14 @@ void AbstractItem::setNewHolderIdentity(const Identity &newHolderIdentity) {
 
 const Identity& AbstractItem::getObjectHolderIdentity() const {
     return objectHolderIdentity_;
+}
+
+bool AbstractItem::operator==(const AbstractItem &rhs) const {
+    // TODO: also compare the types
+    return std::tie(selfIdentity_, objectHolderIdentity_) == std::tie(rhs.selfIdentity_, rhs.objectHolderIdentity_);
+}
+
+bool AbstractItem::operator!=(const AbstractItem &rhs) const {
+    return !(rhs == *this);
 }
 }

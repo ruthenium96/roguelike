@@ -32,6 +32,10 @@ execute_process(
         RESULT_VARIABLE _EXIT_CODE)
 
 add_library(serializer
+        proto/action.pb.cc proto/action.pb.h
+        proto/object.pb.cc proto/object.pb.h
+        proto/state.pb.cc proto/state.pb.h
+
         ProtobufEngine.cpp ProtobufEngine.h
         Serializer.cpp Serializer.h
         Deserializer.cpp Deserializer.h)

@@ -57,7 +57,19 @@ void Observer::deleteObject(Identity identity) {
 }
 
 bool Observer::operator==(const Observer &rhs) const {
-    return identityObjectMap_ == rhs.identityObjectMap_;
+    if (identityObjectMap_.size() != rhs.identityObjectMap_.size()) {
+        return false;
+    }
+    auto liter = identityObjectMap_.begin();
+    auto riter = rhs.identityObjectMap_.begin();
+    while (liter != identityObjectMap_.end()) {
+        if (liter->first != riter->first || *(liter->second) != *(riter->second)) {
+            return false;
+        }
+        ++liter;
+        ++riter;
+    }
+    return true;
 }
 
 bool Observer::operator!=(const Observer &rhs) const {

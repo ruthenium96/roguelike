@@ -20,6 +20,10 @@ class AbstractItem {
 
     virtual ~AbstractItem() = default;
 
+    bool operator==(const AbstractItem &rhs) const;
+
+    bool operator!=(const AbstractItem &rhs) const;
+
   private:
     const Identity selfIdentity_;
     Identity objectHolderIdentity_;

@@ -46,4 +46,34 @@ bool AbstractAction::isEveryTurn() const {
 const std::map<std::string, std::any> &AbstractAction::getAllProperties() const {
     return property_;
 }
+
+bool AbstractAction::operator==(const AbstractAction &rhs) const {
+    if (std::tie(selfIdentity_, correspondingObjectIdentity_, correspondingItemIdentity_) !=
+           std::tie(rhs.selfIdentity_, rhs.correspondingObjectIdentity_, rhs.correspondingItemIdentity_)) {
+        return false;
+    }
+
+    if (property_.size() != rhs.property_.size()) {
+        return false;
+    }
+    auto liter = property_.begin();
+    auto riter = rhs.property_.begin();
+    while (liter != property_.end()) {
+        if (liter->first != riter->first) {
+            return false;
+        }
+        if (liter->second.type() != riter->second.type()) {
+            // TODO: also compare values of any
+            return false;
+        }
+        ++liter;
+        ++riter;
+    }
+
+    return true;
+}
+
+bool AbstractAction::operator!=(const AbstractAction &rhs) const {
+    return !(rhs == *this);
+}
 }  // namespace world::state::action

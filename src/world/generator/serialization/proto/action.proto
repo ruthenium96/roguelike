@@ -9,7 +9,7 @@ message ActionProperties {
   google.protobuf.Int32Value dy = 2;
   google.protobuf.Int32Value dhp = 3;
   google.protobuf.Int32Value duration = 4;
-  google.protobuf.Int32Value every_turn = 5;
+  google.protobuf.BoolValue every_turn = 5;
 }
 
 
