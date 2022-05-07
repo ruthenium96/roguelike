@@ -19,6 +19,12 @@ void Serializer::associate_object_types() {
     object_mapper_.associate_types(ProtoSerializer::Object::ARTEFACT, common::ObjectType::ARTEFACT);
     object_mapper_.associate_types(ProtoSerializer::Object::FLOOR, common::ObjectType::FLOOR);
     object_mapper_.associate_types(ProtoSerializer::Object::WALL, common::ObjectType::WALL);
+
+    // TODO: implement it as named constructors
+    objectConstructor_[common::ObjectType::PLAYER] = [](world::state::Identity identity){return std::make_shared<world::state::object::Player>(identity);};
+    objectConstructor_[common::ObjectType::ARTEFACT] = [](world::state::Identity identity){return std::make_shared<world::state::object::Artefact>(identity);};
+    objectConstructor_[common::ObjectType::FLOOR] = [](world::state::Identity identity){return std::make_shared<world::state::object::Floor>(identity);};
+    objectConstructor_[common::ObjectType::WALL] = [](world::state::Identity identity){return std::make_shared<world::state::object::Wall>(identity);};
 }
 
 Serializer::Serializer(const std::filesystem::path& path) : path_(path) {
@@ -129,17 +135,7 @@ world::state::State Serializer::deserialize() {
         // type and identity
         std::shared_ptr<world::state::object::AbstractObject> shared_object;
         auto objectIdentity = world::state::Identity(proto_object.selfidentity());
-        if (game_object_type == common::ObjectType::PLAYER) {
-            shared_object = std::make_shared<world::state::object::Player>(objectIdentity);
-        } else if (game_object_type == common::ObjectType::ARTEFACT) {
-            shared_object = std::make_shared<world::state::object::Artefact>(objectIdentity);
-        } else if (game_object_type == common::ObjectType::WALL) {
-            shared_object = std::make_shared<world::state::object::Wall>(objectIdentity);
-        } else if (game_object_type == common::ObjectType::FLOOR) {
-            shared_object = std::make_shared<world::state::object::Floor>(objectIdentity);
-        } else {
-            throw std::runtime_error("handle unknown object type during deserialization");
-        }
+        shared_object = objectConstructor_[game_object_type](objectIdentity);
         // coordinates
         shared_object->getCoordinate().x = proto_object.coords().x();
         shared_object->getCoordinate().y = proto_object.coords().y();

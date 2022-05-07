@@ -3,6 +3,7 @@
 
 #include "proto/state.pb.h"
 #include "../../state/State.h"
+#include "../../state/object/AbstractObject.h"
 #include <filesystem>
 #include <unordered_map>
 #include <utility>
@@ -39,6 +40,8 @@ class Serializer {
     void associate_object_types();
     ProtoToGameTypeMapper<ProtoSerializer::Item::ItemType, common::ItemType> item_mapper_;
     ProtoToGameTypeMapper<ProtoSerializer::Object::ObjectType, common::ObjectType> object_mapper_;
+
+    std::map<common::ObjectType, std::function<std::shared_ptr<world::state::object::AbstractObject>(world::state::Identity)>> objectConstructor_;
     std::filesystem::path path_;
 };
 
