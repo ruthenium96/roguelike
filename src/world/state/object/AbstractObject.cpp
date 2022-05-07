@@ -1,5 +1,6 @@
 #include "AbstractObject.h"
 
+#include <stdexcept>
 #include <utility>
 
 namespace world::state::object {
@@ -44,8 +45,7 @@ bool AbstractObject::operator==(const AbstractObject &rhs) const {
         if (liter->first != riter->first) {
             return false;
         }
-        if (liter->second.type() != riter->second.type()) {
-            // TODO: also compare values of any
+        if (!compareTwoAny(liter->second, riter->second)) {
             return false;
         }
         ++liter;
@@ -57,5 +57,21 @@ bool AbstractObject::operator==(const AbstractObject &rhs) const {
 
 bool AbstractObject::operator!=(const AbstractObject &rhs) const {
     return !(rhs == *this);
+}
+
+bool AbstractObject::compareTwoAny(const std::any &lhs, const std::any &rhs) {
+    if (lhs.type() != rhs.type()) {
+        return false;
+    }
+    if (lhs.type() == typeid(bool)) {
+        return std::any_cast<bool>(lhs) == std::any_cast<bool>(rhs);
+    }
+    if (lhs.type() == typeid(uint64_t)) {
+        return std::any_cast<uint64_t>(lhs) == std::any_cast<uint64_t>(rhs);
+    }
+    if (lhs.type() == typeid(int32_t)) {
+        return std::any_cast<int32_t>(lhs) == std::any_cast<int32_t>(rhs);
+    }
+    throw std::invalid_argument("Unimplemented type for any comparison");
 }
 }  // namespace world::state::object

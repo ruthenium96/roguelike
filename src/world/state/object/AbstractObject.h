@@ -45,6 +45,8 @@ class AbstractObject {
     // TODO: Can be replaced by std::vector<Identity>
     std::vector<std::unique_ptr<item::AbstractItem>> items_;
     std::map<std::string, std::any> property_;
+
+    static bool compareTwoAny(const std::any& lhs, const std::any& rhs) ;
 };
 }  // namespace world::state::object
 

@@ -45,6 +45,8 @@ private:
     std::optional<Identity> correspondingObjectIdentity_;
     std::optional<Identity> correspondingItemIdentity_;
     std::map<std::string, std::any> property_;
+
+    static bool compareTwoAny(const std::any& lhs, const std::any& rhs) ;
 };
 
 }  // namespace world::state::action
