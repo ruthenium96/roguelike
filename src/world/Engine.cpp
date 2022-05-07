@@ -24,6 +24,8 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
         int32_t delta_x;
         int32_t delta_y;
         switch (command) {
+            case ControllerCommand::IGNORE:
+                break;
             case ControllerCommand::MOVE_TOP:
                 delta_x = 0;
                 delta_y = -1;
@@ -39,6 +41,18 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
             case ControllerCommand::MOVE_RIGHT:
                 delta_x = 1;
                 delta_y = 0;
+                break;
+            case ControllerCommand::APPLY_RING:
+                // add apply
+                break;
+            case ControllerCommand::APPLY_STICK:
+                // add apply
+                break;
+            case ControllerCommand::DROP_RING:
+                // add drop
+                break;
+            case ControllerCommand::DROP_STICK:
+                // add drop
                 break;
             default:
                 // throw is better than ignore

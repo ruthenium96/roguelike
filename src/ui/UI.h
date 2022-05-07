@@ -25,7 +25,8 @@ class UI {
     // draw current game image
     void draw(const common::WorldUITransfer& world_state);
 
-    void apply_command(const common::ControllerCommand& command, const common::WorldUITransfer& world_state);
+    common::ControllerCommand apply_command(const common::ControllerCommand& command,
+                                            const common::WorldUITransfer& world_state);
     void deactivate_state();
 
   private:
