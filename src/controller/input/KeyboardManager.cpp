@@ -65,6 +65,8 @@ ControllerCommand KeyboardManager::readCommand() {
         return ControllerCommand::UI_INVENTORY_UP;
     } else if (symbol == 'f') {
         return ControllerCommand::UI_INVENTORY_APPLY;
+    } else if (symbol == 'v') {
+        return ControllerCommand::UI_INVENTORY_DROP;
 
     } else {
         return ControllerCommand::UNKNOWN;
