@@ -29,15 +29,24 @@ class AbstractObject {
     std::vector<std::unique_ptr<item::AbstractItem>>& getItems() { return items_; }
     const std::vector<std::unique_ptr<item::AbstractItem>>& getItems() const { return items_; }
     std::optional<std::any> getProperty(const std::string& property_name) const;
+    void setProperty(const std::string& property_name, std::any value);
+
+    const std::map<std::string, std::any>& getAllProperties() const;
+
+    virtual ~AbstractObject() = default;
+
+    bool operator==(const AbstractObject &rhs) const;
+
+    bool operator!=(const AbstractObject &rhs) const;
 
   private:
     const Identity selfIdentity_;
     common::Coordinate coordinate_;
     // TODO: Can be replaced by std::vector<Identity>
     std::vector<std::unique_ptr<item::AbstractItem>> items_;
-
-  protected:
     std::map<std::string, std::any> property_;
+
+    static bool compareTwoAny(const std::any& lhs, const std::any& rhs) ;
 };
 }  // namespace world::state::object
 

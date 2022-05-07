@@ -18,4 +18,8 @@ char DefaultStyle::getGameObjectRepr(ObjectType type) const {
     return object_styles_.at(type);
 }
 
+char DefaultStyle::getGameItemRepr(ItemType type) const {
+    return item_styles_.at(type);
+}
+
 }  // namespace ui

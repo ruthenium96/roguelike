@@ -6,7 +6,7 @@
 namespace world::state::object {
 class Wall : public AbstractObject {
   public:
-    explicit Wall(Identity&& identity) : AbstractObject(std::move(identity)){};
+    explicit Wall(const Identity& identity);
     common::ObjectType getObjectType() const override;
 };
 }  // namespace world::state::object

@@ -15,6 +15,8 @@ class Identity {
     Identity(Identity&&) = default;
     Identity& operator=(Identity&&) = default;
 
+    uint64_t asNumber() const {return identity_;};
+
     bool operator==(const Identity& rhs) const { return identity_ == rhs.identity_; }
 
     bool operator!=(const Identity& rhs) const { return !(rhs == *this); }

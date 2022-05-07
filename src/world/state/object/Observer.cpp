@@ -3,14 +3,12 @@
 #include <stdexcept>
 namespace world::state::object {
 
-std::shared_ptr<object::Player> world::state::object::Observer::getPlayer() {
-    for (const auto& [_, object] : identityObjectMap_) {
-        if (object->getObjectType() == common::ObjectType::PLAYER) {
-            auto ptrToPlayer = std::dynamic_pointer_cast<Player>(object);
-            return ptrToPlayer;
-        }
-    }
-    return nullptr;
+std::shared_ptr<object::AbstractObject> world::state::object::Observer::getPlayer() {
+    return player_;
+}
+
+std::shared_ptr<const object::AbstractObject> Observer::getPlayer() const {
+    return player_;
 }
 
 std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Identity identity) {
@@ -26,9 +24,16 @@ void Observer::addObject(const std::shared_ptr<object::AbstractObject>& object) 
         throw std::invalid_argument("Trying to add object with already existing Identity");
     }
     identityObjectMap_[object->getIdentity()] = object;
+    if (object->getObjectType() == common::ObjectType::PLAYER) {
+        if (player_ == nullptr) {
+            player_ = object;
+        } else {
+            // TODO: throw something here
+        }
+    }
 }
 
-std::vector<std::shared_ptr<AbstractObject>> Observer::getObjects(common::Coordinate coordinate) const {
+std::vector<std::shared_ptr<AbstractObject>> Observer::getObjectsAtCoordinate(common::Coordinate coordinate) const {
     std::vector<std::shared_ptr<AbstractObject>> answer;
     for (const auto& [_, object] : identityObjectMap_) {
         if (object->getCoordinate() == coordinate) {
@@ -38,17 +43,36 @@ std::vector<std::shared_ptr<AbstractObject>> Observer::getObjects(common::Coordi
     return answer;
 }
 
-std::shared_ptr<const object::Player> Observer::getPlayer() const {
+std::vector<std::shared_ptr<AbstractObject>> Observer::getAllObjects() const {
+    std::vector<std::shared_ptr<AbstractObject>> objects;
+    objects.reserve(identityObjectMap_.size());
     for (const auto& [_, object] : identityObjectMap_) {
-        if (object->getObjectType() == common::ObjectType::PLAYER) {
-            auto ptrToPlayer = std::dynamic_pointer_cast<Player>(object);
-            return ptrToPlayer;
-        }
+        objects.push_back(object);
     }
-    return nullptr;
+    return objects;
 }
 
 void Observer::deleteObject(Identity identity) {
     identityObjectMap_.erase(identity);
+}
+
+bool Observer::operator==(const Observer &rhs) const {
+    if (identityObjectMap_.size() != rhs.identityObjectMap_.size()) {
+        return false;
+    }
+    auto liter = identityObjectMap_.begin();
+    auto riter = rhs.identityObjectMap_.begin();
+    while (liter != identityObjectMap_.end()) {
+        if (liter->first != riter->first || *(liter->second) != *(riter->second)) {
+            return false;
+        }
+        ++liter;
+        ++riter;
+    }
+    return true;
+}
+
+bool Observer::operator!=(const Observer &rhs) const {
+    return !(rhs == *this);
 }
 }  // namespace world::state::object

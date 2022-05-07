@@ -6,7 +6,7 @@
 namespace world::state::object {
 class Floor : public AbstractObject {
   public:
-    explicit Floor(Identity&& identity) : AbstractObject(std::move(identity)){};
+    explicit Floor(const Identity& identity) : AbstractObject(identity){};
     common::ObjectType getObjectType() const override;
 
   private:

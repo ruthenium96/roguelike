@@ -7,11 +7,8 @@ namespace world::state::object {
 
 class Player : public AbstractObject {
   public:
-    explicit Player(Identity&& identity);
-    ;
+    explicit Player(const Identity& identity);
     common::ObjectType getObjectType() const override;
-
-  private:
 };
 
 }  // namespace world::state::object

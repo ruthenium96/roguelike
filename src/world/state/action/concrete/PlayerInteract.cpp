@@ -2,10 +2,9 @@
 #include "PickItem.h"
 
 namespace world::state::action {
-bool PlayerInteract::precondition(const object::Observer& objectObserver,
-                                  const std::set<std::shared_ptr<AbstractAction>>& set) {
+bool PlayerInteract::precondition(const object::Observer& objectObserver, const action::Observer& actionObserver) {
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
-    auto objects = objectObserver.getObjects(playerCoordinate);
+    auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
     if (findInteractableObject(objects) != std::nullopt) {
         return true;
     } else {
@@ -13,9 +12,9 @@ bool PlayerInteract::precondition(const object::Observer& objectObserver,
     }
 }
 
-void PlayerInteract::changeTarget(object::Observer& objectObserver, std::set<std::shared_ptr<AbstractAction>>& set) {
+void PlayerInteract::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
-    auto objects = objectObserver.getObjects(playerCoordinate);
+    auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
     auto interactableObject = findInteractableObject(objects).value();
     if (interactableObject->getObjectType() != common::ObjectType::ARTEFACT) {
         // do not support other ObjectTypes now
@@ -24,12 +23,12 @@ void PlayerInteract::changeTarget(object::Observer& objectObserver, std::set<std
 
     auto interactableObjectIdentity = interactableObject->getIdentity();
 
-    auto maybe_action = findInteraction(interactableObjectIdentity, set);
+    auto maybe_action = actionObserver.getActionByCorrespondingObjectIdentity(interactableObjectIdentity);
     if (!maybe_action.has_value()) {
         return;
     }
     auto action = maybe_action.value();
-    action->changeTarget(objectObserver, set);
+    action->changeTarget(objectObserver, actionObserver);
 }
 
 std::optional<std::shared_ptr<object::AbstractObject>> PlayerInteract::findInteractableObject(
@@ -37,17 +36,6 @@ std::optional<std::shared_ptr<object::AbstractObject>> PlayerInteract::findInter
     for (const auto& object : objects) {
         if (object->getProperty("interactable").has_value()) {
             return object;
-        }
-    }
-    return std::nullopt;
-}
-
-std::optional<std::shared_ptr<action::AbstractAction>> PlayerInteract::findInteraction(
-    Identity objectIdentity,
-    const std::set<std::shared_ptr<AbstractAction>>& set) {
-    for (auto& action : set) {
-        if (action->getCorrespondingObjectIdentity() == objectIdentity) {
-            return action;
         }
     }
     return std::nullopt;

@@ -4,27 +4,30 @@
 namespace world::state::action {
 
 PlayerMove::PlayerMove(int32_t delta_x, int32_t delta_y) : AbstractAction(std::nullopt) {
-    delta_x_ = delta_x;
-    delta_y_ = delta_y;
+    setProperty("dx", std::make_any<int32_t>(delta_x));
+    setProperty("dy", std::make_any<int32_t>(delta_y));
 }
 
-bool PlayerMove::precondition(const object::Observer& objectObserver,
-                              const std::set<std::shared_ptr<AbstractAction>>&) {
+bool PlayerMove::precondition(const object::Observer& objectObserver, const action::Observer&) {
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
-    common::Coordinate wantedCoordinate = {playerCoordinate.x + delta_x_, playerCoordinate.y + delta_y_};
-    auto objects = objectObserver.getObjects(wantedCoordinate);
+    auto dx = std::any_cast<int32_t>(getProperty("dx").value());
+    auto dy = std::any_cast<int32_t>(getProperty("dy").value());
+    common::Coordinate wantedCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
+    auto objects = objectObserver.getObjectsAtCoordinate(wantedCoordinate);
     for (const auto& object : objects) {
-        if (object->getObjectType() == common::ObjectType::WALL) {
+        if (object->getProperty("blocking") != std::nullopt) {
             return false;
         }
     }
     return true;
 }
 
-void PlayerMove::changeTarget(object::Observer& objectObserver, std::set<std::shared_ptr<AbstractAction>>&) {
+void PlayerMove::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
     auto player = objectObserver.getPlayer();
-    player->getCoordinate().x += delta_x_;
-    player->getCoordinate().y += delta_y_;
+    auto dx = std::any_cast<int32_t>(getProperty("dx").value());
+    auto dy = std::any_cast<int32_t>(getProperty("dy").value());
+    player->getCoordinate().x += dx;
+    player->getCoordinate().y += dy;
 }
 
 }  // namespace world::state::action

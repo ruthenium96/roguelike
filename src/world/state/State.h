@@ -16,16 +16,26 @@ class State {
     // Const and non-const getters of object::Observer
     const object::Observer& getObjectObserver() const;
     object::Observer& getObjectObserver();
+    // Const and non-const getters of action::Observer
+    const action::Observer& getActionObserver() const;
+    action::Observer& getActionObserver();
 
     // Add action to array of Actions
     void addAction(const std::shared_ptr<action::AbstractAction>&);
 
     // Apply Action to array of Actions and object::Observer
-    void applyAction(const std::shared_ptr<action::AbstractAction>&);
+    // Returns true if Action was applied
+    bool applyAction(const std::shared_ptr<action::AbstractAction>&);
 
-  private:
+    void applyEveryTurnInternalActions();
+
+    bool operator==(const State &rhs) const;
+
+    bool operator!=(const State &rhs) const;
+
+private:
     object::Observer objectObserver_;
-    std::set<std::shared_ptr<action::AbstractAction>> actions_;
+    action::Observer actionObserver_;
 };
 
 }  // namespace world::state

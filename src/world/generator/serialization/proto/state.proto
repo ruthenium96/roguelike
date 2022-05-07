@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "action.proto";
+import "object.proto";
+
+package ProtoSerializer;
+
+message State {
+  repeated Object objects = 1;
+  repeated Action actions = 2;
+}

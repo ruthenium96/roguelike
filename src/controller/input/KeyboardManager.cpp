@@ -1,10 +1,11 @@
 #include "KeyboardManager.h"
 #include <chrono>
 #include <iostream>
+#include <stdexcept>
 
 namespace {
 // this function takes a character from the console without confirmation
-#ifdef linux
+#ifdef __linux__
 
 #include "../../common/Command.h"
 #include <termios.h>
@@ -39,22 +40,36 @@ inline char read_char_with_no_confirmation() {
 }  // namespace
 
 namespace controller::input {
-common::ControllerCommand KeyboardManager::readCommand() {
+using common::ControllerCommand;
+
+ControllerCommand KeyboardManager::readCommand() {
     char symbol = std::tolower(read_char_with_no_confirmation());
     if (symbol == 'w') {
-        return common::ControllerCommand::MOVE_TOP;
+        return ControllerCommand::MOVE_TOP;
     } else if (symbol == 'd') {
-        return common::ControllerCommand::MOVE_RIGHT;
+        return ControllerCommand::MOVE_RIGHT;
     } else if (symbol == 's') {
-        return common::ControllerCommand::MOVE_BOTTOM;
+        return ControllerCommand::MOVE_BOTTOM;
     } else if (symbol == 'a') {
-        return common::ControllerCommand::MOVE_LEFT;
+        return ControllerCommand::MOVE_LEFT;
     } else if (symbol == 'q') {
-        return common::ControllerCommand::EXIT;
+        return ControllerCommand::EXIT;
     } else if (symbol == 'e') {
-        return common::ControllerCommand::INTERACT;
+        return ControllerCommand::INTERACT;
+
+    } else if (symbol == 'r') {
+        return ControllerCommand::UI_ACTIVATE_INVENTORY;
+    } else if (symbol == 'g') {
+        return ControllerCommand::UI_INVENTORY_DOWN;
+    } else if (symbol == 't') {
+        return ControllerCommand::UI_INVENTORY_UP;
+    } else if (symbol == 'f') {
+        return ControllerCommand::UI_INVENTORY_APPLY;
+
     } else {
-        return common::ControllerCommand::UNKNOWN;
+        return ControllerCommand::UNKNOWN;
     }
+
+    throw std::runtime_error("ControllerCommand was not generated");
 }
 }  // namespace controller::input
