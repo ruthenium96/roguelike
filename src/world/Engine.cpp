@@ -93,7 +93,7 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
         auto player = state_.getObjectObserver().getPlayer();
         playerMetrics.hp = std::any_cast<int32_t>(player->getProperty("hp").value());
         playerMetrics.lvl = std::any_cast<int32_t>(player->getProperty("lvl").value());
-        playerMetrics.exp = std::any_cast<int32_t>(player->getProperty("exp").value());
+        playerMetrics.xp = std::any_cast<int32_t>(player->getProperty("xp").value());
         worldUiTransfer.playerMetrics = playerMetrics;
     }
     return worldUiTransfer;

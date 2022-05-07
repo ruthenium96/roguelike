@@ -99,7 +99,7 @@ void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) {
 
     const auto player_lvl = std::to_string(player_stats.lvl);
     const auto player_hp = std::to_string(player_stats.hp);
-    const auto player_exp = std::to_string(player_stats.exp);
+    const auto player_exp = std::to_string(player_stats.xp);
 
     size_t curr_display_height = 3;
     stats_display.put_string("Lvl  : " + player_lvl, curr_display_height++, 2U);
