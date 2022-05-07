@@ -85,25 +85,25 @@ void Serializer::serialize(const world::state::State& state) {
         }
         // Object Identity:
         if (action_ptr->getCorrespondingObjectIdentity().has_value()) {
-            new_proto_action->set_objectidentity(action_ptr->getCorrespondingObjectIdentity().value().asNumber());
+            new_proto_action->mutable_objectidentity()->set_value(action_ptr->getCorrespondingObjectIdentity().value().asNumber());
         }
         // Item Identity:
         if (action_ptr->getCorrespondingItemIdentity().has_value()) {
-            new_proto_action->set_itemidentity(action_ptr->getCorrespondingItemIdentity().value().asNumber());
+            new_proto_action->mutable_itemidentity()->set_value(action_ptr->getCorrespondingItemIdentity().value().asNumber());
         }
         // properties:
         auto* proto_properties = new_proto_action->mutable_properties();
         for (const auto& [key, value] : action_ptr->getAllProperties()) {
             if (key == "dx") {
-                proto_properties->set_dx(std::any_cast<int32_t>(value));
+                proto_properties->mutable_dx()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "dy") {
-                proto_properties->set_dy(std::any_cast<int32_t>(value));
+                proto_properties->mutable_dy()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "dhp") {
-                proto_properties->set_dhp(std::any_cast<int32_t>(value));
+                proto_properties->mutable_dhp()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "duration") {
-                proto_properties->set_duration(std::any_cast<int32_t>(value));
+                proto_properties->mutable_duration()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "every_turn") {
-                proto_properties->set_every_turn(std::any_cast<bool>(value));
+                proto_properties->mutable_every_turn()->set_value(std::any_cast<bool>(value));
             } else {
                 throw std::invalid_argument("Unknown key: " + key);
             }
