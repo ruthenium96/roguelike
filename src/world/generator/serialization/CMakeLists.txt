@@ -32,5 +32,8 @@ execute_process(
         RESULT_VARIABLE _EXIT_CODE)
 
 add_library(serializer
-        serialization.cpp
-        serialization.h)
+        ProtobufEngine.cpp ProtobufEngine.h
+        Serializer.cpp Serializer.h
+        Deserializer.cpp Deserializer.h)
+
+target_link_libraries(serializer INTERFACE ${Protobuf_LIBRARIES})

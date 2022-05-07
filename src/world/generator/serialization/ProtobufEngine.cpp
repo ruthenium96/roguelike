@@ -1,4 +1,4 @@
-#include "serialization.h"
+#include "ProtobufEngine.h"
 #include "../../state/action/concrete/PickItem.h"
 #include "../../state/action/concrete/Poison.h"
 #include "../../state/item/concrete/Stick.h"
@@ -6,15 +6,15 @@
 #include "../../state/object/concrete/Artefact.h"
 #include "../../state/object/concrete/Floor.h"
 #include "../../state/object/concrete/Wall.h"
-#include <fstream>
 #include <memory>
 
-void Serializer::associate_item_types() {
+namespace world::generator::serialization {
+void ProtobufEngine::associate_item_types() {
     item_mapper_.associate_types(ProtoSerializer::Item::STICK, common::ItemType::STICK);
     item_mapper_.associate_types(ProtoSerializer::Item::RING, common::ItemType::RING);
 }
 
-void Serializer::associate_object_types() {
+void ProtobufEngine::associate_object_types() {
     object_mapper_.associate_types(ProtoSerializer::Object::PLAYER, common::ObjectType::PLAYER);
     object_mapper_.associate_types(ProtoSerializer::Object::ARTEFACT, common::ObjectType::ARTEFACT);
     object_mapper_.associate_types(ProtoSerializer::Object::FLOOR, common::ObjectType::FLOOR);
@@ -27,14 +27,14 @@ void Serializer::associate_object_types() {
     objectConstructor_[common::ObjectType::WALL] = [](world::state::Identity identity){return std::make_shared<world::state::object::Wall>(identity);};
 }
 
-Serializer::Serializer(const std::filesystem::path& path) : path_(path) {
+ProtobufEngine::ProtobufEngine() {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     associate_item_types();
     associate_object_types();
 }
 
-void Serializer::serialize(const world::state::State& state) {
+ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& state) const {
     ProtoSerializer::State proto_state;
 
     // Serialize all Objects...
@@ -111,20 +111,16 @@ void Serializer::serialize(const world::state::State& state) {
             } else if (key == "every_turn") {
                 proto_properties->mutable_every_turn()->set_value(std::any_cast<bool>(value));
             } else {
-                throw std::invalid_argument("Unknown key: " + key);
+//                throw std::invalid_argument("Unknown key: " + key);
             }
         }
         new_proto_action->set_allocated_properties(proto_properties);
     }
-    std::fstream serialize_stream(path_.string(), std::ios::out | std::ios::trunc | std::ios::binary);
-    proto_state.SerializeToOstream(&serialize_stream);
+    return proto_state;
 }
 
-world::state::State Serializer::deserialize() {
+world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& proto_state) const {
     world::state::State state;
-    std::fstream deserialize_stream(path_.string(), std::ios::in | std::ios::binary);
-    ProtoSerializer::State proto_state;
-    proto_state.ParseFromIstream(&deserialize_stream);
 
     // Objects and Items
     int objects_size = proto_state.objects_size();
@@ -135,7 +131,7 @@ world::state::State Serializer::deserialize() {
         // type and identity
         std::shared_ptr<world::state::object::AbstractObject> shared_object;
         auto objectIdentity = world::state::Identity(proto_object.selfidentity());
-        shared_object = objectConstructor_[game_object_type](objectIdentity);
+        shared_object = objectConstructor_.at(game_object_type)(objectIdentity);
         // coordinates
         shared_object->getCoordinate().x = proto_object.coords().x();
         shared_object->getCoordinate().y = proto_object.coords().y();
@@ -216,4 +212,5 @@ world::state::State Serializer::deserialize() {
         state.getActionObserver().addAction(shared_action);
     }
     return state;
+}
 }

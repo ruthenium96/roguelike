@@ -1,14 +1,13 @@
-#ifndef ARCH_ROGUELIKE_SERIALIZATION_H
-#define ARCH_ROGUELIKE_SERIALIZATION_H
+#ifndef ARCH_ROGUELIKE_PROTOBUFENGINE_H
+#define ARCH_ROGUELIKE_PROTOBUFENGINE_H
 
 #include "proto/state.pb.h"
 #include "../../state/State.h"
 #include "../../state/object/AbstractObject.h"
-#include <filesystem>
+#include <map>
 #include <unordered_map>
 #include <utility>
 
-// TODO: create world::generator::serialization namespace
 namespace {
 template <class ProtoType, class GameType>
 class ProtoToGameTypeMapper {
@@ -28,12 +27,12 @@ class ProtoToGameTypeMapper {
 };
 }  // namespace
 
-class Serializer {
+namespace world::generator::serialization {
+class ProtobufEngine {
   public:
-    explicit Serializer(const std::filesystem::path& path);
-
-    void serialize(const world::state::State& state);
-    world::state::State deserialize();
+    ProtobufEngine();
+    ProtoSerializer::State serialize(const world::state::State& state) const;
+    world::state::State deserialize(const ProtoSerializer::State& proto_state) const;
 
   private:
     void associate_item_types();
@@ -42,7 +41,6 @@ class Serializer {
     ProtoToGameTypeMapper<ProtoSerializer::Object::ObjectType, common::ObjectType> object_mapper_;
 
     std::map<common::ObjectType, std::function<std::shared_ptr<world::state::object::AbstractObject>(world::state::Identity)>> objectConstructor_;
-    std::filesystem::path path_;
 };
-
-#endif  // ARCH_ROGUELIKE_SERIALIZATION_H
+}
+#endif  // ARCH_ROGUELIKE_PROTOBUFENGINE_H

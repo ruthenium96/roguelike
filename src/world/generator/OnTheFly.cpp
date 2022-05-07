@@ -8,7 +8,6 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
 
     if (std::find(generated_coordinates_.begin(), generated_coordinates_.end(), coordinate) !=
         generated_coordinates_.end()) {
-        // TODO: is it good idea to return empty vector instead of optional<vector> or something else?
         return {};
     }
 

@@ -6,6 +6,6 @@ import "object.proto";
 package ProtoSerializer;
 
 message State {
-  repeated Object objects = 3;
-  repeated Action actions = 4;
+  repeated Object objects = 1;
+  repeated Action actions = 2;
 }

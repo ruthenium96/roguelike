@@ -89,7 +89,7 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
                 std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
             break;
         default:
-            throw std::runtime_error("Inknown item type was generated");
+            throw std::runtime_error("Unknown item type was generated");
     }
 
     // add Artefact actions
@@ -100,5 +100,9 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
     artefact.actions.push_back(actionOnInteraction);
 
     answer.push_back(artefact);
+}
+
+const serialization::Serializer &AbstractGenerator::getSaver() const {
+    return saver_;
 }
 }  // namespace world::generator
