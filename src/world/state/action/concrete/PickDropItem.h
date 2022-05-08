@@ -1,12 +1,12 @@
-#ifndef ARCH_ROGUELIKE_PICKITEM_H
-#define ARCH_ROGUELIKE_PICKITEM_H
+#ifndef ARCH_ROGUELIKE_PICKDROPITEM_H
+#define ARCH_ROGUELIKE_PICKDROPITEM_H
 
 #include "../AbstractAction.h"
 
 namespace world::state::action {
-class PickItem : public AbstractAction {
+class PickDropItem : public AbstractAction {
   public:
-    explicit PickItem(const std::optional<Identity>& selfIdentity);
+    explicit PickDropItem(const std::optional<Identity>& selfIdentity);
 
     bool precondition(const object::Observer&, const action::Observer&) override;
 
@@ -14,4 +14,4 @@ class PickItem : public AbstractAction {
 };
 }  // namespace world::state::action
 
-#endif  // ARCH_ROGUELIKE_PICKITEM_H
+#endif  // ARCH_ROGUELIKE_PICKDROPITEM_H

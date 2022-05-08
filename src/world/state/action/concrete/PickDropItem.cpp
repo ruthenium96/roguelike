@@ -1,13 +1,14 @@
-#include "PickItem.h"
+#include "PickDropItem.h"
 namespace world::state::action {
-PickItem::PickItem(const std::optional<Identity>& selfIdentity) : AbstractAction(selfIdentity) {}
+PickDropItem::PickDropItem(const std::optional<Identity>& selfIdentity) : AbstractAction(selfIdentity) {}
 
-bool PickItem::precondition(const object::Observer& objectObbserver, const action::Observer& actionObserver) {
+bool PickDropItem::precondition(const object::Observer& objectObbserver, const action::Observer& actionObserver) {
     // TODO: it is true only if it was called from PlayerInteract
     return true;
 }
 
-void PickItem::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
+void PickDropItem::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
+    // Pick branch:
     // first, move Item to player
     auto artefactIdentity = getCorrespondingObjectIdentity();
     auto artefact = objectObserver.getObject(artefactIdentity.value()).value();
@@ -16,7 +17,9 @@ void PickItem::changeTarget(object::Observer& objectObserver, action::Observer& 
     objectObserver.getPlayer()->getItems().push_back(std::move(item));
     // secondly, delete Artefact from ObjectObserver
     objectObserver.deleteObject(artefactIdentity.value());
-    // thirdly, delete PickItem itself
+    // thirdly, delete PickDropItem itself
     deleteItselfFromActionObserver(actionObserver);
+
+    // TODO: drop branch
 }
 }  // namespace world::state::action

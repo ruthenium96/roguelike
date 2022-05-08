@@ -12,6 +12,6 @@ add_library(state
         item/AbstractItem.cpp item/AbstractItem.h
         item/concrete/Stick.cpp item/concrete/Stick.h
         action/concrete/PlayerInteract.cpp action/concrete/PlayerInteract.h
-        action/concrete/PickItem.cpp action/concrete/PickItem.h
+        action/concrete/PickDropItem.cpp action/concrete/PickDropItem.h
         action/Observer.cpp action/Observer.h
         action/concrete/Poison.cpp action/concrete/Poison.h)

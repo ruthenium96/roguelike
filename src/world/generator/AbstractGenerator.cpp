@@ -1,7 +1,7 @@
 #include "AbstractGenerator.h"
 #include "../../common/ItemType.h"
 #include "../state/action/concrete/Poison.h"
-#include "../state/action/concrete/PickItem.h"
+#include "../state/action/concrete/PickDropItem.h"
 #include "../state/item/concrete/Ring.h"
 #include "../state/item/concrete/Stick.h"
 #include "../state/object/concrete/Artefact.h"
@@ -94,7 +94,7 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
 
     // add Artefact actions
     auto actionIdentity = state::Identity(generated_identities_++);
-    auto actionOnInteraction = std::make_shared<state::action::PickItem>(actionIdentity);
+    auto actionOnInteraction = std::make_shared<state::action::PickDropItem>(actionIdentity);
     actionOnInteraction->setCorrespondingItemIdentity(itemIdentity);
     actionOnInteraction->setCorrespondingObjectIdentity(objectIdentity);
     artefact.actions.push_back(actionOnInteraction);

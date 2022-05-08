@@ -1,5 +1,5 @@
 #include "ProtobufEngine.h"
-#include "../../state/action/concrete/PickItem.h"
+#include "../../state/action/concrete/PickDropItem.h"
 #include "../../state/action/concrete/Poison.h"
 #include "../../state/item/concrete/Stick.h"
 #include "../../state/item/concrete/Ring.h"
@@ -173,7 +173,7 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
         std::shared_ptr<world::state::action::AbstractAction> shared_action;
         auto actionIdentity = world::state::Identity(proto_action.selfidentity());
         if (action_type == ProtoSerializer::Action_ActionType_PICKITEM) {
-            shared_action = std::make_shared<world::state::action::PickItem>(actionIdentity);
+            shared_action = std::make_shared<world::state::action::PickDropItem>(actionIdentity);
         } else if (action_type == ProtoSerializer::Action_ActionType_POISON) {
             shared_action = std::make_shared<world::state::action::Poison>(actionIdentity);
         } else {
