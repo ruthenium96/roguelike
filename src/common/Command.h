@@ -1,26 +1,52 @@
 #pragma once
 
+#include <variant>
+#include "ItemType.h"
+
 // This class helps modules communicate each other.
 namespace common {
 
-enum class ControllerCommand {
+enum class Direction {
+    TOP,
+    LEFT,
+    RIGHT,
+    BOTTOM,
+};
+
+struct Move {
+    Direction direction;
+};
+
+struct UiMoveInventory {
+    Direction direction;
+};
+
+// TODO: rename this struct to something like "WearItem"
+struct ApplyItem {
+    ItemType type;
+};
+
+struct DropItem {
+    ItemType type;
+};
+
+enum class NonparameterizedVariant {
     UNKNOWN,
     IGNORE,
-    MOVE_TOP,
-    MOVE_LEFT,
-    MOVE_RIGHT,
-    MOVE_BOTTOM,
     INTERACT,
+    // can we use it as internal Controller State?
     UI_ACTIVATE_INVENTORY,
-    UI_INVENTORY_DOWN,
-    UI_INVENTORY_UP,
     UI_INVENTORY_APPLY,
     UI_INVENTORY_DROP,
-    APPLY_RING,
-    APPLY_STICK,
-    DROP_RING,
-    DROP_STICK,
     EXIT
 };
+
+using ControllerCommand = std::variant<
+        NonparameterizedVariant,
+        Move,
+        UiMoveInventory,
+        ApplyItem,
+        DropItem
+        >;
 
 }  // namespace common

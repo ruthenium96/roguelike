@@ -18,47 +18,68 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
 
     std::shared_ptr<state::action::AbstractAction> externalAction;
     // TODO: refactor it
-    if (command == ControllerCommand::INTERACT) {
-        externalAction = std::make_shared<state::action::PlayerInteract>();
-    } else {
+
+    if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
+        auto variant = std::get<common::NonparameterizedVariant>(command);
+        switch (variant) {
+            case common::NonparameterizedVariant::INTERACT: {
+                externalAction = std::make_shared<state::action::PlayerInteract>();
+                break;
+            }
+            case common::NonparameterizedVariant::IGNORE: {
+                return;
+                break;
+            }
+                // TODO: implement something
+            case common::NonparameterizedVariant::UNKNOWN:
+                break;
+            case common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY:
+                break;
+            case common::NonparameterizedVariant::UI_INVENTORY_APPLY:
+                break;
+            case common::NonparameterizedVariant::UI_INVENTORY_DROP:
+                break;
+            case common::NonparameterizedVariant::EXIT:
+                break;
+        }
+    } else if (std::holds_alternative<common::Move>(command)) {
+        auto variant = std::get<common::Move>(command);
         int32_t delta_x;
         int32_t delta_y;
-        switch (command) {
-            case ControllerCommand::IGNORE:
-                break;
-            case ControllerCommand::MOVE_TOP:
+        switch (variant.direction) {
+            case common::Direction::TOP:
                 delta_x = 0;
                 delta_y = -1;
                 break;
-            case ControllerCommand::MOVE_LEFT:
+            case common::Direction::LEFT:
                 delta_x = -1;
                 delta_y = 0;
                 break;
-            case ControllerCommand::MOVE_BOTTOM:
+            case common::Direction::BOTTOM:
                 delta_x = 0;
                 delta_y = 1;
                 break;
-            case ControllerCommand::MOVE_RIGHT:
+            case common::Direction::RIGHT:
                 delta_x = 1;
                 delta_y = 0;
-                break;
-            case ControllerCommand::APPLY_RING:
-                // add apply
-                break;
-            case ControllerCommand::APPLY_STICK:
-                // add apply
-                break;
-            case ControllerCommand::DROP_RING:
-                // add drop
-                break;
-            case ControllerCommand::DROP_STICK:
-                // add drop
                 break;
             default:
                 // throw is better than ignore
                 throw std::runtime_error("unknown command sent to engine");
         }
         externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
+
+    } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
+        // TODO: do nothing
+    } else if (std::holds_alternative<common::ApplyItem>(command)) {
+        auto variant = std::get<common::ApplyItem>(command);
+        // TODO: Implement activation
+    } else if (std::holds_alternative<common::DropItem>(command)) {
+        auto variant = std::get<common::DropItem>(command);
+        // TODO: Implement dropping
+    } else {
+        // throw is better than ignore
+        throw std::runtime_error("unknown command sent to engine");
     }
 
     bool isExternalActionApplied = state_.applyAction(externalAction);

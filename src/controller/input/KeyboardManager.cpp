@@ -44,32 +44,38 @@ using common::ControllerCommand;
 
 ControllerCommand KeyboardManager::readCommand() {
     char symbol = std::tolower(read_char_with_no_confirmation());
-    if (symbol == 'w') {
-        return ControllerCommand::MOVE_TOP;
-    } else if (symbol == 'd') {
-        return ControllerCommand::MOVE_RIGHT;
-    } else if (symbol == 's') {
-        return ControllerCommand::MOVE_BOTTOM;
-    } else if (symbol == 'a') {
-        return ControllerCommand::MOVE_LEFT;
+    if (symbol == 'w' || symbol == 'd' || symbol == 's' || symbol == 'a') {
+        common::Direction direction;
+        if (symbol == 'w') {
+            direction = common::Direction::TOP;
+        } else if (symbol == 'd') {
+            direction = common::Direction::RIGHT;
+        } else if (symbol == 's') {
+            direction = common::Direction::BOTTOM;
+        } else if (symbol == 'a') {
+            direction = common::Direction::LEFT;
+        }
+        return common::Move{direction};
     } else if (symbol == 'q') {
-        return ControllerCommand::EXIT;
+        return common::NonparameterizedVariant::EXIT;
     } else if (symbol == 'e') {
-        return ControllerCommand::INTERACT;
-
+        return common::NonparameterizedVariant::INTERACT;
     } else if (symbol == 'r') {
-        return ControllerCommand::UI_ACTIVATE_INVENTORY;
-    } else if (symbol == 'g') {
-        return ControllerCommand::UI_INVENTORY_DOWN;
-    } else if (symbol == 't') {
-        return ControllerCommand::UI_INVENTORY_UP;
+        return common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY;
+    } else if (symbol == 'g' || symbol == 't') {
+        common::Direction direction;
+        if (symbol == 'g') {
+            direction = common::Direction::BOTTOM;
+        } else if (symbol == 't') {
+            direction = common::Direction::TOP;
+        }
+        return common::UiMoveInventory{direction};
     } else if (symbol == 'f') {
-        return ControllerCommand::UI_INVENTORY_APPLY;
+        return common::NonparameterizedVariant::UI_INVENTORY_APPLY;
     } else if (symbol == 'v') {
-        return ControllerCommand::UI_INVENTORY_DROP;
-
+        return common::NonparameterizedVariant::UI_INVENTORY_DROP;
     } else {
-        return ControllerCommand::UNKNOWN;
+        return common::NonparameterizedVariant::UNKNOWN;
     }
 
     throw std::runtime_error("ControllerCommand was not generated");

@@ -8,15 +8,23 @@ using common::ControllerCommand;
 namespace {
 
 bool is_ui_command(const ControllerCommand& command) {
-    switch (command) {
-        case ControllerCommand::UI_ACTIVATE_INVENTORY:
-        case ControllerCommand::UI_INVENTORY_DOWN:
-        case ControllerCommand::UI_INVENTORY_UP:
-        case ControllerCommand::UI_INVENTORY_APPLY:
-            return true;
-            break;
+    if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
+        auto variant = std::get<common::NonparameterizedVariant>(command);
+        switch (variant) {
+            case common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY:
+            case common::NonparameterizedVariant::UI_INVENTORY_APPLY:
+            case common::NonparameterizedVariant::UI_INVENTORY_DROP:
+                return true;
+                break;
+            default:
+                return false;
+                break;
+        }
+    } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
+        return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 }  // namespace
@@ -30,8 +38,14 @@ void Controller::start() {
         ui_.draw(world_state);
 
         command = manager_.readCommand();
-        if (command == ControllerCommand::UNKNOWN || command == ControllerCommand::EXIT) {
-            continue;
+        if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
+            auto variant = std::get<common::NonparameterizedVariant>(command);
+            if (variant == common::NonparameterizedVariant::UNKNOWN) {
+                continue;
+            }
+            if (variant == common::NonparameterizedVariant::EXIT) {
+                break;
+            }
         }
 
         if (is_ui_command(command)) {
@@ -44,7 +58,7 @@ void Controller::start() {
 
         engine_.applyCommand(command);
 
-    } while (command != ControllerCommand::EXIT);
+    } while (true);
 
     // us_.draw_final();
 }
