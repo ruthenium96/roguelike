@@ -63,4 +63,14 @@ bool Observer::operator!=(const Observer &rhs) const {
 const std::set<std::shared_ptr<AbstractAction>> &Observer::getAllActions() const {
     return allActions_;
 }
+
+std::optional<std::shared_ptr<action::AbstractAction>>
+Observer::getActionByCorrespondingItemIdentity(Identity objectIdentity) const {
+    for (auto& action : getAllActions()) {
+        if (action->getCorrespondingItemIdentity() == objectIdentity) {
+            return action;
+        }
+    }
+    return std::nullopt;
+}
 }  // namespace world::state::action
