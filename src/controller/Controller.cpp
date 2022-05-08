@@ -35,13 +35,14 @@ void Controller::start() {
         }
 
         if (is_ui_command(command)) {
-            ui_.apply_command(command, world_state);
+            command = ui_.apply_command(command, world_state);
             ui_.draw(world_state);
         } else {
             // move outside else block to process command returned from ui_
             ui_.deactivate_state();
-            engine_.applyCommand(command);
         }
+
+        engine_.applyCommand(command);
 
     } while (command != ControllerCommand::EXIT);
 

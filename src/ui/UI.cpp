@@ -14,7 +14,7 @@ namespace ui {
 
 namespace {
 
-// TODO: replace this crutchy function
+// TODO: replace this crutchy functions
 size_t get_inventory_size(const common::Inventory& inventory) {
     std::unordered_map<common::ItemType, size_t> items;
     for (const auto& item : inventory) {
@@ -22,6 +22,17 @@ size_t get_inventory_size(const common::Inventory& inventory) {
     }
 
     return items.size();
+}
+
+common::ItemType get_inventory_item_type_by_index(const common::Inventory& inventory, size_t index) {
+    std::unordered_map<common::ItemType, size_t> items;
+    for (const auto& item : inventory) {
+        items[item.itemType] += 1;
+    }
+
+    auto it = items.begin();
+    std::advance(it, index);
+    return it->first;
 }
 
 }  // namespace
@@ -34,7 +45,8 @@ UI::UI(const std::string& style) {
     }
 }
 
-void UI::apply_command(const common::ControllerCommand& command, const common::WorldUITransfer& world_state) {
+common::ControllerCommand UI::apply_command(const common::ControllerCommand& command,
+                                            const common::WorldUITransfer& world_state) {
     using common::ControllerCommand;
 
     switch (command) {
@@ -54,11 +66,39 @@ void UI::apply_command(const common::ControllerCommand& command, const common::W
                 --state_.inventory_pos;
             }
             break;
-        case ControllerCommand::UI_INVENTORY_APPLY:
+        case ControllerCommand::UI_INVENTORY_APPLY: {
+            auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
+            switch (item_type) {
+                case common::ItemType::RING:
+                    return ControllerCommand::APPLY_RING;
+                    break;
+                case common::ItemType::STICK:
+                    return ControllerCommand::APPLY_STICK;
+                    break;
+                default:
+                    throw std::runtime_error("Unknown item type to apply was received in UI");
+            }
             break;
+        }
+        case ControllerCommand::UI_INVENTORY_DROP: {
+            auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
+            switch (item_type) {
+                case common::ItemType::RING:
+                    return ControllerCommand::DROP_RING;
+                    break;
+                case common::ItemType::STICK:
+                    return ControllerCommand::DROP_STICK;
+                    break;
+                default:
+                    throw std::runtime_error("Unknown item type to drop was received in UI");
+            }
+            break;
+        }
         default:
             throw std::runtime_error("Unknown command sent to UI");
     }
+
+    return ControllerCommand::IGNORE;
 }
 
 void UI::deactivate_state() {
