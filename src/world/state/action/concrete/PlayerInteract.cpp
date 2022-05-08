@@ -1,15 +1,10 @@
 #include "PlayerInteract.h"
-#include "PickItem.h"
 
 namespace world::state::action {
 bool PlayerInteract::precondition(const object::Observer& objectObserver, const action::Observer& actionObserver) {
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
-    if (findInteractableObject(objects) != std::nullopt) {
-        return true;
-    } else {
-        return false;
-    }
+    return findInteractableObject(objects) != std::nullopt;
 }
 
 void PlayerInteract::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
