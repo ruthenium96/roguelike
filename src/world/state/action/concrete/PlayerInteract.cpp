@@ -18,7 +18,7 @@ void PlayerInteract::changeTarget(object::Observer& objectObserver, action::Obse
 
     auto interactableObjectIdentity = interactableObject->getIdentity();
 
-    // We know Artefact Identity, but do not know Identity
+    // We know Artefact Identity, but do not know Item Identity
     // thus we have to find item through Artefact
     auto maybe_action = actionObserver.getActionByCorrespondingObjectIdentity(interactableObjectIdentity);
     if (!maybe_action.has_value()) {
