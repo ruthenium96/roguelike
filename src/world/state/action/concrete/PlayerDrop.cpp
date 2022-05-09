@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cassert>
 #include "PlayerDrop.h"
 
 namespace world::state::action {
@@ -7,7 +9,13 @@ PlayerDrop::PlayerDrop(common::ItemType itemType) : AbstractAction(std::nullopt)
 }
 
 bool PlayerDrop::precondition(const object::Observer &objectObserver, const action::Observer &actionObserver) {
-    // TODO: also _assert_ that player have Item of ItemType
+    auto requiredItemType = std::any_cast<common::ItemType>(getProperty("itemToDrop").value());
+    // check if player actually have Item with required ItemType
+    assert(std::any_of(objectObserver.getPlayer()->getItems().begin(),
+                       objectObserver.getPlayer()->getItems().end(),
+                       [requiredItemType](const auto& item){return item->getItemType() == requiredItemType;})
+    );
+
     // Cannot drop Item on the Coordinate with interactable object (for example, Artefact)
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
