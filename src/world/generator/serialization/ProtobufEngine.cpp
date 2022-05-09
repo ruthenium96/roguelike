@@ -107,6 +107,8 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
                 proto_properties->mutable_duration()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "every_turn") {
                 proto_properties->mutable_every_turn()->set_value(std::any_cast<bool>(value));
+            } else if (key == "itemToDrop") {
+                proto_properties->mutable_item_to_drop()->set_value(std::any_cast<state::Identity>(value).asNumber());
             } else {
                 throw std::invalid_argument("Unknown key: " + key);
             }
@@ -204,6 +206,10 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
         }
         if (proto_action.properties().has_every_turn()) {
             shared_action->setProperty("every_turn", proto_action.properties().every_turn().value());
+        }
+        if (proto_action.properties().has_item_to_drop()) {
+            auto identityToDrop = state::Identity(proto_action.properties().item_to_drop().value());
+            shared_action->setProperty("itemToDrop", identityToDrop);
         }
         state.getActionObserver().addAction(shared_action);
     }
