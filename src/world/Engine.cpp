@@ -72,6 +72,22 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
         worldUiTransfer.playerMetrics = playerMetrics;
     }
     {
+        common::PlayerEquipment playerEquipment;
+        auto player = state_.getObjectObserver().getPlayer();
+        if (player->getProperty("armor").has_value()) {
+            auto armorItemType = std::any_cast<common::ItemType>(player->getProperty("armor").value());
+            playerEquipment.armor = armorItemType;
+        }
+        if (player->getProperty("leftHand").has_value()) {
+            auto leftHandItemType = std::any_cast<common::ItemType>(player->getProperty("leftHand").value());
+            playerEquipment.leftHand = leftHandItemType;
+        }
+        if (player->getProperty("rightHand").has_value()) {
+            auto rightHandItemType = std::any_cast<common::ItemType>(player->getProperty("rightHand").value());
+            playerEquipment.rightHand = rightHandItemType;
+        }
+    }
+    {
         worldUiTransfer.message = errorMessageForUi;
         errorMessageForUi = std::nullopt;
     }
