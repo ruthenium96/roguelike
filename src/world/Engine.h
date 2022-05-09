@@ -26,6 +26,8 @@ class Engine {
 
     state::State state_;
     std::unique_ptr<generator::AbstractGenerator> generator_;
+    mutable std::optional<std::string> errorMessageForUi;
+    void generateErrorMessageForUI(const common::ControllerCommand&);
 };
 
 }  // namespace world

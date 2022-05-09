@@ -26,7 +26,7 @@ void Engine::applyCommand(const common::ControllerCommand& command) {
     if (isExternalActionApplied) {
         state_.applyEveryTurnInternalActions();
     } else {
-        // TODO: return description string if an external action has false precondition
+        generateErrorMessageForUI(command);
     }
 
     generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
@@ -70,6 +70,10 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
         playerMetrics.lvl = std::any_cast<int32_t>(player->getProperty("lvl").value());
         playerMetrics.xp = std::any_cast<int32_t>(player->getProperty("xp").value());
         worldUiTransfer.playerMetrics = playerMetrics;
+    }
+    {
+        worldUiTransfer.message = errorMessageForUi;
+        errorMessageForUi = std::nullopt;
     }
     return worldUiTransfer;
 }
@@ -152,6 +156,38 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
     }
 
     return externalAction;
+}
+
+void Engine::generateErrorMessageForUI(const common::ControllerCommand& command) {
+    if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
+        auto variant = std::get<common::NonparameterizedVariant>(command);
+        switch (variant) {
+            case common::NonparameterizedVariant::INTERACT: {
+                errorMessageForUi = "Nothing to interact with";
+                break;
+            }
+                // TODO: implement something
+            case common::NonparameterizedVariant::IGNORE:
+            case common::NonparameterizedVariant::UNKNOWN:
+            case common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY:
+            case common::NonparameterizedVariant::UI_INVENTORY_APPLY:
+            case common::NonparameterizedVariant::UI_INVENTORY_DROP:
+            case common::NonparameterizedVariant::EXIT: {
+                break;
+            }
+        }
+    } else if (std::holds_alternative<common::Move>(command)) {
+        errorMessageForUi = "Can not move here";
+    } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
+        // TODO: do nothing
+    } else if (std::holds_alternative<common::ApplyItem>(command)) {
+        // TODO: write something
+    } else if (std::holds_alternative<common::DropItem>(command)) {
+        errorMessageForUi = "Can not drop here";
+    } else {
+        // throw is better than ignore
+        throw std::runtime_error("unknown command sent to message generator");
+    }
 }
 
 }  // namespace world
