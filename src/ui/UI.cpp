@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <optional>
 
 namespace ui {
 
@@ -24,7 +25,7 @@ size_t get_inventory_size(const common::Inventory& inventory) {
     return items.size();
 }
 
-common::ItemType get_inventory_item_type_by_index(const common::Inventory& inventory, size_t index) {
+std::optional<common::ItemType> get_inventory_item_type_by_index(const common::Inventory& inventory, size_t index) {
     std::unordered_map<common::ItemType, size_t> items;
     for (const auto& item : inventory) {
         items[item.itemType] += 1;
@@ -32,7 +33,11 @@ common::ItemType get_inventory_item_type_by_index(const common::Inventory& inven
 
     auto it = items.begin();
     std::advance(it, index);
-    return it->first;
+    if (it != items.end()) {
+        return it->first;
+    } else {
+        return std::nullopt;
+    }
 }
 
 }  // namespace
@@ -59,25 +64,33 @@ common::ControllerCommand UI::apply_command(const common::ControllerCommand& com
                 break;
             case common::NonparameterizedVariant::UI_INVENTORY_APPLY: {
                 auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
-                common::ApplyItem applyItem = {item_type};
-                return applyItem;
+                if (item_type.has_value()) {
+                    common::ApplyItem applyItem = {item_type.value()};
+                    return applyItem;
+                } else {
+                    // TODO: print something?
+                    return common::NonparameterizedVariant::IGNORE;
+                }
                 break;
             }
             case common::NonparameterizedVariant::UI_INVENTORY_DROP: {
                 auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
-                common::DropItem dropItem = {item_type};
-                return dropItem;
+                if (item_type.has_value()) {
+                    common::DropItem dropItem = {item_type.value()};
+                    return dropItem;
+                } else {
+                    // TODO: print something?
+                    return common::NonparameterizedVariant::IGNORE;
+                }
                 break;
             }
                 // TODO: implement it
             case common::NonparameterizedVariant::UNKNOWN:
-                break;
             case common::NonparameterizedVariant::IGNORE:
-                break;
             case common::NonparameterizedVariant::INTERACT:
+            case common::NonparameterizedVariant::EXIT: {
                 break;
-            case common::NonparameterizedVariant::EXIT:
-                break;
+            }
         }
     } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
         auto variant = std::get<common::UiMoveInventory>(command);
