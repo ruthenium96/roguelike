@@ -2,8 +2,9 @@
 
 #include "../../../src/world/generator/AbstractGenerator.h"
 #include "../../../src/world/state/State.h"
-#include "../../../src/world/state/action/concrete/PlayerMove.h"
+#include "../../../src/world/state/action/concrete/PlayerDrop.h"
 #include "../../../src/world/state/action/concrete/PlayerInteract.h"
+#include "../../../src/world/state/action/concrete/PlayerMove.h"
 
 namespace world::generator {
 class GeneratorForTests : public AbstractGenerator {
@@ -121,7 +122,7 @@ TEST(state_tests, cannotWalkIntoWall) {
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 }
 
-TEST(state_tests, interactWithArtefact) {
+TEST(state_tests, interactWithArtefactAndDropItem) {
     world::state::State state;
     world::generator::GeneratorForTests generator;
 
@@ -138,15 +139,23 @@ TEST(state_tests, interactWithArtefact) {
         }
     }
 
+    for (int _ = 0; _ < 10; ++_) {
+        ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 3);
+        ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
+
+        auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+        ASSERT_EQ(state.applyAction(interactAction), true);
+
+        ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
+        ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 1);
+
+        auto itemType = state.getObjectObserver().getPlayer()->getItems()[0]->getItemType();
+        auto dropAction = std::make_shared<world::state::action::PlayerDrop>(itemType);
+        ASSERT_EQ(state.applyAction(dropAction), true);
+    }
+
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 3);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
-    // TODO: find Action corresponding to Artefact/Item
-
-    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
-    ASSERT_EQ(state.applyAction(interactAction), true);
-
-    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
-    ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 1);
 }
 
 TEST(state_tests, interactWithNothing) {
