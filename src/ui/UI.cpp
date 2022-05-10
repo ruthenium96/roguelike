@@ -79,7 +79,7 @@ common::ControllerCommand UI::apply_command(const common::ControllerCommand& com
                     common::DropItem dropItem = {item_type.value()};
                     return dropItem;
                 } else {
-                    // TODO: print something?
+                    // TODO: print something? pushMessageOnDisplay?
                     return common::NonparameterizedVariant::IGNORE;
                 }
                 break;
@@ -137,6 +137,7 @@ void UI::draw(const common::WorldUITransfer& world_state) {
     pushStatsOnDisplay(world_state.playerMetrics);
     pushMapOnDisplay(world_state.map);
     pushInventoryOnDisplay(world_state.inventory);
+    pushMessageOnDisplay(world_state.message);
 
     display_.draw();
 }
@@ -260,6 +261,24 @@ void UI::pushInventoryOnDisplay(const common::Inventory& inventory) {
     const size_t game_board_inventory_height_pos = 17U;
     const size_t game_board_inventory_width_pos = 35U;
     display_.add_display_data(inventory_display, game_board_inventory_height_pos, game_board_inventory_width_pos);
+}
+
+void UI::pushMessageOnDisplay(const std::optional<std::string>& mbMessage) {
+    if (!mbMessage.has_value()) {
+        return;
+    }
+    const auto& message = mbMessage.value();
+    const size_t message_display_height = 1U;
+    const size_t message_display_width = message.size();
+    CharDisplay message_display(message_display_height, message_display_width);
+
+    message_display.put_string(message, 0U, 0U);
+
+    const size_t game_board_hello_height_pos = 27U;
+    const size_t game_board_hello_width_pos = 7U;
+    display_.add_display_data(message_display, game_board_hello_height_pos, game_board_hello_width_pos);
+
+
 }
 
 }  // namespace ui

@@ -179,7 +179,7 @@ void Engine::generateErrorMessageForUI(const common::ControllerCommand& command)
         auto variant = std::get<common::NonparameterizedVariant>(command);
         switch (variant) {
             case common::NonparameterizedVariant::INTERACT: {
-                errorMessageForUi = "Nothing to interact with";
+                errorMessageForUi = "Nothing to interact";
                 break;
             }
                 // TODO: implement something
@@ -193,13 +193,13 @@ void Engine::generateErrorMessageForUI(const common::ControllerCommand& command)
             }
         }
     } else if (std::holds_alternative<common::Move>(command)) {
-        errorMessageForUi = "Can not move here";
+        errorMessageForUi = "Cannot move here";
     } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
         // TODO: do nothing
     } else if (std::holds_alternative<common::ApplyItem>(command)) {
         // TODO: write something
     } else if (std::holds_alternative<common::DropItem>(command)) {
-        errorMessageForUi = "Can not drop here";
+        errorMessageForUi = "Cannot drop here";
     } else {
         // throw is better than ignore
         throw std::runtime_error("unknown command sent to message generator");

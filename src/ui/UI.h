@@ -42,6 +42,9 @@ class UI {
     // pushes player inventory on display
     void pushInventoryOnDisplay(const common::Inventory& inventory);
 
+    // pushes message on display
+    void pushMessageOnDisplay(const std::optional<std::string>& mbMessage);
+
   private:
     std::unique_ptr<IStyle> style_;
 
