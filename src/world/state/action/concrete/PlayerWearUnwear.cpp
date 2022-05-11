@@ -23,11 +23,13 @@ bool PlayerWearUnwear::precondition(const object::Observer &objectObserver, cons
 
     auto player = objectObserver.getPlayer();
     auto str_position = std::any_cast<std::string>(getProperty("position").value());
+    auto itemType = std::any_cast<common::ItemType>(getProperty("itemToWear").value());
 
-    if (player->getProperty(str_position).has_value()) {  // unwear case
-        return true;
+    if (player->getProperty(str_position).has_value()) { // unwear case
+        // Unwear, if existed type equals wanted type
+        auto existedItemType = std::any_cast<common::ItemType>(player->getProperty(str_position).value());
+        return existedItemType == itemType;
     } else { // wear case
-        auto itemType = std::any_cast<common::ItemType>(getProperty("itemToWear").value());
         return objectObserver.countHowManyTimesItemIsWearedByPlayer(itemType) < objectObserver.howManyItemsOfThisTypeHoldsPlayer(itemType);
     }
 }
