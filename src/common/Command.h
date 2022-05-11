@@ -30,21 +30,52 @@ struct DropItem {
     ItemType type;
 };
 
-enum class NonparameterizedVariant {
-    UNKNOWN,
-    IGNORE,
-    INTERACT,
-    // can we use it as internal Controller State?
-    UI_ACTIVATE_INVENTORY,
-    UI_INVENTORY_APPLY,
-    UI_INVENTORY_DROP,
-    EXIT
+struct Unknown {
+  private:
+    bool dummyField_ = false;
+};
+
+struct Ignore {
+private:
+    bool dummyField_ = false;
+};
+
+struct Interact {
+private:
+    bool dummyField_ = false;
+};
+
+struct ChangeRegime {
+private:
+    bool dummyField_ = false;
+};
+
+struct UIInventoryApply {
+private:
+    bool dummyField_ = false;
+};
+
+struct UIInventoryDrop {
+private:
+    bool dummyField_ = false;
+};
+
+struct Exit {
+private:
+    bool dummyField_ = false;
 };
 
 using ControllerCommand = std::variant<
-        NonparameterizedVariant,
+        // Internal Controller Commands:
+        Unknown,
+        ChangeRegime,
+        Exit,
+        Ignore,
         Move,
+        Interact,
         UiMoveInventory,
+        UIInventoryApply,
+        UIInventoryDrop,
         ApplyItem,
         DropItem
         >;
