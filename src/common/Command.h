@@ -42,17 +42,12 @@ private:
     bool dummyField_ = false;
 };
 
-struct World_Interact {
+struct Interact {
 private:
     bool dummyField_ = false;
 };
 
 struct Controller_ChangeRegime {
-private:
-    bool dummyField_ = false;
-};
-
-struct UI_ApplyItem {
 private:
     bool dummyField_ = false;
 };
@@ -75,13 +70,12 @@ using ControllerCommand = std::variant<
         // UI and World Commands:
         Ignore,
         Move,
+        Interact,
         // UI Commands:
-        UI_ApplyItem,
         UI_DropItem,
         // World Commands:
         World_ApplyItem,
-        World_DropItem,
-        World_Interact
+        World_DropItem
         >;
 
 }  // namespace common

@@ -29,6 +29,10 @@ class Observer {
     //
     void deleteObject(Identity);
 
+
+    size_t howManyItemsOfThisTypeHoldsPlayer(common::ItemType type) const;
+    size_t countHowManyTimesItemIsWearedByPlayer(common::ItemType type) const;
+
     bool operator==(const Observer &rhs) const;
     bool operator!=(const Observer &rhs) const;
 

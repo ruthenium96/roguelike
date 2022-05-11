@@ -30,6 +30,7 @@ class AbstractObject {
     const std::vector<std::unique_ptr<item::AbstractItem>>& getItems() const { return items_; }
     std::optional<std::any> getProperty(const std::string& property_name) const;
     void setProperty(const std::string& property_name, std::any value);
+    void deleteProperty(const std::string& property_name);
 
     const std::map<std::string, std::any>& getAllProperties() const;
 

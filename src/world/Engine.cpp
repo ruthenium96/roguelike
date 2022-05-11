@@ -3,7 +3,7 @@
 #include "state/action/concrete/PlayerDrop.h"
 #include "state/action/concrete/PlayerInteract.h"
 #include "state/action/concrete/PlayerMove.h"
-#include "state/action/concrete/PlayerWear.h"
+#include "state/action/concrete/PlayerWearUnwear.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -119,7 +119,7 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
 
     if (std::holds_alternative<common::Ignore>(command)) {
         // do nothing
-    } else if (std::holds_alternative<common::World_Interact>(command)) {
+    } else if (std::holds_alternative<common::Interact>(command)) {
         externalAction = std::make_shared<state::action::PlayerInteract>();
     } else if (std::holds_alternative<common::Move>(command)) {
         auto variant = std::get<common::Move>(command);
@@ -148,7 +148,7 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
         externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         auto variant = std::get<common::World_ApplyItem>(command);
-        externalAction = std::make_shared<state::action::PlayerWear>(variant.type, variant.equipmentPosition);
+        externalAction = std::make_shared<state::action::PlayerWearUnwear>(variant.type, variant.equipmentPosition);
     } else if (std::holds_alternative<common::World_DropItem>(command)) {
         auto variant = std::get<common::World_DropItem>(command);
         externalAction = std::make_shared<state::action::PlayerDrop>(variant.type);
@@ -163,12 +163,12 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
 void Engine::generateErrorMessageForUI(const common::ControllerCommand& command) {
     if (std::holds_alternative<common::Ignore>(command)) {
         return;
-    } else if (std::holds_alternative<common::World_Interact>(command)) {
+    } else if (std::holds_alternative<common::Interact>(command)) {
         errorMessageForUi = "Nothing to interact!";
     } else if (std::holds_alternative<common::Move>(command)) {
         errorMessageForUi = "Cannot move here!";
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
-        errorMessageForUi = "Cannot wear!";
+        errorMessageForUi = "Need more items!";
     } else if (std::holds_alternative<common::World_DropItem>(command)) {
         errorMessageForUi = "Cannot drop here!";
     } else {

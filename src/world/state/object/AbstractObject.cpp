@@ -17,6 +17,10 @@ void AbstractObject::setProperty(const std::string& property_name, std::any valu
     property_[property_name] = std::move(value);
 }
 
+void AbstractObject::deleteProperty(const std::string &property_name) {
+    property_.erase(property_name);
+}
+
 const std::map<std::string, std::any> &AbstractObject::getAllProperties() const {
     return property_;
 }

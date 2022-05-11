@@ -8,7 +8,7 @@ using common::ControllerCommand;
 namespace {
 
 bool is_ui_command(const ControllerCommand& command) {
-    if (std::holds_alternative<common::UI_ApplyItem>(command)) {
+    if (std::holds_alternative<common::Interact>(command)) {
         return true;
     } else if (std::holds_alternative<common::UI_DropItem>(command)) {
         return true;
@@ -22,7 +22,7 @@ bool is_ui_command(const ControllerCommand& command) {
 bool is_world_command(const ControllerCommand& command) {
     if (std::holds_alternative<common::Move>(command)) {
         return true;
-    } else if (std::holds_alternative<common::World_Interact>(command)) {
+    } else if (std::holds_alternative<common::Interact>(command)) {
         return true;
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         return true;

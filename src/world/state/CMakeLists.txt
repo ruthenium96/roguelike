@@ -14,7 +14,7 @@ add_library(state
         action/concrete/PlayerDrop.cpp action/concrete/PlayerDrop.h
         action/concrete/PlayerMove.cpp action/concrete/PlayerMove.h
         action/concrete/PlayerInteract.cpp action/concrete/PlayerInteract.h
-        action/concrete/PlayerWear.cpp action/concrete/PlayerWear.h
+        action/concrete/PlayerWearUnwear.cpp action/concrete/PlayerWearUnwear.h
         action/concrete/PickDropItem.cpp action/concrete/PickDropItem.h
         action/concrete/Poison.cpp action/concrete/Poison.h
 

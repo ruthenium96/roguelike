@@ -54,7 +54,7 @@ common::ControllerCommand UI::apply_command(const common::ControllerCommand& com
                                             const common::WorldUITransfer& world_state) {
     using common::ControllerCommand;
 
-    if (std::holds_alternative<common::UI_ApplyItem>(command)) {
+    if (std::holds_alternative<common::Interact>(command)) {
         auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
         if (item_type.has_value()) {
             // TODO: fix static_cast
