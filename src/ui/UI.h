@@ -27,7 +27,9 @@ class UI {
 
     common::ControllerCommand apply_command(const common::ControllerCommand& command,
                                             const common::WorldUITransfer& world_state);
-    void deactivate_state();
+    // true if state was activated
+    bool activate_state(const common::WorldUITransfer& world_state);
+    void deactivate_state(const common::WorldUITransfer& world_state);
 
   private:
     // pushes hello line on display

@@ -57,11 +57,11 @@ ControllerCommand KeyboardManager::readCommand() {
         }
         return common::Move{direction};
     } else if (symbol == 'q') {
-        return common::NonparameterizedVariant::EXIT;
+        return common::Exit();
     } else if (symbol == 'e') {
-        return common::NonparameterizedVariant::INTERACT;
+        return common::Interact();
     } else if (symbol == 'r') {
-        return common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY;
+        return common::ChangeRegime();
     } else if (symbol == 'g' || symbol == 't') {
         common::Direction direction;
         if (symbol == 'g') {
@@ -71,13 +71,11 @@ ControllerCommand KeyboardManager::readCommand() {
         }
         return common::UiMoveInventory{direction};
     } else if (symbol == 'f') {
-        return common::NonparameterizedVariant::UI_INVENTORY_APPLY;
+        return common::UIInventoryApply();
     } else if (symbol == 'v') {
-        return common::NonparameterizedVariant::UI_INVENTORY_DROP;
+        return common::UIInventoryDrop();
     } else {
-        return common::NonparameterizedVariant::UNKNOWN;
+        return common::Unknown();
     }
-
-    throw std::runtime_error("ControllerCommand was not generated");
 }
 }  // namespace controller::input

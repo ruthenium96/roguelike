@@ -8,19 +8,27 @@ using common::ControllerCommand;
 namespace {
 
 bool is_ui_command(const ControllerCommand& command) {
-    if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
-        auto variant = std::get<common::NonparameterizedVariant>(command);
-        switch (variant) {
-            case common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY:
-            case common::NonparameterizedVariant::UI_INVENTORY_APPLY:
-            case common::NonparameterizedVariant::UI_INVENTORY_DROP:
-                return true;
-                break;
-            default:
-                return false;
-                break;
-        }
+    if (std::holds_alternative<common::UIInventoryApply>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::UIInventoryDrop>(command)) {
+        return true;
     } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool is_world_command(const ControllerCommand& command) {
+    if (std::holds_alternative<common::Move>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::Interact>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::ApplyItem>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::DropItem>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::Ignore>(command)) {
         return true;
     } else {
         return false;
@@ -37,30 +45,53 @@ void Controller::start() {
     ui_.draw(world_state);
     while (true) {
         command = manager_.readCommand();
-        if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
-            auto variant = std::get<common::NonparameterizedVariant>(command);
-            if (variant == common::NonparameterizedVariant::UNKNOWN) {
-                continue;
-            }
-            if (variant == common::NonparameterizedVariant::EXIT) {
-                break;
-            }
+        if (std::holds_alternative<common::Unknown>(command)) {
+            continue;
+        } else if (std::holds_alternative<common::Exit>(command)) {
+            break;
+        } else if (std::holds_alternative<common::ChangeRegime>(command)) {
+            changeRegime(world_state);
         }
 
-        if (is_ui_command(command)) {
-            command = ui_.apply_command(command, world_state);
-//            ui_.draw(world_state);
+        if (getCurrentRegime() == CurrentRegime::UI) {
+            if (is_ui_command(command)) {
+                auto commandFromUI = ui_.apply_command(command, world_state);
+                engine_.applyCommand(commandFromUI);
+            }
+            // TODO: return to world regime if the last item was dropped
+            // do nothing if it is not command of UI
+        } else if (getCurrentRegime() == CurrentRegime::WORLD) {
+            if (is_world_command(command)) {
+                engine_.applyCommand(command);
+            }
+            // do nothing if it is not command of World
         } else {
-            // move outside else block to process command returned from ui_
-            ui_.deactivate_state();
+            assert(0);
         }
 
-        engine_.applyCommand(command);
         world_state = engine_.getWorldUITransfer();
         ui_.draw(world_state);
     }
 
     // us_.draw_final();
+}
+
+void Controller::changeRegime(const common::WorldUITransfer& world_state) {
+    if (currentRegime_ == CurrentRegime::WORLD) {
+        if (ui_.activate_state(world_state)) {
+            currentRegime_ = CurrentRegime::UI;
+        }
+    } else if (currentRegime_ == CurrentRegime::UI) {
+        currentRegime_ = CurrentRegime::WORLD;
+        ui_.deactivate_state(world_state);
+    } else {
+        assert(0);
+    }
+
+}
+
+const Controller::CurrentRegime &Controller::getCurrentRegime() const {
+    return currentRegime_;
 }
 
 }  // namespace controller

@@ -115,23 +115,10 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
     std::shared_ptr<state::action::AbstractAction> externalAction = nullptr;
     // TODO: refactor it
 
-    if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
-        auto variant = std::get<common::NonparameterizedVariant>(command);
-        switch (variant) {
-            case common::NonparameterizedVariant::INTERACT: {
-                externalAction = std::make_shared<state::action::PlayerInteract>();
-                break;
-            }
-                // TODO: implement something
-            case common::NonparameterizedVariant::IGNORE:
-            case common::NonparameterizedVariant::UNKNOWN:
-            case common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY:
-            case common::NonparameterizedVariant::UI_INVENTORY_APPLY:
-            case common::NonparameterizedVariant::UI_INVENTORY_DROP:
-            case common::NonparameterizedVariant::EXIT: {
-                break;
-            }
-        }
+    if (std::holds_alternative<common::Ignore>(command)) {
+        // do nothing
+    } else if (std::holds_alternative<common::Interact>(command)) {
+        externalAction = std::make_shared<state::action::PlayerInteract>();
     } else if (std::holds_alternative<common::Move>(command)) {
         auto variant = std::get<common::Move>(command);
         int32_t delta_x;
@@ -154,12 +141,9 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
                 delta_y = 0;
                 break;
             default:
-                // throw is better than ignore
-                throw std::runtime_error("unknown command sent to engine");
+                assert(0);
         }
         externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
-    } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
-        // TODO: do nothing
     } else if (std::holds_alternative<common::ApplyItem>(command)) {
         auto variant = std::get<common::ApplyItem>(command);
         // TODO: Implement activation
@@ -167,42 +151,29 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
         auto variant = std::get<common::DropItem>(command);
         externalAction = std::make_shared<state::action::PlayerDrop>(variant.type);
     } else {
-        // throw is better than ignore
-        throw std::runtime_error("unknown command sent to engine");
+        // Unknown, Exit, UIInventoryDrop, UIInventoryApply, ChangeRegime, UiMoveInventory
+        assert(0);
     }
 
     return externalAction;
 }
 
 void Engine::generateErrorMessageForUI(const common::ControllerCommand& command) {
-    if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
-        auto variant = std::get<common::NonparameterizedVariant>(command);
-        switch (variant) {
-            case common::NonparameterizedVariant::INTERACT: {
-                errorMessageForUi = "Nothing to interact!";
-                break;
-            }
-                // TODO: implement something
-            case common::NonparameterizedVariant::IGNORE:
-            case common::NonparameterizedVariant::UNKNOWN:
-            case common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY:
-            case common::NonparameterizedVariant::UI_INVENTORY_APPLY:
-            case common::NonparameterizedVariant::UI_INVENTORY_DROP:
-            case common::NonparameterizedVariant::EXIT: {
-                break;
-            }
-        }
+    if (std::holds_alternative<common::Ignore>(command)) {
+        return;
+    } else if (std::holds_alternative<common::Interact>(command)) {
+        errorMessageForUi = "Nothing to interact!";
     } else if (std::holds_alternative<common::Move>(command)) {
         errorMessageForUi = "Cannot move here!";
-    } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
-        // TODO: do nothing
     } else if (std::holds_alternative<common::ApplyItem>(command)) {
+        // TODO: rewrite it
+        errorMessageForUi = "Cannot apply";
         // TODO: write something
     } else if (std::holds_alternative<common::DropItem>(command)) {
         errorMessageForUi = "Cannot drop here!";
     } else {
-        // throw is better than ignore
-        throw std::runtime_error("unknown command sent to message generator");
+        // Unknown, Exit, UIInventoryDrop, UIInventoryApply, ChangeRegime, UiMoveInventory
+        assert(0);
     }
 }
 

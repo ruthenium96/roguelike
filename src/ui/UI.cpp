@@ -54,81 +54,69 @@ common::ControllerCommand UI::apply_command(const common::ControllerCommand& com
                                             const common::WorldUITransfer& world_state) {
     using common::ControllerCommand;
 
-    if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
-        auto variant = std::get<common::NonparameterizedVariant>(command);
-        switch (variant) {
-            case common::NonparameterizedVariant::UI_ACTIVATE_INVENTORY:
-                if (get_inventory_size(world_state.inventory)) {
-                    state_.inventory_active = true;
-                }
-                break;
-            case common::NonparameterizedVariant::UI_INVENTORY_APPLY: {
-                auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
-                if (item_type.has_value()) {
-                    common::ApplyItem applyItem = {item_type.value()};
-                    return applyItem;
-                } else {
-                    // TODO: print something?
-                    return common::NonparameterizedVariant::IGNORE;
-                }
-                break;
-            }
-            case common::NonparameterizedVariant::UI_INVENTORY_DROP: {
-                auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
-                if (item_type.has_value()) {
-                    common::DropItem dropItem = {item_type.value()};
-                    return dropItem;
-                } else {
-                    // TODO: print something? pushMessageOnDisplay?
-                    return common::NonparameterizedVariant::IGNORE;
-                }
-                break;
-            }
-                // TODO: implement it
-            case common::NonparameterizedVariant::UNKNOWN:
-            case common::NonparameterizedVariant::IGNORE:
-            case common::NonparameterizedVariant::INTERACT:
-            case common::NonparameterizedVariant::EXIT: {
-                break;
-            }
+    if (std::holds_alternative<common::UIInventoryApply>(command)) {
+        auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
+        if (item_type.has_value()) {
+            common::ApplyItem applyItem = {item_type.value()};
+            return applyItem;
+        } else {
+            // TODO: print something?
+            return common::Ignore();
         }
+    } else if (std::holds_alternative<common::UIInventoryDrop>(command)) {
+        auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
+        if (item_type.has_value()) {
+            common::DropItem dropItem = {item_type.value()};
+            return dropItem;
+        } else {
+            // TODO: print something? pushMessageOnDisplay?
+            return common::Ignore();
+        }
+
+    } else if (std::holds_alternative<common::Ignore>(command)) {
+
     } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
         auto variant = std::get<common::UiMoveInventory>(command);
         switch (variant.direction) {
-            case common::Direction::TOP:
+            case common::Direction::TOP: {
                 if (state_.inventory_active && state_.inventory_pos) {
                     --state_.inventory_pos;
                 }
                 break;
-                // TODO: implement it
+            }
+            case common::Direction::BOTTOM: {
+                if (state_.inventory_active && get_inventory_size(world_state.inventory) &&
+                (get_inventory_size(world_state.inventory) - 1 > state_.inventory_pos)) {
+                    ++state_.inventory_pos;
+                }
+                break;
+            }
+            // TODO: implement it
             case common::Direction::LEFT:
                 break;
             case common::Direction::RIGHT:
                 break;
-            case common::Direction::BOTTOM:
-                if (state_.inventory_active && get_inventory_size(world_state.inventory) &&
-                    (get_inventory_size(world_state.inventory) - 1 > state_.inventory_pos)) {
-                    ++state_.inventory_pos;
-                }
-                break;
         }
-
-    } else if (std::holds_alternative<common::ApplyItem>(command)) {
-
-
-    } else if (std::holds_alternative<common::DropItem>(command)) {
-
     } else {
-        // TODO: throw something
-        // TODO: do branch with ControllerCommand::Move
+        // Unknown, ChangeRegime, Exit, Move, Interact, ApplyItem, DropItem
+        assert(0);
     }
 
-    return common::NonparameterizedVariant::IGNORE;
+    return common::Ignore();
 }
 
-void UI::deactivate_state() {
+void UI::deactivate_state(const common::WorldUITransfer& world_state) {
     state_ = {};
 }
+
+bool UI::activate_state(const common::WorldUITransfer& world_state) {
+    if (get_inventory_size(world_state.inventory)) {
+        state_.inventory_active = true;
+        return true;
+    }
+    return false;
+}
+
 
 void UI::draw(const common::WorldUITransfer& world_state) {
     display_.fill_border();
