@@ -59,12 +59,10 @@ ControllerCommand KeyboardManager::readCommand() {
     } else if (symbol == 'q') {
         return common::Controller_Exit();
     } else if (symbol == 'e') {
-        return common::World_Interact();
+        return common::Interact();
     } else if (symbol == 'r') {
         return common::Controller_ChangeRegime();
     } else if (symbol == 'f') {
-        return common::UI_ApplyItem();
-    } else if (symbol == 'v') {
         return common::UI_DropItem();
     } else {
         return common::Controller_Unknown();
