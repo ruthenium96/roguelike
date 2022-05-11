@@ -264,21 +264,23 @@ void UI::pushInventoryOnDisplay(const common::Inventory& inventory) {
 }
 
 void UI::pushMessageOnDisplay(const std::optional<std::string>& mbMessage) {
-    if (!mbMessage.has_value()) {
-        return;
+    std::string content;
+    content.reserve(23U);
+    if (mbMessage.has_value()) {
+        content = mbMessage.value();
     }
-    const auto& message = mbMessage.value();
+    assert(content.size() <= 23);
+//    content.resize(23U, ' ');
+
     const size_t message_display_height = 1U;
-    const size_t message_display_width = message.size();
+    const size_t message_display_width = 23U;
     CharDisplay message_display(message_display_height, message_display_width);
 
-    message_display.put_string(message, 0U, 0U);
+    message_display.put_string(content, 0U, 0U);
 
     const size_t game_board_hello_height_pos = 27U;
     const size_t game_board_hello_width_pos = 7U;
     display_.add_display_data(message_display, game_board_hello_height_pos, game_board_hello_width_pos);
-
-
 }
 
 }  // namespace ui

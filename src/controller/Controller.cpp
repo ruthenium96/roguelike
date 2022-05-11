@@ -33,10 +33,9 @@ void Controller::start() {
     // use us_.draw_init();
 
     ControllerCommand command;
-    do {
-        auto world_state = engine_.getWorldUITransfer();
-        ui_.draw(world_state);
-
+    auto world_state = engine_.getWorldUITransfer();
+    ui_.draw(world_state);
+    while (true) {
         command = manager_.readCommand();
         if (std::holds_alternative<common::NonparameterizedVariant>(command)) {
             auto variant = std::get<common::NonparameterizedVariant>(command);
@@ -50,15 +49,16 @@ void Controller::start() {
 
         if (is_ui_command(command)) {
             command = ui_.apply_command(command, world_state);
-            ui_.draw(world_state);
+//            ui_.draw(world_state);
         } else {
             // move outside else block to process command returned from ui_
             ui_.deactivate_state();
         }
 
         engine_.applyCommand(command);
-
-    } while (true);
+        world_state = engine_.getWorldUITransfer();
+        ui_.draw(world_state);
+    }
 
     // us_.draw_final();
 }
