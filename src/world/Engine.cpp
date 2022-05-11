@@ -41,14 +41,16 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
         auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
         int32_t VISIBILITY = 10;
         for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
-            for (int32_t dy = -VISIBILITY; dy <= VISIBILITY; ++dy) {
-                common::Coordinate currentCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
-                auto objects = state_.getObjectObserver().getObjectsAtCoordinate(currentCoordinate);
+            int32_t sqrt = std::sqrt(VISIBILITY * VISIBILITY - dx * dx);
+            for (int32_t dy = -sqrt; dy <= sqrt; ++dy) {
+                common::Coordinate relativeCoordinate = {dx, dy};
+                common::Coordinate absoluteCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
+                auto objects = state_.getObjectObserver().getObjectsAtCoordinate(absoluteCoordinate);
                 std::vector<common::ObjectType> objectsTypes(objects.size());
                 std::transform(objects.cbegin(), objects.cend(), objectsTypes.begin(), [](const auto& object) {
                     return object->getObjectType();
                 });
-                map[currentCoordinate] = objectsTypes;
+                map[relativeCoordinate] = objectsTypes;
             }
         }
         worldUiTransfer.map = map;

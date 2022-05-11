@@ -182,21 +182,11 @@ void UI::pushMapOnDisplay(const common::Map& map) {
     CharDisplay map_display(map_display_height, map_display_width);
     map_display.fill_border();
 
-    auto initial_coordinate = map.begin()->first;
-    auto width_i = 1U;
-    auto height_i = 1U;
-
     for (const auto& [coordinate, objects] : map) {
-        // currently only the last object is painted
+        // style_->getGameObjectsRepr stores order of object painting
+        auto height_i = coordinate.y + map_display_height / 2;
+        auto width_i = coordinate.x + map_display_width / 2;
         map_display.at(height_i, width_i) = style_->getGameObjectsRepr(objects);
-
-        if (coordinate.y != initial_coordinate.y) {
-            width_i = 1U;
-            ++height_i;
-            initial_coordinate = coordinate;
-        } else {
-            width_i++;
-        }
     }
 
     const size_t game_board_map_height_pos = 4U;
