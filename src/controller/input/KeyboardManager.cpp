@@ -57,25 +57,17 @@ ControllerCommand KeyboardManager::readCommand() {
         }
         return common::Move{direction};
     } else if (symbol == 'q') {
-        return common::Exit();
+        return common::Controller_Exit();
     } else if (symbol == 'e') {
-        return common::Interact();
+        return common::World_Interact();
     } else if (symbol == 'r') {
-        return common::ChangeRegime();
-    } else if (symbol == 'g' || symbol == 't') {
-        common::Direction direction;
-        if (symbol == 'g') {
-            direction = common::Direction::BOTTOM;
-        } else if (symbol == 't') {
-            direction = common::Direction::TOP;
-        }
-        return common::UiMoveInventory{direction};
+        return common::Controller_ChangeRegime();
     } else if (symbol == 'f') {
-        return common::UIInventoryApply();
+        return common::UI_ApplyItem();
     } else if (symbol == 'v') {
-        return common::UIInventoryDrop();
+        return common::UI_DropItem();
     } else {
-        return common::Unknown();
+        return common::Controller_Unknown();
     }
 }
 }  // namespace controller::input

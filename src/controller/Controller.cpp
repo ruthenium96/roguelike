@@ -8,11 +8,11 @@ using common::ControllerCommand;
 namespace {
 
 bool is_ui_command(const ControllerCommand& command) {
-    if (std::holds_alternative<common::UIInventoryApply>(command)) {
+    if (std::holds_alternative<common::UI_ApplyItem>(command)) {
         return true;
-    } else if (std::holds_alternative<common::UIInventoryDrop>(command)) {
+    } else if (std::holds_alternative<common::UI_DropItem>(command)) {
         return true;
-    } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
+    } else if (std::holds_alternative<common::Move>(command)) {
         return true;
     } else {
         return false;
@@ -22,11 +22,11 @@ bool is_ui_command(const ControllerCommand& command) {
 bool is_world_command(const ControllerCommand& command) {
     if (std::holds_alternative<common::Move>(command)) {
         return true;
-    } else if (std::holds_alternative<common::Interact>(command)) {
+    } else if (std::holds_alternative<common::World_Interact>(command)) {
         return true;
-    } else if (std::holds_alternative<common::ApplyItem>(command)) {
+    } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         return true;
-    } else if (std::holds_alternative<common::DropItem>(command)) {
+    } else if (std::holds_alternative<common::World_DropItem>(command)) {
         return true;
     } else if (std::holds_alternative<common::Ignore>(command)) {
         return true;
@@ -45,11 +45,11 @@ void Controller::start() {
     ui_.draw(world_state);
     while (true) {
         command = manager_.readCommand();
-        if (std::holds_alternative<common::Unknown>(command)) {
+        if (std::holds_alternative<common::Controller_Unknown>(command)) {
             continue;
-        } else if (std::holds_alternative<common::Exit>(command)) {
+        } else if (std::holds_alternative<common::Controller_Exit>(command)) {
             break;
-        } else if (std::holds_alternative<common::ChangeRegime>(command)) {
+        } else if (std::holds_alternative<common::Controller_ChangeRegime>(command)) {
             changeRegime(world_state);
         }
 

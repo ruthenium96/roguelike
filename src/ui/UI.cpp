@@ -54,19 +54,19 @@ common::ControllerCommand UI::apply_command(const common::ControllerCommand& com
                                             const common::WorldUITransfer& world_state) {
     using common::ControllerCommand;
 
-    if (std::holds_alternative<common::UIInventoryApply>(command)) {
+    if (std::holds_alternative<common::UI_ApplyItem>(command)) {
         auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
         if (item_type.has_value()) {
-            common::ApplyItem applyItem = {item_type.value()};
+            common::World_ApplyItem applyItem = {item_type.value()};
             return applyItem;
         } else {
             // TODO: print something?
             return common::Ignore();
         }
-    } else if (std::holds_alternative<common::UIInventoryDrop>(command)) {
+    } else if (std::holds_alternative<common::UI_DropItem>(command)) {
         auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
         if (item_type.has_value()) {
-            common::DropItem dropItem = {item_type.value()};
+            common::World_DropItem dropItem = {item_type.value()};
             return dropItem;
         } else {
             // TODO: print something? pushMessageOnDisplay?
@@ -75,8 +75,8 @@ common::ControllerCommand UI::apply_command(const common::ControllerCommand& com
 
     } else if (std::holds_alternative<common::Ignore>(command)) {
 
-    } else if (std::holds_alternative<common::UiMoveInventory>(command)) {
-        auto variant = std::get<common::UiMoveInventory>(command);
+    } else if (std::holds_alternative<common::Move>(command)) {
+        auto variant = std::get<common::Move>(command);
         switch (variant.direction) {
             case common::Direction::TOP: {
                 if (state_.inventory_active && state_.inventory_pos) {
@@ -91,10 +91,9 @@ common::ControllerCommand UI::apply_command(const common::ControllerCommand& com
                 }
                 break;
             }
-            // TODO: implement it
             case common::Direction::LEFT:
-                break;
             case common::Direction::RIGHT:
+                // do nothing.
                 break;
         }
     } else {

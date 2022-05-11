@@ -117,7 +117,7 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
 
     if (std::holds_alternative<common::Ignore>(command)) {
         // do nothing
-    } else if (std::holds_alternative<common::Interact>(command)) {
+    } else if (std::holds_alternative<common::World_Interact>(command)) {
         externalAction = std::make_shared<state::action::PlayerInteract>();
     } else if (std::holds_alternative<common::Move>(command)) {
         auto variant = std::get<common::Move>(command);
@@ -144,11 +144,11 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
                 assert(0);
         }
         externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
-    } else if (std::holds_alternative<common::ApplyItem>(command)) {
-        auto variant = std::get<common::ApplyItem>(command);
+    } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
+        auto variant = std::get<common::World_ApplyItem>(command);
         // TODO: Implement activation
-    } else if (std::holds_alternative<common::DropItem>(command)) {
-        auto variant = std::get<common::DropItem>(command);
+    } else if (std::holds_alternative<common::World_DropItem>(command)) {
+        auto variant = std::get<common::World_DropItem>(command);
         externalAction = std::make_shared<state::action::PlayerDrop>(variant.type);
     } else {
         // Unknown, Exit, UIInventoryDrop, UIInventoryApply, ChangeRegime, UiMoveInventory
@@ -161,15 +161,15 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
 void Engine::generateErrorMessageForUI(const common::ControllerCommand& command) {
     if (std::holds_alternative<common::Ignore>(command)) {
         return;
-    } else if (std::holds_alternative<common::Interact>(command)) {
+    } else if (std::holds_alternative<common::World_Interact>(command)) {
         errorMessageForUi = "Nothing to interact!";
     } else if (std::holds_alternative<common::Move>(command)) {
         errorMessageForUi = "Cannot move here!";
-    } else if (std::holds_alternative<common::ApplyItem>(command)) {
+    } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         // TODO: rewrite it
         errorMessageForUi = "Cannot apply";
         // TODO: write something
-    } else if (std::holds_alternative<common::DropItem>(command)) {
+    } else if (std::holds_alternative<common::World_DropItem>(command)) {
         errorMessageForUi = "Cannot drop here!";
     } else {
         // Unknown, Exit, UIInventoryDrop, UIInventoryApply, ChangeRegime, UiMoveInventory

@@ -22,15 +22,15 @@ struct UiMoveInventory {
 };
 
 // TODO: rename this struct to something like "WearItem"
-struct ApplyItem {
+struct World_ApplyItem {
     ItemType type;
 };
 
-struct DropItem {
+struct World_DropItem {
     ItemType type;
 };
 
-struct Unknown {
+struct Controller_Unknown {
   private:
     bool dummyField_ = false;
 };
@@ -40,44 +40,46 @@ private:
     bool dummyField_ = false;
 };
 
-struct Interact {
+struct World_Interact {
 private:
     bool dummyField_ = false;
 };
 
-struct ChangeRegime {
+struct Controller_ChangeRegime {
 private:
     bool dummyField_ = false;
 };
 
-struct UIInventoryApply {
+struct UI_ApplyItem {
 private:
     bool dummyField_ = false;
 };
 
-struct UIInventoryDrop {
+struct UI_DropItem {
 private:
     bool dummyField_ = false;
 };
 
-struct Exit {
+struct Controller_Exit {
 private:
     bool dummyField_ = false;
 };
 
 using ControllerCommand = std::variant<
         // Internal Controller Commands:
-        Unknown,
-        ChangeRegime,
-        Exit,
+        Controller_Unknown,
+        Controller_ChangeRegime,
+        Controller_Exit,
+        // UI and World Commands:
         Ignore,
         Move,
-        Interact,
-        UiMoveInventory,
-        UIInventoryApply,
-        UIInventoryDrop,
-        ApplyItem,
-        DropItem
+        // UI Commands:
+        UI_ApplyItem,
+        UI_DropItem,
+        // World Commands:
+        World_ApplyItem,
+        World_DropItem,
+        World_Interact
         >;
 
 }  // namespace common
