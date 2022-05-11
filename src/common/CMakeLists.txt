@@ -1,5 +1,5 @@
 add_library(common
-        Command.cpp Command.h
+        Command.h
         Map.h
         ObjectType.h
         Coordinate.h
@@ -8,3 +8,5 @@ add_library(common
         Inventory.h
         ItemType.h
         PlayerEquipment.h)
+
+set_target_properties(common PROPERTIES LINKER_LANGUAGE CXX)
