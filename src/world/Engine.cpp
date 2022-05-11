@@ -170,7 +170,7 @@ void Engine::generateErrorMessageForUI(const common::ControllerCommand& command)
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         errorMessageForUi = "Need more items!";
     } else if (std::holds_alternative<common::World_DropItem>(command)) {
-        errorMessageForUi = "Cannot drop here!";
+        errorMessageForUi = "Cannot drop!";
     } else {
         // Unknown, Exit, UIInventoryDrop, UIInventoryApply, ChangeRegime, UiMoveInventory
         assert(0);

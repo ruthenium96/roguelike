@@ -20,7 +20,12 @@ bool PlayerDrop::precondition(const object::Observer &objectObserver, const acti
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
     // NB: the opposite situation with PlayerInteract
-    return findInteractableObject(objects) == std::nullopt;
+    if (findInteractableObject(objects) != std::nullopt) {
+        return false;
+    }
+    // Cannot drop Item if it is weared:
+    return objectObserver.countHowManyTimesItemIsWearedByPlayer(requiredItemType)
+    < objectObserver.howManyItemsOfThisTypeHoldsPlayer(requiredItemType);
 }
 
 void PlayerDrop::changeTarget(object::Observer &objectObserver, action::Observer &actionObserver) {
