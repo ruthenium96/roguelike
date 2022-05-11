@@ -3,6 +3,7 @@
 #include "state/action/concrete/PlayerDrop.h"
 #include "state/action/concrete/PlayerInteract.h"
 #include "state/action/concrete/PlayerMove.h"
+#include "state/action/concrete/PlayerWear.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -86,6 +87,7 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
             auto rightHandItemType = std::any_cast<common::ItemType>(player->getProperty("rightHand").value());
             playerEquipment.rightHand = rightHandItemType;
         }
+        worldUiTransfer.playerEquipment = playerEquipment;
     }
     {
         worldUiTransfer.message = errorMessageForUi;
@@ -146,7 +148,7 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
         externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         auto variant = std::get<common::World_ApplyItem>(command);
-        // TODO: Implement activation
+        externalAction = std::make_shared<state::action::PlayerWear>(variant.type, variant.equipmentPosition);
     } else if (std::holds_alternative<common::World_DropItem>(command)) {
         auto variant = std::get<common::World_DropItem>(command);
         externalAction = std::make_shared<state::action::PlayerDrop>(variant.type);
@@ -166,9 +168,7 @@ void Engine::generateErrorMessageForUI(const common::ControllerCommand& command)
     } else if (std::holds_alternative<common::Move>(command)) {
         errorMessageForUi = "Cannot move here!";
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
-        // TODO: rewrite it
-        errorMessageForUi = "Cannot apply";
-        // TODO: write something
+        errorMessageForUi = "Cannot wear!";
     } else if (std::holds_alternative<common::World_DropItem>(command)) {
         errorMessageForUi = "Cannot drop here!";
     } else {

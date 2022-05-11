@@ -13,7 +13,8 @@ namespace {
 
 struct UiState {
     size_t inventory_pos{0};
-    bool inventory_active{false};
+    size_t equipment_pos{0};
+    bool active{false};
 };
 
 }  // namespace
@@ -46,6 +47,10 @@ class UI {
 
     // pushes message on display
     void pushMessageOnDisplay(const std::optional<std::string>& mbMessage);
+
+    // pushes equipment on display
+    void pushEquipmentOnDisplay(const common::PlayerEquipment& equipment);
+
 
   private:
     std::unique_ptr<IStyle> style_;

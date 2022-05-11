@@ -2,6 +2,7 @@
 
 #include <variant>
 #include "ItemType.h"
+#include "PlayerEquipment.h"
 
 // This class helps modules communicate each other.
 namespace common {
@@ -24,6 +25,7 @@ struct UiMoveInventory {
 // TODO: rename this struct to something like "WearItem"
 struct World_ApplyItem {
     ItemType type;
+    EquipmentPosition equipmentPosition;
 };
 
 struct World_DropItem {

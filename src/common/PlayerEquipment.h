@@ -5,6 +5,13 @@
 #include "ItemType.h"
 
 namespace common {
+
+enum EquipmentPosition {
+    ARMOR,
+    LEFTHAND,
+    RIGHTHAND,
+};
+
 struct PlayerEquipment {
     std::optional<ItemType> armor;
     std::optional<ItemType> leftHand;
