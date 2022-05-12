@@ -2,6 +2,7 @@
 #define ARCH_ROGUELIKE_ENTITY_H
 
 #include <any>
+#include <optional>
 #include <string>
 #include <map>
 
