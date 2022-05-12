@@ -26,8 +26,10 @@ class UI {
     // draw current game image
     void draw(const common::WorldUITransfer& world_state);
 
-    common::ControllerCommand apply_command(const common::ControllerCommand& command,
-                                            const common::WorldUITransfer& world_state);
+    void drawDeath(const common::Death& death);
+
+    common::Command apply_command(const common::Command& command,
+                                  const common::WorldUITransfer& world_state);
     // true if state was activated
     bool activate_state(const common::WorldUITransfer& world_state);
     void deactivate_state(const common::WorldUITransfer& world_state);
@@ -51,6 +53,8 @@ class UI {
     // pushes equipment on display
     void pushEquipmentOnDisplay(const common::PlayerEquipment& equipment);
 
+    // pushes death screen on display
+    void pushDeathScreenOnDisplay(const common::Death& death);
 
   private:
     std::unique_ptr<IStyle> style_;

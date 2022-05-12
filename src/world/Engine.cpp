@@ -9,27 +9,30 @@
 namespace world {
 
 Engine::Engine() {
-    generator_ = std::make_unique<generator::OnTheFly>();
-    // Here I create initial place:
-    generateWorldAroundPlayer({0, 0});
+    initialize();
 }
 
-void Engine::applyCommand(const common::ControllerCommand& command) {
-    using common::ControllerCommand;
+common::Command Engine::applyCommand(const common::Command& command)  {
+    using common::Command;
 
-    auto externalAction = generateExternalAction(command);
-    if (externalAction == nullptr) {
-        return;
+    auto mbExternalAction = generateExternalAction(command);
+    if (mbExternalAction.has_value()) {
+        auto externalAction = mbExternalAction.value();
+
+        bool isExternalActionApplied = state_.applyAction(externalAction);
+        if (isExternalActionApplied) {
+            state_.applyEveryTurnInternalActions();
+        } else {
+            generateErrorMessageForUI(command);
+        }
+
+        generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
     }
-
-    bool isExternalActionApplied = state_.applyAction(externalAction);
-    if (isExternalActionApplied) {
-        state_.applyEveryTurnInternalActions();
+    if (checkIfPlayerIsAlive()) {
+        return getWorldUITransfer();
     } else {
-        generateErrorMessageForUI(command);
+        return common::Death();
     }
-
-    generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
 }
 
 common::WorldUITransfer Engine::getWorldUITransfer() const {
@@ -115,9 +118,9 @@ void Engine::generateWorldAroundPlayer(common::Coordinate playerCoordinate) {
     }
 }
 
-std::shared_ptr<state::action::AbstractAction>
-Engine::generateExternalAction(const common::ControllerCommand& command) const {
-    std::shared_ptr<state::action::AbstractAction> externalAction = nullptr;
+std::optional<std::shared_ptr<state::action::AbstractAction>>
+Engine::generateExternalAction(const common::Command& command) const {
+    std::optional<std::shared_ptr<state::action::AbstractAction>> externalAction = std::nullopt;
     // TODO: refactor it
 
     if (std::holds_alternative<common::Ignore>(command)) {
@@ -163,7 +166,7 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
     return externalAction;
 }
 
-void Engine::generateErrorMessageForUI(const common::ControllerCommand& command) {
+void Engine::generateErrorMessageForUI(const common::Command& command) {
     if (std::holds_alternative<common::Ignore>(command)) {
         return;
     } else if (std::holds_alternative<common::Interact>(command)) {
@@ -178,6 +181,23 @@ void Engine::generateErrorMessageForUI(const common::ControllerCommand& command)
         // Unknown, Exit, UIInventoryDrop, UIInventoryApply, ChangeRegime, UiMoveInventory
         assert(0);
     }
+}
+
+bool Engine::checkIfPlayerIsAlive() const {
+    auto playerHP = std::any_cast<int32_t>(state_.getObjectObserver().getPlayer()->getProperty("hp").value());
+    return playerHP > 0;
+}
+
+void Engine::initialize() {
+    generator_ = std::make_unique<generator::OnTheFly>();
+    // Here I create initial place:
+    generateWorldAroundPlayer({0, 0});
+}
+
+void Engine::resetWorld() {
+    state_ = state::State();
+    errorMessageForUi = std::nullopt;
+    initialize();
 }
 
 }  // namespace world

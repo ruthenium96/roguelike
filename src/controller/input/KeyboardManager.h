@@ -6,6 +6,6 @@ namespace controller::input {
 class KeyboardManager : public AbstractManager {
   public:
     KeyboardManager() = default;
-    common::ControllerCommand readCommand() override;
+    common::Command readCommand() override;
 };
 }  // namespace controller::input

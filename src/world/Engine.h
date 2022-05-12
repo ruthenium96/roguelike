@@ -13,21 +13,26 @@ namespace world {
 class Engine {
   public:
     Engine();
-    // Applies ControllerCommand
-    void applyCommand(const common::ControllerCommand&);
+    // Applies Command
+    common::Command applyCommand(const common::Command&);
 
     // Generate current Map
     common::WorldUITransfer getWorldUITransfer() const;
 
+    void resetWorld();
+
   private:
+    void initialize();
     void generateWorldAroundPlayer(common::Coordinate playerCoordinate);
 
-    std::shared_ptr<state::action::AbstractAction> generateExternalAction(const common::ControllerCommand&) const;
+    bool checkIfPlayerIsAlive() const;
+
+    std::optional<std::shared_ptr<state::action::AbstractAction>> generateExternalAction(const common::Command&) const;
 
     state::State state_;
     std::unique_ptr<generator::AbstractGenerator> generator_;
     mutable std::optional<std::string> errorMessageForUi;
-    void generateErrorMessageForUI(const common::ControllerCommand&);
+    void generateErrorMessageForUI(const common::Command&);
 };
 
 }  // namespace world
