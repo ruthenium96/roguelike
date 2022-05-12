@@ -41,9 +41,9 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
     {
         common::Map map;
         auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
-        int32_t VISIBILITY = 10;
-        for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
-            int32_t sqrt = std::sqrt(VISIBILITY * VISIBILITY - dx * dx);
+        auto vision = std::any_cast<int32_t>(state_.getObjectObserver().getPlayer()->getProperty("vision").value());
+        for (int32_t dx = -vision; dx <= vision; ++dx) {
+            int32_t sqrt = std::sqrt(vision * vision - dx * dx);
             for (int32_t dy = -sqrt; dy <= sqrt; ++dy) {
                 common::Coordinate relativeCoordinate = {dx, dy};
                 common::Coordinate absoluteCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};

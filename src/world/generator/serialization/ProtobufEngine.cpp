@@ -67,6 +67,8 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
                 proto_properties->mutable_attack()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "defence") {
                 proto_properties->mutable_defence()->set_value(std::any_cast<int32_t>(value));
+            } else if (key == "vision") {
+                proto_properties->mutable_vision()->set_value(std::any_cast<int32_t>(value));
             } else {
                 assert(0);
             }
@@ -158,6 +160,9 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
         }
         if (proto_object.properties().has_defence()) {
             shared_object->setProperty("defence", proto_object.properties().defence().value());
+        }
+        if (proto_object.properties().has_vision()) {
+            shared_object->setProperty("vision", proto_object.properties().defence().value());
         }
         // items
         int items_size = proto_object.items_size();
