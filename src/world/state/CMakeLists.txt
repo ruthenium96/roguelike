@@ -1,6 +1,7 @@
 add_library(state
         State.cpp State.h
         Identity.h
+        Entity.cpp Entity.h
 
         object/AbstractObject.cpp object/AbstractObject.h
         object/Observer.cpp object/Observer.h

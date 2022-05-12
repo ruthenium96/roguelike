@@ -2,12 +2,13 @@
 #define ARCH_ROGUELIKE_ABSTRACTITEM_H
 
 #include "../../../common/ItemType.h"
+#include "../Entity.h"
 #include "../Identity.h"
 #include <utility>
 
 namespace world::state::item {
 
-class AbstractItem {
+class AbstractItem : public Entity {
   public:
     AbstractItem(const Identity& itemIdentity, const Identity& objectHolderIdentity)
         : selfIdentity_(itemIdentity), objectHolderIdentity_(objectHolderIdentity){};
