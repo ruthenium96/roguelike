@@ -72,6 +72,8 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
         playerMetrics.hp = std::any_cast<int32_t>(player->getProperty("hp").value());
         playerMetrics.lvl = std::any_cast<int32_t>(player->getProperty("lvl").value());
         playerMetrics.xp = std::any_cast<int32_t>(player->getProperty("xp").value());
+        playerMetrics.attack = std::any_cast<int32_t>(player->getProperty("attack").value());
+        playerMetrics.defence = std::any_cast<int32_t>(player->getProperty("defence").value());
         worldUiTransfer.playerMetrics = playerMetrics;
     }
     {

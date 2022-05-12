@@ -154,7 +154,7 @@ void UI::pushHelloOnDisplay() {
 }
 
 void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) {
-    const size_t stats_display_height = 8U;
+    const size_t stats_display_height = 9U;
     const size_t stats_display_width = 14U;
     CharDisplay stats_display(stats_display_height, stats_display_width);
     stats_display.fill_border();
@@ -164,11 +164,17 @@ void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) {
     const auto player_lvl = std::to_string(player_stats.lvl);
     const auto player_hp = std::to_string(player_stats.hp);
     const auto player_exp = std::to_string(player_stats.xp);
+    const auto player_att = std::to_string(player_stats.attack);
+    const auto player_def = std::to_string(player_stats.defence);
 
     size_t curr_display_height = 3;
     stats_display.put_string("Lvl  : " + player_lvl, curr_display_height++, 2U);
     stats_display.put_string("Exp  : " + player_exp, curr_display_height++, 2U);
     stats_display.put_string("HP   : " + player_hp, curr_display_height++, 2U);
+    stats_display.put_string("Att  : " + player_att, curr_display_height++, 2U);
+    stats_display.put_string("Def  : " + player_def, curr_display_height++, 2U);
+
+
     // stats_display.put_string("Mana : " + player_mana, curr_display_height++, 2U);
 
     const size_t game_board_stats_height_pos = 4U;
@@ -246,7 +252,7 @@ void UI::pushInventoryOnDisplay(const common::Inventory& inventory) {
         ++item_type_idx;
     }
 
-    const size_t game_board_inventory_height_pos = 12U;
+    const size_t game_board_inventory_height_pos = 13U;
     const size_t game_board_inventory_width_pos = 35U;
     display_.add_display_data(inventory_display, game_board_inventory_height_pos, game_board_inventory_width_pos);
 }
@@ -328,7 +334,7 @@ void UI::pushEquipmentOnDisplay(const common::PlayerEquipment &equipment) {
     }
     equipment_display.put_string(choseString, inventory_line_idx, 2U);
 
-    const size_t game_board_equipment_height_pos = 19U;
+    const size_t game_board_equipment_height_pos = 20U;
     const size_t game_board_equipment_width_pos = 35U;
     display_.add_display_data(equipment_display, game_board_equipment_height_pos, game_board_equipment_width_pos);
 

@@ -10,6 +10,8 @@ Player::Player(const Identity& identity) : AbstractObject(identity) {
     setProperty("hp", std::make_any<int32_t>(100));
     setProperty("lvl", std::make_any<int32_t>(1));
     setProperty("xp", std::make_any<int32_t>(0));
+    setProperty("attack", std::make_any<int32_t>(10));
+    setProperty("defence", std::make_any<int32_t>(0));
 }
 
 }  // namespace world::state::object

@@ -63,8 +63,12 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
                 proto_properties->mutable_blocking()->set_value(std::any_cast<bool>(value));
             } else if (key == "interactable") {
                 proto_properties->mutable_interactable()->set_value(std::any_cast<bool>(value));
+            } else if (key == "attack") {
+                proto_properties->mutable_attack()->set_value(std::any_cast<int32_t>(value));
+            } else if (key == "defence") {
+                proto_properties->mutable_defence()->set_value(std::any_cast<int32_t>(value));
             } else {
-                throw std::invalid_argument("Unknown key: " + key);
+                assert(0);
             }
         }
 
@@ -110,7 +114,7 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
             } else if (key == "itemToDrop") {
                 proto_properties->mutable_item_to_drop()->set_value(std::any_cast<state::Identity>(value).asNumber());
             } else {
-                throw std::invalid_argument("Unknown key: " + key);
+                assert(0);
             }
         }
     }
@@ -149,6 +153,12 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
         if (proto_object.properties().has_interactable()) {
             shared_object->setProperty("interactable", proto_object.properties().interactable().value());
         }
+        if (proto_object.properties().has_attack()) {
+            shared_object->setProperty("attack", proto_object.properties().attack().value());
+        }
+        if (proto_object.properties().has_defence()) {
+            shared_object->setProperty("defence", proto_object.properties().defence().value());
+        }
         // items
         int items_size = proto_object.items_size();
         for (int item_index = 0; item_index < items_size; ++item_index) {
@@ -161,7 +171,7 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
             } else if (game_item_type == common::ItemType::RING) {
                 shared_object->getItems().push_back(std::make_unique<world::state::item::Ring>(itemIdentity, ownerIdentity));
             } else {
-                throw std::runtime_error("handle unknown item type during deserialization");
+                assert(0);
             }
         }
         state.getObjectObserver().addObject(shared_object);
@@ -179,7 +189,7 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
         } else if (action_type == ProtoSerializer::Action_ActionType_POISON) {
             shared_action = std::make_shared<world::state::action::Poison>(actionIdentity);
         } else {
-            throw std::runtime_error("handle unknown action type during deserialization");
+            assert(0);
         }
         // object identity:
         if (proto_action.has_objectidentity()) {

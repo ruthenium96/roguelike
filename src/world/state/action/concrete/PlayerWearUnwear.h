@@ -12,6 +12,9 @@ class PlayerWearUnwear : public AbstractAction {
     bool precondition(const object::Observer &observer, const Observer &observer1) override;
 
     void changeTarget(object::Observer &observer, Observer &observer1) override;
+  private:
+    void wear(object::Observer &objectObserver);
+    void unwear (object::Observer &objectObserver);
 };
 }
 #endif //ARCH_ROGUELIKE_PLAYERWEARUNWEAR_H
