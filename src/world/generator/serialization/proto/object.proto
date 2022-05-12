@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+package ProtoSerializer;
+
+message Coordinates {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message ObjectProperties {
+  google.protobuf.Int32Value hp = 2;
+  google.protobuf.Int32Value lvl = 3;
+  google.protobuf.Int32Value xp = 4;
+  google.protobuf.BoolValue blocking = 5;
+  google.protobuf.BoolValue interactable = 6;
+  google.protobuf.Int32Value attack = 7;
+  google.protobuf.Int32Value defence = 8;
+}
+
+message Item {
+  enum ItemType {
+    STICK = 0;
+    RING = 1;
+  }
+
+  ItemType type = 1;
+  uint64 self_id = 2;
+  uint64 owner_id = 3;
+}
+
+message Object {
+  enum ObjectType {
+    PLAYER = 0;
+    FLOOR = 1;
+    WALL = 2;
+    ARTEFACT = 3;
+  }
+
+  uint64 selfIdentity = 1;
+  ObjectType type = 2;
+  Coordinates coords = 3;
+  ObjectProperties properties = 4;
+  repeated Item items = 5;
+}

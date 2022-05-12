@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+'According to Copenhagen taxonomy, there are four types of airport passengers.
+'Let's try to export the taxonomy to types of players.
+actor :Efficiency Customer:
+actor :Experience Customer:
+actor :Selection Customer:
+actor :Attention Customer:
+
+package RogueLike {
+usecase (Finish the game) as Finish
+usecase (Explore the game) as Explore
+usecase (Figure out the gameplay by themself) as Figure
+usecase (Get tutorial) as Tutorial
+}
+
+'First and second types use the most direct and shortest path:
+(Attention Customer) -> Finish
+(Efficiency Customer) -> Finish
+'Third and forth types view airport as part of travel:
+(Experience Customer) -> Explore
+(Selection Customer) -> Explore
+'First and third types prefer personal assistance.
+(Attention Customer) -> Figure
+(Experience Customer) -> Figure
+'Second and forth types adopt use of self-service offerings
+(Efficiency Customer) -> Tutorial
+(Selection Customer) -> Tutorial
+
+@enduml
