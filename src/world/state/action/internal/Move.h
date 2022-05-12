@@ -1,14 +1,14 @@
-#ifndef ARCH_ROGUELIKE_PLAYERMOVE_H
-#define ARCH_ROGUELIKE_PLAYERMOVE_H
+#ifndef ARCH_ROGUELIKE_MOVE_H
+#define ARCH_ROGUELIKE_MOVE_H
 
 #include "../AbstractAction.h"
 
 namespace world::state::action {
 
-// Action of Player movement. Currently, can be applied only from external source.
-class PlayerMove : public AbstractAction {
+// Action of movement.
+class Move : public AbstractAction {
   public:
-    PlayerMove(int32_t delta_x, int32_t delta_y);
+    Move(int32_t delta_x, int32_t delta_y);
 
     bool precondition(const object::Observer& objectObserver, const action::Observer&) override;
 
@@ -17,4 +17,4 @@ class PlayerMove : public AbstractAction {
 
 }  // namespace world::state::action
 
-#endif  // ARCH_ROGUELIKE_PLAYERMOVE_H
+#endif  // ARCH_ROGUELIKE_MOVE_H

@@ -2,7 +2,7 @@
 #include "generator/OnTheFly.h"
 #include "state/action/external/PlayerDrop.h"
 #include "state/action/external/PlayerWorldInteract.h"
-#include "state/action/external/PlayerMove.h"
+#include "state/action/internal/Move.h"
 #include "state/action/external/PlayerUIInteract.h"
 #include <algorithm>
 
@@ -151,7 +151,9 @@ Engine::generateExternalAction(const common::Command& command) const {
             default:
                 assert(0);
         }
-        externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
+        auto playerIdentity = state_.getObjectObserver().getPlayer()->getIdentity();
+        externalAction = std::make_shared<state::action::Move>(delta_x, delta_y);
+        externalAction.value()->setCorrespondingObjectIdentity(playerIdentity);
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         auto variant = std::get<common::World_ApplyItem>(command);
         externalAction = std::make_shared<state::action::PlayerUIInteract>(variant.type, variant.equipmentPosition);

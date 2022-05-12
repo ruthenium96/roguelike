@@ -3,7 +3,7 @@
 #include "../../../src/world/generator/FromTheDisk.h"
 #include "../../../src/world/generator/OnTheFly.h"
 #include "../../../src/world/state/State.h"
-#include "../../../src/world/state/action/external/PlayerMove.h"
+#include "../../../src/world/state/action/internal/Move.h"
 #include "../../../src/world/state/action/external/PlayerWorldInteract.h"
 
 

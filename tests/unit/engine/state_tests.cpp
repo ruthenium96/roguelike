@@ -4,7 +4,7 @@
 #include "../../../src/world/state/State.h"
 #include "../../../src/world/state/action/external/PlayerDrop.h"
 #include "../../../src/world/state/action/external/PlayerWorldInteract.h"
-#include "../../../src/world/state/action/external/PlayerMove.h"
+#include "../../../src/world/state/action/internal/Move.h"
 #include "../../../src/world/state/action/external/PlayerUIInteract.h"
 
 namespace world::generator {
@@ -58,10 +58,10 @@ TEST(state_tests, canWalkOntoFloor) {
     common::Coordinate expectedCoordinate = {0, 0};
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
-    auto moveActionRight = std::make_shared<world::state::action::PlayerMove>(1, 0);
-    auto moveActionLeft = std::make_shared<world::state::action::PlayerMove>(-1, 0);
-    auto moveActionUp = std::make_shared<world::state::action::PlayerMove>(0, -1);
-    auto moveActionDown = std::make_shared<world::state::action::PlayerMove>(0, 1);
+    auto moveActionRight = std::make_shared<world::state::action::Move>(1, 0);
+    auto moveActionLeft = std::make_shared<world::state::action::Move>(-1, 0);
+    auto moveActionUp = std::make_shared<world::state::action::Move>(0, -1);
+    auto moveActionDown = std::make_shared<world::state::action::Move>(0, 1);
 
     ASSERT_EQ(state.applyAction(moveActionRight), true);
     expectedCoordinate.x += 1;
@@ -109,16 +109,16 @@ TEST(state_tests, cannotWalkIntoWall) {
     common::Coordinate expectedCoordinate = {0, 0};
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
-    auto moveAction = std::make_shared<world::state::action::PlayerMove>(1, 0);
+    auto moveAction = std::make_shared<world::state::action::Move>(1, 0);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
-    moveAction = std::make_shared<world::state::action::PlayerMove>(-1, 0);
+    moveAction = std::make_shared<world::state::action::Move>(-1, 0);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
-    moveAction = std::make_shared<world::state::action::PlayerMove>(0, 1);
+    moveAction = std::make_shared<world::state::action::Move>(0, 1);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
-    moveAction = std::make_shared<world::state::action::PlayerMove>(0, -1);
+    moveAction = std::make_shared<world::state::action::Move>(0, -1);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 }
