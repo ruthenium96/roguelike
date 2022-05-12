@@ -11,7 +11,7 @@ std::shared_ptr<const object::AbstractObject> Observer::getPlayer() const {
     return player_;
 }
 
-std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Identity identity) {
+std::optional<std::shared_ptr<object::AbstractObject>> Observer::getObject(Identity identity) const {
     if (identityObjectMap_.count(identity) == 0) {
         return std::nullopt;
     } else {

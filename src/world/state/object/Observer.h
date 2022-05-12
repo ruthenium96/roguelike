@@ -18,7 +18,7 @@ class Observer {
     std::shared_ptr<object::AbstractObject> getPlayer();
     std::shared_ptr<const object::AbstractObject> getPlayer() const;
     // Get object using its Identity.
-    std::optional<std::shared_ptr<object::AbstractObject>> getObject(Identity);
+    std::optional<std::shared_ptr<object::AbstractObject>> getObject(Identity) const;
 
     // Get all Objects using their Coordinate.
     std::vector<std::shared_ptr<AbstractObject>> getObjectsAtCoordinate(common::Coordinate coordinate) const;
