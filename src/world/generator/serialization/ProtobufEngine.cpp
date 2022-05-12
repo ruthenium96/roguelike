@@ -1,6 +1,6 @@
 #include "ProtobufEngine.h"
-#include "../../state/action/concrete/PickDropItem.h"
-#include "../../state/action/concrete/Poison.h"
+#include "../../state/action/internal/PickDropItem.h"
+#include "../../state/action/internal/Poison.h"
 #include "../../state/item/concrete/Stick.h"
 #include "../../state/item/concrete/Ring.h"
 #include "../../state/object/concrete/Artefact.h"

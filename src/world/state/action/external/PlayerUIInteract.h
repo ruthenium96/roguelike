@@ -1,13 +1,13 @@
-#ifndef ARCH_ROGUELIKE_PLAYERWEARUNWEAR_H
-#define ARCH_ROGUELIKE_PLAYERWEARUNWEAR_H
+#ifndef ARCH_ROGUELIKE_PLAYERUIINTERACT_H
+#define ARCH_ROGUELIKE_PLAYERUIINTERACT_H
 
 #include "../AbstractAction.h"
 #include "../../../../common/PlayerEquipment.h"
 
 namespace world::state::action {
-class PlayerWearUnwear : public AbstractAction {
+class PlayerUIInteract : public AbstractAction {
   public:
-    PlayerWearUnwear(common::ItemType itemType, common::EquipmentPosition position);
+    PlayerUIInteract(common::ItemType itemType, common::EquipmentPosition position);
 
     bool precondition(const object::Observer &observer, const Observer &observer1) override;
 
@@ -17,4 +17,4 @@ class PlayerWearUnwear : public AbstractAction {
     void unwear (object::Observer &objectObserver);
 };
 }
-#endif //ARCH_ROGUELIKE_PLAYERWEARUNWEAR_H
+#endif //ARCH_ROGUELIKE_PLAYERUIINTERACT_H

@@ -3,8 +3,8 @@
 #include "../../../src/world/generator/FromTheDisk.h"
 #include "../../../src/world/generator/OnTheFly.h"
 #include "../../../src/world/state/State.h"
-#include "../../../src/world/state/action/concrete/PlayerMove.h"
-#include "../../../src/world/state/action/concrete/PlayerInteract.h"
+#include "../../../src/world/state/action/external/PlayerMove.h"
+#include "../../../src/world/state/action/external/PlayerWorldInteract.h"
 
 
 TEST(generator_tests, stateEqualsItself) {

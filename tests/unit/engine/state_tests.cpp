@@ -2,10 +2,10 @@
 
 #include "../../../src/world/generator/AbstractGenerator.h"
 #include "../../../src/world/state/State.h"
-#include "../../../src/world/state/action/concrete/PlayerDrop.h"
-#include "../../../src/world/state/action/concrete/PlayerInteract.h"
-#include "../../../src/world/state/action/concrete/PlayerMove.h"
-#include "../../../src/world/state/action/concrete/PlayerWearUnwear.h"
+#include "../../../src/world/state/action/external/PlayerDrop.h"
+#include "../../../src/world/state/action/external/PlayerWorldInteract.h"
+#include "../../../src/world/state/action/external/PlayerMove.h"
+#include "../../../src/world/state/action/external/PlayerUIInteract.h"
 
 namespace world::generator {
 class GeneratorForTests : public AbstractGenerator {
@@ -144,7 +144,7 @@ TEST(state_tests, interactWithArtefactAndDropItem) {
         ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 3);
         ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
 
-        auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+        auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
         ASSERT_EQ(state.applyAction(interactAction), true);
 
         ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
@@ -179,7 +179,7 @@ TEST(state_tests, interactWithNothing) {
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
     // TODO: find Action corresponding to Artefact/Item
 
-    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+    auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
     ASSERT_EQ(state.applyAction(interactAction), false);
 
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
@@ -204,13 +204,13 @@ TEST(state_tests, wearUnwearItem) {
         }
     }
 
-    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+    auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
     ASSERT_EQ(state.applyAction(interactAction), true);
 
     auto itemType = state.getObjectObserver().getPlayer()->getItems().back()->getItemType();
 
     for (int _ = 0; _ < 10; ++_) {
-        auto wearUnwearAction = std::make_shared<world::state::action::PlayerWearUnwear>(itemType, common::LEFTHAND);
+        auto wearUnwearAction = std::make_shared<world::state::action::PlayerUIInteract>(itemType, common::LEFTHAND);
         ASSERT_EQ(state.applyAction(wearUnwearAction), true);
         ASSERT_TRUE(state.getObjectObserver().getPlayer()->getProperty("leftHand").has_value());
 
@@ -237,14 +237,14 @@ TEST(state_tests, cannotWearTwice) {
         }
     }
 
-    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+    auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
     ASSERT_EQ(state.applyAction(interactAction), true);
 
     auto itemType = state.getObjectObserver().getPlayer()->getItems().back()->getItemType();
-    auto wearAction = std::make_shared<world::state::action::PlayerWearUnwear>(itemType, common::LEFTHAND);
+    auto wearAction = std::make_shared<world::state::action::PlayerUIInteract>(itemType, common::LEFTHAND);
     ASSERT_EQ(state.applyAction(wearAction), true);
 
-    auto wearAction_two = std::make_shared<world::state::action::PlayerWearUnwear>(itemType, common::RIGHTHAND);
+    auto wearAction_two = std::make_shared<world::state::action::PlayerUIInteract>(itemType, common::RIGHTHAND);
     ASSERT_EQ(state.applyAction(wearAction_two), false);
 }
 
@@ -266,11 +266,11 @@ TEST(state_tests, cannotDropWhileWeared) {
         }
     }
 
-    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+    auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
     ASSERT_EQ(state.applyAction(interactAction), true);
 
     auto itemType = state.getObjectObserver().getPlayer()->getItems().back()->getItemType();
-    auto wearAction = std::make_shared<world::state::action::PlayerWearUnwear>(itemType, common::LEFTHAND);
+    auto wearAction = std::make_shared<world::state::action::PlayerUIInteract>(itemType, common::LEFTHAND);
     ASSERT_EQ(state.applyAction(wearAction), true);
 
     auto dropAction = std::make_shared<world::state::action::PlayerDrop>(itemType);

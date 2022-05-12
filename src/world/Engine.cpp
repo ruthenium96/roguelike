@@ -1,11 +1,10 @@
 #include "Engine.h"
 #include "generator/OnTheFly.h"
-#include "state/action/concrete/PlayerDrop.h"
-#include "state/action/concrete/PlayerInteract.h"
-#include "state/action/concrete/PlayerMove.h"
-#include "state/action/concrete/PlayerWearUnwear.h"
+#include "state/action/external/PlayerDrop.h"
+#include "state/action/external/PlayerWorldInteract.h"
+#include "state/action/external/PlayerMove.h"
+#include "state/action/external/PlayerUIInteract.h"
 #include <algorithm>
-#include <stdexcept>
 
 namespace world {
 
@@ -124,7 +123,7 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
     if (std::holds_alternative<common::Ignore>(command)) {
         // do nothing
     } else if (std::holds_alternative<common::Interact>(command)) {
-        externalAction = std::make_shared<state::action::PlayerInteract>();
+        externalAction = std::make_shared<state::action::PlayerWorldInteract>();
     } else if (std::holds_alternative<common::Move>(command)) {
         auto variant = std::get<common::Move>(command);
         int32_t delta_x;
@@ -152,7 +151,7 @@ Engine::generateExternalAction(const common::ControllerCommand& command) const {
         externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         auto variant = std::get<common::World_ApplyItem>(command);
-        externalAction = std::make_shared<state::action::PlayerWearUnwear>(variant.type, variant.equipmentPosition);
+        externalAction = std::make_shared<state::action::PlayerUIInteract>(variant.type, variant.equipmentPosition);
     } else if (std::holds_alternative<common::World_DropItem>(command)) {
         auto variant = std::get<common::World_DropItem>(command);
         externalAction = std::make_shared<state::action::PlayerDrop>(variant.type);

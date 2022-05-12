@@ -1,9 +1,9 @@
 #include <cassert>
-#include "PlayerWearUnwear.h"
+#include "PlayerUIInteract.h"
 
 namespace world::state::action {
 
-PlayerWearUnwear::PlayerWearUnwear(common::ItemType itemType, common::EquipmentPosition position) : AbstractAction(std::nullopt) {
+PlayerUIInteract::PlayerUIInteract(common::ItemType itemType, common::EquipmentPosition position) : AbstractAction(std::nullopt) {
     setProperty("itemToWear", itemType);
     std::string str_position;
     if (position == common::ARMOR) {
@@ -19,7 +19,7 @@ PlayerWearUnwear::PlayerWearUnwear(common::ItemType itemType, common::EquipmentP
     setProperty("position", str_position);
 }
 
-bool PlayerWearUnwear::precondition(const object::Observer &objectObserver, const Observer &actionObserver) {
+bool PlayerUIInteract::precondition(const object::Observer &objectObserver, const Observer &actionObserver) {
 
     auto player = objectObserver.getPlayer();
     auto str_position = std::any_cast<std::string>(getProperty("position").value());
@@ -34,7 +34,7 @@ bool PlayerWearUnwear::precondition(const object::Observer &objectObserver, cons
     }
 }
 
-void PlayerWearUnwear::changeTarget(object::Observer &objectObserver, Observer &actionObserver) {
+void PlayerUIInteract::changeTarget(object::Observer &objectObserver, Observer &actionObserver) {
     auto player = objectObserver.getPlayer();
     auto str_position = std::any_cast<std::string>(getProperty("position").value());
 
@@ -45,7 +45,7 @@ void PlayerWearUnwear::changeTarget(object::Observer &objectObserver, Observer &
     }
 }
 
-void PlayerWearUnwear::wear(object::Observer &objectObserver) {
+void PlayerUIInteract::wear(object::Observer &objectObserver) {
     auto player = objectObserver.getPlayer();
     auto itemType = std::any_cast<common::ItemType>(getProperty("itemToWear").value());
     auto str_position = std::any_cast<std::string>(getProperty("position").value());
@@ -64,7 +64,7 @@ void PlayerWearUnwear::wear(object::Observer &objectObserver) {
     }
 }
 
-void PlayerWearUnwear::unwear(object::Observer &objectObserver) {
+void PlayerUIInteract::unwear(object::Observer &objectObserver) {
     auto player = objectObserver.getPlayer();
     auto itemType = std::any_cast<common::ItemType>(getProperty("itemToWear").value());
     auto str_position = std::any_cast<std::string>(getProperty("position").value());

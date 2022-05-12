@@ -1,13 +1,13 @@
-#include "PlayerInteract.h"
+#include "PlayerWorldInteract.h"
 
 namespace world::state::action {
-bool PlayerInteract::precondition(const object::Observer& objectObserver, const action::Observer& actionObserver) {
+bool PlayerWorldInteract::precondition(const object::Observer& objectObserver, const action::Observer& actionObserver) {
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
     return findInteractableObject(objects) != std::nullopt;
 }
 
-void PlayerInteract::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
+void PlayerWorldInteract::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
     auto interactableObject = findInteractableObject(objects).value();
@@ -28,7 +28,7 @@ void PlayerInteract::changeTarget(object::Observer& objectObserver, action::Obse
     action->changeTarget(objectObserver, actionObserver);
 }
 
-std::optional<std::shared_ptr<object::AbstractObject>> PlayerInteract::findInteractableObject(
+std::optional<std::shared_ptr<object::AbstractObject>> PlayerWorldInteract::findInteractableObject(
     const std::vector<std::shared_ptr<object::AbstractObject>>& objects) {
     for (const auto& object : objects) {
         if (object->getProperty("interactable").has_value()) {

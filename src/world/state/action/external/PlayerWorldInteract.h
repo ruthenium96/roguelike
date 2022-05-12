@@ -1,12 +1,12 @@
-#ifndef ARCH_ROGUELIKE_PLAYERINTERACT_H
-#define ARCH_ROGUELIKE_PLAYERINTERACT_H
+#ifndef ARCH_ROGUELIKE_PLAYERWORLDINTERACT_H
+#define ARCH_ROGUELIKE_PLAYERWORLDINTERACT_H
 
 #include "../AbstractAction.h"
 
 namespace world::state::action {
-class PlayerInteract : public AbstractAction {
+class PlayerWorldInteract : public AbstractAction {
   public:
-    PlayerInteract() : AbstractAction(std::nullopt){};
+    PlayerWorldInteract() : AbstractAction(std::nullopt){};
 
     bool precondition(const object::Observer&, const action::Observer&) override;
 
@@ -18,4 +18,4 @@ class PlayerInteract : public AbstractAction {
 };
 }  // namespace world::state::action
 
-#endif  // ARCH_ROGUELIKE_PLAYERINTERACT_H
+#endif  // ARCH_ROGUELIKE_PLAYERWORLDINTERACT_H

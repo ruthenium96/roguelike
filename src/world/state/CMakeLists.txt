@@ -12,12 +12,12 @@ add_library(state
 
         action/AbstractAction.h action/AbstractAction.cpp
         action/Observer.cpp action/Observer.h
-        action/concrete/PlayerDrop.cpp action/concrete/PlayerDrop.h
-        action/concrete/PlayerMove.cpp action/concrete/PlayerMove.h
-        action/concrete/PlayerInteract.cpp action/concrete/PlayerInteract.h
-        action/concrete/PlayerWearUnwear.cpp action/concrete/PlayerWearUnwear.h
-        action/concrete/PickDropItem.cpp action/concrete/PickDropItem.h
-        action/concrete/Poison.cpp action/concrete/Poison.h
+        action/external/PlayerDrop.cpp action/external/PlayerDrop.h
+        action/external/PlayerMove.cpp action/external/PlayerMove.h
+        action/external/PlayerWorldInteract.cpp action/external/PlayerWorldInteract.h
+        action/external/PlayerUIInteract.cpp action/external/PlayerUIInteract.h
+        action/internal/PickDropItem.cpp action/internal/PickDropItem.h
+        action/internal/Poison.cpp action/internal/Poison.h
 
         item/AbstractItem.cpp item/AbstractItem.h
         item/concrete/Stick.cpp item/concrete/Stick.h
