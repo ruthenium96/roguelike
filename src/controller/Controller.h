@@ -24,6 +24,13 @@ class Controller {
     }
 
   private:
+    enum class CurrentRegime {
+        WORLD,
+        UI,
+    };
+    CurrentRegime currentRegime_ = CurrentRegime::WORLD;
+    void changeRegime(const common::WorldUITransfer& world_state);
+    const CurrentRegime& getCurrentRegime() const;
     world::Engine engine_;
     ui::UI ui_;
     controller::input::KeyboardManager manager_;

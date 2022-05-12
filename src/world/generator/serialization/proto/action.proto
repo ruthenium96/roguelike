@@ -10,6 +10,7 @@ message ActionProperties {
   google.protobuf.Int32Value dhp = 3;
   google.protobuf.Int32Value duration = 4;
   google.protobuf.BoolValue every_turn = 5;
+  google.protobuf.UInt64Value item_to_drop = 6;
 }
 
 

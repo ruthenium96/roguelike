@@ -22,8 +22,12 @@ class Engine {
   private:
     void generateWorldAroundPlayer(common::Coordinate playerCoordinate);
 
+    std::shared_ptr<state::action::AbstractAction> generateExternalAction(const common::ControllerCommand&) const;
+
     state::State state_;
     std::unique_ptr<generator::AbstractGenerator> generator_;
+    mutable std::optional<std::string> errorMessageForUi;
+    void generateErrorMessageForUI(const common::ControllerCommand&);
 };
 
 }  // namespace world

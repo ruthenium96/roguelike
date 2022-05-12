@@ -75,4 +75,38 @@ bool Observer::operator==(const Observer &rhs) const {
 bool Observer::operator!=(const Observer &rhs) const {
     return !(rhs == *this);
 }
+
+size_t Observer::howManyItemsOfThisTypeHoldsPlayer(common::ItemType type) const {
+    size_t answer = 0;
+    for (const auto& item : getPlayer()->getItems()) {
+        if (item->getItemType() == type) {
+            ++answer;
+        }
+    }
+    return answer;
+}
+
+size_t Observer::countHowManyTimesItemIsWearedByPlayer(common::ItemType type) const {
+    size_t answer = 0;
+    auto player = getPlayer();
+    if (player->getProperty("armor").has_value()) {
+        auto wearedType = std::any_cast<common::ItemType>(player->getProperty("armor").value());
+        if (type == wearedType) {
+            ++answer;
+        }
+    }
+    if (player->getProperty("leftHand").has_value()) {
+        auto wearedType = std::any_cast<common::ItemType>(player->getProperty("leftHand").value());
+        if (type == wearedType) {
+            ++answer;
+        }
+    }
+    if (player->getProperty("rightHand").has_value()) {
+        auto wearedType = std::any_cast<common::ItemType>(player->getProperty("rightHand").value());
+        if (type == wearedType) {
+            ++answer;
+        }
+    }
+    return answer;
+}
 }  // namespace world::state::object

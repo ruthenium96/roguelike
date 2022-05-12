@@ -1,9 +1,10 @@
 #include "Engine.h"
 #include "generator/OnTheFly.h"
-#include "state/action/concrete/PlayerInteract.h"
-#include "state/action/concrete/PlayerMove.h"
+#include "state/action/external/PlayerDrop.h"
+#include "state/action/external/PlayerWorldInteract.h"
+#include "state/action/external/PlayerMove.h"
+#include "state/action/external/PlayerUIInteract.h"
 #include <algorithm>
-#include <stdexcept>
 
 namespace world {
 
@@ -16,42 +17,16 @@ Engine::Engine() {
 void Engine::applyCommand(const common::ControllerCommand& command) {
     using common::ControllerCommand;
 
-    std::shared_ptr<state::action::AbstractAction> externalAction;
-    // TODO: refactor it
-    if (command == ControllerCommand::INTERACT) {
-        externalAction = std::make_shared<state::action::PlayerInteract>();
-    } else {
-        int32_t delta_x;
-        int32_t delta_y;
-        switch (command) {
-            case ControllerCommand::MOVE_TOP:
-                delta_x = 0;
-                delta_y = -1;
-                break;
-            case ControllerCommand::MOVE_LEFT:
-                delta_x = -1;
-                delta_y = 0;
-                break;
-            case ControllerCommand::MOVE_BOTTOM:
-                delta_x = 0;
-                delta_y = 1;
-                break;
-            case ControllerCommand::MOVE_RIGHT:
-                delta_x = 1;
-                delta_y = 0;
-                break;
-            default:
-                // throw is better than ignore
-                throw std::runtime_error("unknown command sent to engine");
-        }
-        externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
+    auto externalAction = generateExternalAction(command);
+    if (externalAction == nullptr) {
+        return;
     }
 
     bool isExternalActionApplied = state_.applyAction(externalAction);
     if (isExternalActionApplied) {
         state_.applyEveryTurnInternalActions();
     } else {
-        // TODO: return description string if an external action has false precondition
+        generateErrorMessageForUI(command);
     }
 
     generateWorldAroundPlayer(state_.getObjectObserver().getPlayer()->getCoordinate());
@@ -65,14 +40,16 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
         auto playerCoordinate = state_.getObjectObserver().getPlayer()->getCoordinate();
         int32_t VISIBILITY = 10;
         for (int32_t dx = -VISIBILITY; dx <= VISIBILITY; ++dx) {
-            for (int32_t dy = -VISIBILITY; dy <= VISIBILITY; ++dy) {
-                common::Coordinate currentCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
-                auto objects = state_.getObjectObserver().getObjectsAtCoordinate(currentCoordinate);
+            int32_t sqrt = std::sqrt(VISIBILITY * VISIBILITY - dx * dx);
+            for (int32_t dy = -sqrt; dy <= sqrt; ++dy) {
+                common::Coordinate relativeCoordinate = {dx, dy};
+                common::Coordinate absoluteCoordinate = {playerCoordinate.x + dx, playerCoordinate.y + dy};
+                auto objects = state_.getObjectObserver().getObjectsAtCoordinate(absoluteCoordinate);
                 std::vector<common::ObjectType> objectsTypes(objects.size());
                 std::transform(objects.cbegin(), objects.cend(), objectsTypes.begin(), [](const auto& object) {
                     return object->getObjectType();
                 });
-                map[currentCoordinate] = objectsTypes;
+                map[relativeCoordinate] = objectsTypes;
             }
         }
         worldUiTransfer.map = map;
@@ -94,7 +71,30 @@ common::WorldUITransfer Engine::getWorldUITransfer() const {
         playerMetrics.hp = std::any_cast<int32_t>(player->getProperty("hp").value());
         playerMetrics.lvl = std::any_cast<int32_t>(player->getProperty("lvl").value());
         playerMetrics.xp = std::any_cast<int32_t>(player->getProperty("xp").value());
+        playerMetrics.attack = std::any_cast<int32_t>(player->getProperty("attack").value());
+        playerMetrics.defence = std::any_cast<int32_t>(player->getProperty("defence").value());
         worldUiTransfer.playerMetrics = playerMetrics;
+    }
+    {
+        common::PlayerEquipment playerEquipment;
+        auto player = state_.getObjectObserver().getPlayer();
+        if (player->getProperty("armor").has_value()) {
+            auto armorItemType = std::any_cast<common::ItemType>(player->getProperty("armor").value());
+            playerEquipment.armor = armorItemType;
+        }
+        if (player->getProperty("leftHand").has_value()) {
+            auto leftHandItemType = std::any_cast<common::ItemType>(player->getProperty("leftHand").value());
+            playerEquipment.leftHand = leftHandItemType;
+        }
+        if (player->getProperty("rightHand").has_value()) {
+            auto rightHandItemType = std::any_cast<common::ItemType>(player->getProperty("rightHand").value());
+            playerEquipment.rightHand = rightHandItemType;
+        }
+        worldUiTransfer.playerEquipment = playerEquipment;
+    }
+    {
+        worldUiTransfer.message = errorMessageForUi;
+        errorMessageForUi = std::nullopt;
     }
     return worldUiTransfer;
 }
@@ -110,9 +110,73 @@ void Engine::generateWorldAroundPlayer(common::Coordinate playerCoordinate) {
                 for (const auto& action : objectAndActions.actions) {
                     state_.addAction(action);
                 }
-                // TODO: implement adding of actions
             }
         }
+    }
+}
+
+std::shared_ptr<state::action::AbstractAction>
+Engine::generateExternalAction(const common::ControllerCommand& command) const {
+    std::shared_ptr<state::action::AbstractAction> externalAction = nullptr;
+    // TODO: refactor it
+
+    if (std::holds_alternative<common::Ignore>(command)) {
+        // do nothing
+    } else if (std::holds_alternative<common::Interact>(command)) {
+        externalAction = std::make_shared<state::action::PlayerWorldInteract>();
+    } else if (std::holds_alternative<common::Move>(command)) {
+        auto variant = std::get<common::Move>(command);
+        int32_t delta_x;
+        int32_t delta_y;
+        switch (variant.direction) {
+            case common::Direction::TOP:
+                delta_x = 0;
+                delta_y = -1;
+                break;
+            case common::Direction::LEFT:
+                delta_x = -1;
+                delta_y = 0;
+                break;
+            case common::Direction::BOTTOM:
+                delta_x = 0;
+                delta_y = 1;
+                break;
+            case common::Direction::RIGHT:
+                delta_x = 1;
+                delta_y = 0;
+                break;
+            default:
+                assert(0);
+        }
+        externalAction = std::make_shared<state::action::PlayerMove>(delta_x, delta_y);
+    } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
+        auto variant = std::get<common::World_ApplyItem>(command);
+        externalAction = std::make_shared<state::action::PlayerUIInteract>(variant.type, variant.equipmentPosition);
+    } else if (std::holds_alternative<common::World_DropItem>(command)) {
+        auto variant = std::get<common::World_DropItem>(command);
+        externalAction = std::make_shared<state::action::PlayerDrop>(variant.type);
+    } else {
+        // Unknown, Exit, UIInventoryDrop, UIInventoryApply, ChangeRegime, UiMoveInventory
+        assert(0);
+    }
+
+    return externalAction;
+}
+
+void Engine::generateErrorMessageForUI(const common::ControllerCommand& command) {
+    if (std::holds_alternative<common::Ignore>(command)) {
+        return;
+    } else if (std::holds_alternative<common::Interact>(command)) {
+        errorMessageForUi = "Nothing to interact!";
+    } else if (std::holds_alternative<common::Move>(command)) {
+        errorMessageForUi = "Cannot move here!";
+    } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
+        errorMessageForUi = "Need more items!";
+    } else if (std::holds_alternative<common::World_DropItem>(command)) {
+        errorMessageForUi = "Cannot drop!";
+    } else {
+        // Unknown, Exit, UIInventoryDrop, UIInventoryApply, ChangeRegime, UiMoveInventory
+        assert(0);
     }
 }
 

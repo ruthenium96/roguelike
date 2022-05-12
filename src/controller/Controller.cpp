@@ -8,15 +8,31 @@ using common::ControllerCommand;
 namespace {
 
 bool is_ui_command(const ControllerCommand& command) {
-    switch (command) {
-        case ControllerCommand::UI_ACTIVATE_INVENTORY:
-        case ControllerCommand::UI_INVENTORY_DOWN:
-        case ControllerCommand::UI_INVENTORY_UP:
-        case ControllerCommand::UI_INVENTORY_APPLY:
-            return true;
-            break;
+    if (std::holds_alternative<common::Interact>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::UI_DropItem>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::Move>(command)) {
+        return true;
+    } else {
+        return false;
     }
-    return false;
+}
+
+bool is_world_command(const ControllerCommand& command) {
+    if (std::holds_alternative<common::Move>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::Interact>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::World_DropItem>(command)) {
+        return true;
+    } else if (std::holds_alternative<common::Ignore>(command)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 }  // namespace
@@ -25,27 +41,57 @@ void Controller::start() {
     // use us_.draw_init();
 
     ControllerCommand command;
-    do {
-        auto world_state = engine_.getWorldUITransfer();
-        ui_.draw(world_state);
-
+    auto world_state = engine_.getWorldUITransfer();
+    ui_.draw(world_state);
+    while (true) {
         command = manager_.readCommand();
-        if (command == ControllerCommand::UNKNOWN || command == ControllerCommand::EXIT) {
+        if (std::holds_alternative<common::Controller_Unknown>(command)) {
             continue;
+        } else if (std::holds_alternative<common::Controller_Exit>(command)) {
+            break;
+        } else if (std::holds_alternative<common::Controller_ChangeRegime>(command)) {
+            changeRegime(world_state);
         }
 
-        if (is_ui_command(command)) {
-            ui_.apply_command(command, world_state);
-            ui_.draw(world_state);
+        if (getCurrentRegime() == CurrentRegime::UI) {
+            if (is_ui_command(command)) {
+                auto commandFromUI = ui_.apply_command(command, world_state);
+                engine_.applyCommand(commandFromUI);
+            }
+            // TODO: return to world regime if the last item was dropped
+            // do nothing if it is not command of UI
+        } else if (getCurrentRegime() == CurrentRegime::WORLD) {
+            if (is_world_command(command)) {
+                engine_.applyCommand(command);
+            }
+            // do nothing if it is not command of World
         } else {
-            // move outside else block to process command returned from ui_
-            ui_.deactivate_state();
-            engine_.applyCommand(command);
+            assert(0);
         }
 
-    } while (command != ControllerCommand::EXIT);
+        world_state = engine_.getWorldUITransfer();
+        ui_.draw(world_state);
+    }
 
     // us_.draw_final();
+}
+
+void Controller::changeRegime(const common::WorldUITransfer& world_state) {
+    if (currentRegime_ == CurrentRegime::WORLD) {
+        if (ui_.activate_state(world_state)) {
+            currentRegime_ = CurrentRegime::UI;
+        }
+    } else if (currentRegime_ == CurrentRegime::UI) {
+        currentRegime_ = CurrentRegime::WORLD;
+        ui_.deactivate_state(world_state);
+    } else {
+        assert(0);
+    }
+
+}
+
+const Controller::CurrentRegime &Controller::getCurrentRegime() const {
+    return currentRegime_;
 }
 
 }  // namespace controller

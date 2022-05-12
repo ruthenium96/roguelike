@@ -13,6 +13,8 @@ class Observer {
     void deleteAction(Identity actionIdentity);
     std::optional<std::shared_ptr<action::AbstractAction>> getActionByCorrespondingObjectIdentity(
         Identity objectIdentity) const;
+    std::optional<std::shared_ptr<action::AbstractAction>> getActionByCorrespondingItemIdentity(
+            Identity objectIdentity) const;
     const std::vector<std::shared_ptr<AbstractAction>>& getEveryTurnActions() const;
     const std::set<std::shared_ptr<AbstractAction>>& getAllActions() const;
 

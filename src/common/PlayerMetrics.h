@@ -6,6 +6,8 @@ struct PlayerMetrics {
     int32_t hp;
     int32_t lvl;
     int32_t xp;
+    int32_t attack;
+    int32_t defence;
 };
 }  // namespace common
 

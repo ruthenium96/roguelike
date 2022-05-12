@@ -3,6 +3,7 @@
 
 #include "../../../common/Coordinate.h"
 #include "../../../common/ObjectType.h"
+#include "../Entity.h"
 #include "../Identity.h"
 #include "../item/AbstractItem.h"
 #include <any>
@@ -15,7 +16,7 @@
 
 namespace world::state::object {
 // An abstract class for all Objects. Object is something, that always have the Coordinate.
-class AbstractObject {
+class AbstractObject : public Entity {
   public:
     explicit AbstractObject(const Identity& identity) : selfIdentity_(identity){};
     // Identity getter.
@@ -28,10 +29,6 @@ class AbstractObject {
     // Items getters:
     std::vector<std::unique_ptr<item::AbstractItem>>& getItems() { return items_; }
     const std::vector<std::unique_ptr<item::AbstractItem>>& getItems() const { return items_; }
-    std::optional<std::any> getProperty(const std::string& property_name) const;
-    void setProperty(const std::string& property_name, std::any value);
-
-    const std::map<std::string, std::any>& getAllProperties() const;
 
     virtual ~AbstractObject() = default;
 
@@ -44,9 +41,6 @@ class AbstractObject {
     common::Coordinate coordinate_;
     // TODO: Can be replaced by std::vector<Identity>
     std::vector<std::unique_ptr<item::AbstractItem>> items_;
-    std::map<std::string, std::any> property_;
-
-    static bool compareTwoAny(const std::any& lhs, const std::any& rhs) ;
 };
 }  // namespace world::state::object
 

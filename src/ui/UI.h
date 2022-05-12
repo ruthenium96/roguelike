@@ -13,7 +13,8 @@ namespace {
 
 struct UiState {
     size_t inventory_pos{0};
-    bool inventory_active{false};
+    size_t equipment_pos{0};
+    bool active{false};
 };
 
 }  // namespace
@@ -25,8 +26,11 @@ class UI {
     // draw current game image
     void draw(const common::WorldUITransfer& world_state);
 
-    void apply_command(const common::ControllerCommand& command, const common::WorldUITransfer& world_state);
-    void deactivate_state();
+    common::ControllerCommand apply_command(const common::ControllerCommand& command,
+                                            const common::WorldUITransfer& world_state);
+    // true if state was activated
+    bool activate_state(const common::WorldUITransfer& world_state);
+    void deactivate_state(const common::WorldUITransfer& world_state);
 
   private:
     // pushes hello line on display
@@ -40,6 +44,13 @@ class UI {
 
     // pushes player inventory on display
     void pushInventoryOnDisplay(const common::Inventory& inventory);
+
+    // pushes message on display
+    void pushMessageOnDisplay(const std::optional<std::string>& mbMessage);
+
+    // pushes equipment on display
+    void pushEquipmentOnDisplay(const common::PlayerEquipment& equipment);
+
 
   private:
     std::unique_ptr<IStyle> style_;

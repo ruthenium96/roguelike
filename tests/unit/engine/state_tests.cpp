@@ -2,8 +2,10 @@
 
 #include "../../../src/world/generator/AbstractGenerator.h"
 #include "../../../src/world/state/State.h"
-#include "../../../src/world/state/action/concrete/PlayerMove.h"
-#include "../../../src/world/state/action/concrete/PlayerInteract.h"
+#include "../../../src/world/state/action/external/PlayerDrop.h"
+#include "../../../src/world/state/action/external/PlayerWorldInteract.h"
+#include "../../../src/world/state/action/external/PlayerMove.h"
+#include "../../../src/world/state/action/external/PlayerUIInteract.h"
 
 namespace world::generator {
 class GeneratorForTests : public AbstractGenerator {
@@ -121,7 +123,7 @@ TEST(state_tests, cannotWalkIntoWall) {
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 }
 
-TEST(state_tests, interactWithArtefact) {
+TEST(state_tests, interactWithArtefactAndDropItem) {
     world::state::State state;
     world::generator::GeneratorForTests generator;
 
@@ -138,15 +140,23 @@ TEST(state_tests, interactWithArtefact) {
         }
     }
 
+    for (int _ = 0; _ < 10; ++_) {
+        ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 3);
+        ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
+
+        auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
+        ASSERT_EQ(state.applyAction(interactAction), true);
+
+        ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
+        ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 1);
+
+        auto itemType = state.getObjectObserver().getPlayer()->getItems()[0]->getItemType();
+        auto dropAction = std::make_shared<world::state::action::PlayerDrop>(itemType);
+        ASSERT_EQ(state.applyAction(dropAction), true);
+    }
+
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 3);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
-    // TODO: find Action corresponding to Artefact/Item
-
-    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
-    ASSERT_EQ(state.applyAction(interactAction), true);
-
-    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
-    ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 1);
 }
 
 TEST(state_tests, interactWithNothing) {
@@ -169,9 +179,100 @@ TEST(state_tests, interactWithNothing) {
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
     // TODO: find Action corresponding to Artefact/Item
 
-    auto interactAction = std::make_shared<world::state::action::PlayerInteract>();
+    auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
     ASSERT_EQ(state.applyAction(interactAction), false);
 
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getItems().size(), 0);
+}
+
+TEST(state_tests, wearUnwearItem) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 0}, answer, generated_identities);
+    generator.addArtefactPublic({0, 0}, answer, ++generated_identities);
+
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
+    ASSERT_EQ(state.applyAction(interactAction), true);
+
+    auto itemType = state.getObjectObserver().getPlayer()->getItems().back()->getItemType();
+
+    for (int _ = 0; _ < 10; ++_) {
+        auto wearUnwearAction = std::make_shared<world::state::action::PlayerUIInteract>(itemType, common::LEFTHAND);
+        ASSERT_EQ(state.applyAction(wearUnwearAction), true);
+        ASSERT_TRUE(state.getObjectObserver().getPlayer()->getProperty("leftHand").has_value());
+
+        ASSERT_EQ(state.applyAction(wearUnwearAction), true);
+        ASSERT_FALSE(state.getObjectObserver().getPlayer()->getProperty("leftHand").has_value());
+    }
+}
+
+TEST(state_tests, cannotWearTwice) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 0}, answer, generated_identities);
+    generator.addArtefactPublic({0, 0}, answer, ++generated_identities);
+
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
+    ASSERT_EQ(state.applyAction(interactAction), true);
+
+    auto itemType = state.getObjectObserver().getPlayer()->getItems().back()->getItemType();
+    auto wearAction = std::make_shared<world::state::action::PlayerUIInteract>(itemType, common::LEFTHAND);
+    ASSERT_EQ(state.applyAction(wearAction), true);
+
+    auto wearAction_two = std::make_shared<world::state::action::PlayerUIInteract>(itemType, common::RIGHTHAND);
+    ASSERT_EQ(state.applyAction(wearAction_two), false);
+}
+
+TEST(state_tests, cannotDropWhileWeared) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 0}, answer, generated_identities);
+    generator.addArtefactPublic({0, 0}, answer, ++generated_identities);
+
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    auto interactAction = std::make_shared<world::state::action::PlayerWorldInteract>();
+    ASSERT_EQ(state.applyAction(interactAction), true);
+
+    auto itemType = state.getObjectObserver().getPlayer()->getItems().back()->getItemType();
+    auto wearAction = std::make_shared<world::state::action::PlayerUIInteract>(itemType, common::LEFTHAND);
+    ASSERT_EQ(state.applyAction(wearAction), true);
+
+    auto dropAction = std::make_shared<world::state::action::PlayerDrop>(itemType);
+    ASSERT_EQ(state.applyAction(dropAction), false);
 }

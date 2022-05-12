@@ -5,10 +5,15 @@
 namespace ui {
 
 char DefaultStyle::getGameObjectsRepr(const std::vector<ObjectType>& objects) const {
-    assert(objects.size() > 0);
-
+    if (objects.empty()) {
+        return ' ';
+    }
+    
     if (std::find(objects.cbegin(), objects.cend(), ObjectType::PLAYER) != objects.end()) {
         return getGameObjectRepr(ObjectType::PLAYER);
+    }
+    if (std::find(objects.cbegin(), objects.cend(), ObjectType::ARTEFACT) != objects.end()) {
+        return getGameObjectRepr(ObjectType::ARTEFACT);
     }
 
     return getGameObjectRepr(objects.back());
