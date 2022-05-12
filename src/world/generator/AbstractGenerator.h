@@ -31,6 +31,7 @@ class AbstractGenerator {
     void addFloor(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
     void addWall(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
     void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
+    void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
 
   private:
     serialization::Serializer saver_;

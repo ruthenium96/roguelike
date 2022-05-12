@@ -6,6 +6,7 @@
 #include "../state/item/concrete/Stick.h"
 #include "../state/object/concrete/Artefact.h"
 #include "../state/object/concrete/Wall.h"
+#include "../state/object/concrete/NPC.h"
 #include <random>
 #include <stdexcept>
 
@@ -101,6 +102,24 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
 
     answer.push_back(artefact);
 }
+
+void AbstractGenerator::addNPC(common::Coordinate coordinate,
+                               std::vector<ObjectAndActions>& answer,
+                               uint64_t& generated_identities_) {
+    ObjectAndActions npc;
+    auto npcIdentity = state::Identity(generated_identities_++);
+    // add NPC object
+    npc.object = std::make_shared<state::object::NPC>(npcIdentity);
+    npc.object->getCoordinate() = coordinate;
+    // add NPC actions
+//    auto actionIdentity = state::Identity(generated_identities_++);
+//    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, -1, 100000);
+//    poisonAction->setCorrespondingObjectIdentity(playerIdentity);
+//    player.actions.push_back(poisonAction);
+    // ...
+    answer.push_back(npc);
+}
+
 
 const serialization::Serializer &AbstractGenerator::getSaver() const {
     return saver_;

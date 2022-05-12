@@ -9,6 +9,7 @@ add_library(state
         object/concrete/Floor.cpp object/concrete/Floor.h
         object/concrete/Wall.cpp object/concrete/Wall.h
         object/concrete/Artefact.cpp object/concrete/Artefact.h
+        object/concrete/NPC.cpp object/concrete/NPC.h
 
         action/AbstractAction.h action/AbstractAction.cpp
         action/Observer.cpp action/Observer.h

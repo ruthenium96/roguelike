@@ -23,6 +23,8 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
             addFloor(coordinate, answer, generated_identities_);
             if (probability > 0.99) {
                 addArtefact(coordinate, answer, generated_identities_);
+            } else if (probability > 0.985) {
+                addNPC(coordinate, answer, generated_identities_);
             }
         }
     }
