@@ -22,4 +22,4 @@ add_library(state
         item/AbstractItem.cpp item/AbstractItem.h
         item/concrete/Stick.cpp item/concrete/Stick.h
         item/concrete/Ring.h
-        )
+        item/concrete/Ring.cpp)
