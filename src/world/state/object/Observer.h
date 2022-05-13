@@ -26,11 +26,13 @@ class Observer {
 
     // Adds new object.
     void addObject(const std::shared_ptr<object::AbstractObject>&);
-    //
+    // Delete object.
     void deleteObject(Identity);
 
 
+    // Counts number of Item with concrete Type in Player's Inventory
     size_t howManyItemsOfThisTypeHoldsPlayer(common::ItemType type) const;
+    // Counts number of weared Item with concrete Type in Player's Inventory
     size_t countHowManyTimesItemIsWearedByPlayer(common::ItemType type) const;
 
     bool operator==(const Observer &rhs) const;

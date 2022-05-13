@@ -1,6 +1,7 @@
 #include "AbstractObject.h"
 
 #include <stdexcept>
+#include <cassert>
 
 namespace world::state::object {
 
@@ -40,5 +41,34 @@ bool AbstractObject::operator==(const AbstractObject &rhs) const {
 
 bool AbstractObject::operator!=(const AbstractObject &rhs) const {
     return !(rhs == *this);
+}
+
+void AbstractObject::levelUp(int32_t dexp) {
+    auto mbXp = getProperty("xp");
+    auto mbLvl = getProperty("lvl");
+    if (!mbXp.has_value() || !mbLvl.has_value()) {
+        assert(0);
+    }
+    auto old_xp = std::any_cast<int32_t>(mbXp.value());
+    auto old_lvl = std::any_cast<int32_t>(mbLvl.value());
+
+    auto new_xp = old_xp + dexp;
+    setProperty("xp", new_xp);
+
+    int new_lvl = 0;
+    uint32_t unew_xp = new_xp;
+    while (unew_xp > 1) {
+        unew_xp >>= 1;
+        ++new_lvl;
+    }
+    setProperty("lvl", new_lvl);
+
+    int32_t dlvl = new_lvl - old_lvl;
+    auto old_attack = std::any_cast<int32_t>(getProperty("attack").value());
+    auto old_defence = std::any_cast<int32_t>(getProperty("defence").value());
+
+    setProperty("attack", old_attack + dlvl);
+    setProperty("defence", old_defence + dlvl);
+
 }
 }  // namespace world::state::object

@@ -29,6 +29,7 @@ class AbstractObject : public Entity {
     // Items getters:
     std::vector<std::unique_ptr<item::AbstractItem>>& getItems() { return items_; }
     const std::vector<std::unique_ptr<item::AbstractItem>>& getItems() const { return items_; }
+    void levelUp(int32_t dexp);
 
     virtual ~AbstractObject() = default;
 

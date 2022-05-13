@@ -22,19 +22,8 @@ bool AbstractNPC::precondition(const object::Observer &objectObserver, const act
 }
 
 void AbstractNPC::death(object::Observer &objectObserver, Observer &actionObserver) {
-    // TODO: move it from here
     auto player = objectObserver.getPlayer();
-    auto old_xp = std::any_cast<int32_t>(player->getProperty("xp").value());
-    auto new_xp = old_xp + 10;
-    player->setProperty("xp", new_xp);
-
-    int new_lvl = 0;
-    uint32_t unew_xp = new_xp;
-    while (unew_xp > 1) {
-        unew_xp >>= 1;
-        ++new_lvl;
-    }
-    player->setProperty("lvl", new_lvl);
+    player->levelUp(10);
 
     auto NPCIdentity = getCorrespondingObjectIdentity().value();
     objectObserver.deleteObject(NPCIdentity);
