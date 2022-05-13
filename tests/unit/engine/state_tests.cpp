@@ -22,6 +22,9 @@ public:
     void addArtefactPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
         addArtefact(coordinate, answer, generated_identities_);
     };
+    void addNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
+        addNPC(coordinate, answer, generated_identities_);
+    }
     std::vector<ObjectAndActions> generateObjects(common::Coordinate coordinate,
                                                   const state::object::Observer &observer) override {
         return {};
@@ -285,4 +288,103 @@ TEST(state_tests, cannotDropWhileWeared) {
 
     auto dropAction = std::make_shared<world::state::action::PlayerDrop>(itemType);
     ASSERT_EQ(state.applyAction(dropAction), false);
+}
+
+TEST(state_tests, aggressiveNPC) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 1}, answer, generated_identities);
+    generator.addNPCPublic({0, 1}, answer, generated_identities);
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    auto player = state.getObjectObserver().getPlayer();
+    std::shared_ptr<world::state::object::AbstractObject> enemy = nullptr;
+    for (const auto& object : state.getObjectObserver().getObjectsAtCoordinate({0, 1})) {
+        if (object->getObjectType() == common::ObjectType::NPC) {
+            enemy = object;
+        }
+    }
+    assert(enemy != nullptr);
+    auto old_hp_enemy = std::any_cast<int32_t>(enemy->getProperty("hp").value());
+    auto old_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
+
+    auto playerAttackAction = std::make_shared<world::state::action::Move>(0, 1);
+    playerAttackAction->setCorrespondingObjectIdentity(player->getIdentity());
+    ASSERT_EQ(state.applyAction(playerAttackAction), true);
+    auto new_hp_enemy = std::any_cast<int32_t>(enemy->getProperty("hp").value());
+    ASSERT_TRUE(new_hp_enemy < old_hp_enemy);
+    state.applyEveryTurnInternalActions();
+    auto new_hp_player = std::any_cast<int32_t>(enemy->getProperty("hp").value());
+    ASSERT_TRUE(new_hp_player < old_hp_player);
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 1}).size(), 2);
+}
+
+TEST(state_tests, twoAggressiveNPC) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 0}, answer, generated_identities);
+    generator.addFloorPublic({0, 1}, answer, generated_identities);
+    generator.addNPCPublic({0, 1}, answer, generated_identities);
+    generator.addFloorPublic({0, 2}, answer, generated_identities);
+    generator.addNPCPublic({0, 2}, answer, generated_identities);
+
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    auto player = state.getObjectObserver().getPlayer();
+    std::shared_ptr<world::state::object::AbstractObject> enemy_close = nullptr;
+    for (const auto& object : state.getObjectObserver().getObjectsAtCoordinate({0, 1})) {
+        if (object->getObjectType() == common::ObjectType::NPC) {
+            enemy_close = object;
+        }
+    }
+    std::shared_ptr<world::state::object::AbstractObject> enemy_far = nullptr;
+    for (const auto& object : state.getObjectObserver().getObjectsAtCoordinate({0, 2})) {
+        if (object->getObjectType() == common::ObjectType::NPC) {
+            enemy_far = object;
+        }
+    }
+
+    assert(enemy_close != nullptr && enemy_far != nullptr);
+    auto old_hp_enemy_close = std::any_cast<int32_t>(enemy_close->getProperty("hp").value());
+    auto old_hp_enemy_far = std::any_cast<int32_t>(enemy_close->getProperty("hp").value());
+    auto old_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
+
+    auto playerAttackAction = std::make_shared<world::state::action::Move>(0, 1);
+    playerAttackAction->setCorrespondingObjectIdentity(player->getIdentity());
+    ASSERT_EQ(state.applyAction(playerAttackAction), true);
+    auto new_hp_enemy_close = std::any_cast<int32_t>(enemy_close->getProperty("hp").value());
+    auto new_hp_enemy_far = std::any_cast<int32_t>(enemy_far->getProperty("hp").value());
+    ASSERT_TRUE(new_hp_enemy_close < old_hp_enemy_close);
+    ASSERT_EQ(new_hp_enemy_far, old_hp_enemy_far);
+    state.applyEveryTurnInternalActions();
+    auto new_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
+    new_hp_enemy_far = std::any_cast<int32_t>(enemy_far->getProperty("hp").value());
+    ASSERT_TRUE(new_hp_player < old_hp_player);
+    ASSERT_EQ(new_hp_enemy_far, old_hp_enemy_far);
+
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 1}).size(), 2);
+    ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 2}).size(), 2);
 }
