@@ -28,7 +28,7 @@ std::vector<ObjectAndActions> FromTheDisk::generateObjects(common::Coordinate co
         loaded_coordinates_.clear();
     } else {
         // Generate Walls outside loaded Map
-        addWall(coordinate, answer, generated_identity_);
+        addWall(coordinate, answer);
     }
     return answer;
 }
@@ -39,15 +39,16 @@ const serialization::Deserializer &FromTheDisk::getLoader() const {
 
 FromTheDisk::FromTheDisk(std::filesystem::path path) : path_(std::move(path)) {
     loadedState_ = loader_.deserialize_from_file(path_);
-    generated_identity_ = 0;
+    uint64_t generated_identity_max = 0;
     for (const auto& object : loadedState_.value().getObjectObserver().getAllObjects()) {
         auto coordinate = object->getCoordinate();
         if (std::find(loaded_coordinates_.begin(), loaded_coordinates_.end(), coordinate) == generated_coordinates_.end()) {
             loaded_coordinates_.insert(coordinate);
         }
         auto identity_as_number = object->getIdentity().asNumber();
-        generated_identity_ = std::max(generated_identity_, identity_as_number);
+        generated_identity_max = std::max(generated_identity_max, identity_as_number);
     }
+    state::IdentityGenerator::setTo(generated_identity_max);
 }
 
 }

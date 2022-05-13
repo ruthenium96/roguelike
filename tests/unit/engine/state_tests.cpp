@@ -10,26 +10,26 @@
 namespace world::generator {
 class GeneratorForTests : public AbstractGenerator {
 public:
-    void addPlayerPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addPlayer(coordinate, answer, generated_identities_);
+    void addPlayerPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+        addPlayer(coordinate, answer);
     };
-    void addFloorPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addFloor(coordinate, answer, generated_identities_);
+    void addFloorPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+        addFloor(coordinate, answer);
     };
-    void addWallPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addWall(coordinate, answer, generated_identities_);
+    void addWallPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+        addWall(coordinate, answer);
     };
-    void addArtefactPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addArtefact(coordinate, answer, generated_identities_);
+    void addArtefactPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+        addArtefact(coordinate, answer);
     };
-    void addAggresiveNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addNPC(coordinate, answer, generated_identities_, {0.0, 0.0});
+    void addAggresiveNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+        addNPC(coordinate, answer, {0.0, 0.0});
     }
-    void addCowardNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addNPC(coordinate, answer, generated_identities_, {1.0, 0.0});
+    void addCowardNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+        addNPC(coordinate, answer, {1.0, 0.0});
     }
-    void addInactiveNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addNPC(coordinate, answer, generated_identities_, {1.0, 1.0});
+    void addInactiveNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+        addNPC(coordinate, answer, {1.0, 1.0});
     }
     std::vector<ObjectAndActions> generateObjects(common::Coordinate coordinate,
                                                   const state::object::Observer &observer) override {
@@ -43,7 +43,6 @@ TEST(state_tests, canWalkOntoFloor) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
     // .......
     // .......
     // .......
@@ -51,10 +50,10 @@ TEST(state_tests, canWalkOntoFloor) {
     // .......
     // .......
     // .......
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
     for (int x = -2; x <= 2; ++x) {
         for (int y = -2; y <= 2; ++y) {
-            generator.addFloorPublic({x, y}, answer, generated_identities);
+            generator.addFloorPublic({x, y}, answer);
         }
     }
 
@@ -99,16 +98,15 @@ TEST(state_tests, cannotWalkIntoWall) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
     //  #
     // #P#
     //  #
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 0}, answer, generated_identities);
-    generator.addWallPublic({0, 1}, answer, generated_identities);
-    generator.addWallPublic({0, -1}, answer, generated_identities);
-    generator.addWallPublic({1, 0}, answer, generated_identities);
-    generator.addWallPublic({-1, 0}, answer, generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 0}, answer);
+    generator.addWallPublic({0, 1}, answer);
+    generator.addWallPublic({0, -1}, answer);
+    generator.addWallPublic({1, 0}, answer);
+    generator.addWallPublic({-1, 0}, answer);
 
     for (const auto& objectAndAction : answer) {
         state.getObjectObserver().addObject(objectAndAction.object);
@@ -139,10 +137,9 @@ TEST(state_tests, interactWithArtefactAndDropItem) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 0}, answer, generated_identities);
-    generator.addArtefactPublic({0, 0}, answer, generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 0}, answer);
+    generator.addArtefactPublic({0, 0}, answer);
 
     for (const auto& objectAndAction : answer) {
         state.getObjectObserver().addObject(objectAndAction.object);
@@ -175,9 +172,8 @@ TEST(state_tests, interactWithNothing) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 0}, answer, generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 0}, answer);
 
     for (const auto& objectAndAction : answer) {
         state.getObjectObserver().addObject(objectAndAction.object);
@@ -202,10 +198,9 @@ TEST(state_tests, wearUnwearItem) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 0}, answer, generated_identities);
-    generator.addArtefactPublic({0, 0}, answer, ++generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 0}, answer);
+    generator.addArtefactPublic({0, 0}, answer);
 
 
     for (const auto& objectAndAction : answer) {
@@ -235,10 +230,9 @@ TEST(state_tests, cannotWearTwice) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 0}, answer, generated_identities);
-    generator.addArtefactPublic({0, 0}, answer, ++generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 0}, answer);
+    generator.addArtefactPublic({0, 0}, answer);
 
 
     for (const auto& objectAndAction : answer) {
@@ -264,10 +258,9 @@ TEST(state_tests, cannotDropWhileWeared) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 0}, answer, generated_identities);
-    generator.addArtefactPublic({0, 0}, answer, ++generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 0}, answer);
+    generator.addArtefactPublic({0, 0}, answer);
 
 
     for (const auto& objectAndAction : answer) {
@@ -293,11 +286,10 @@ TEST(state_tests, aggressiveNPC) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 1}, answer, generated_identities);
-    generator.addAggresiveNPCPublic({0, 1}, answer, generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 1}, answer);
+    generator.addAggresiveNPCPublic({0, 1}, answer);
 
     for (const auto& objectAndAction : answer) {
         state.getObjectObserver().addObject(objectAndAction.object);
@@ -333,13 +325,12 @@ TEST(state_tests, twoAggressiveNPC) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 0}, answer, generated_identities);
-    generator.addFloorPublic({0, 1}, answer, generated_identities);
-    generator.addAggresiveNPCPublic({0, 1}, answer, generated_identities);
-    generator.addFloorPublic({0, 2}, answer, generated_identities);
-    generator.addAggresiveNPCPublic({0, 2}, answer, generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 0}, answer);
+    generator.addFloorPublic({0, 1}, answer);
+    generator.addAggresiveNPCPublic({0, 1}, answer);
+    generator.addFloorPublic({0, 2}, answer);
+    generator.addAggresiveNPCPublic({0, 2}, answer);
 
 
     for (const auto& objectAndAction : answer) {
@@ -390,9 +381,8 @@ TEST(state_tests, cowardNPC) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addCowardNPCPublic({0, 1}, answer, generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addCowardNPCPublic({0, 1}, answer);
 
     for (const auto& objectAndAction : answer) {
         state.getObjectObserver().addObject(objectAndAction.object);
@@ -421,9 +411,8 @@ TEST(state_tests, inactiveNPC) {
     world::generator::GeneratorForTests generator;
 
     std::vector<world::generator::ObjectAndActions> answer;
-    uint64_t generated_identities;
-    generator.addPlayerPublic({0, 0}, answer, generated_identities);
-    generator.addInactiveNPCPublic({0, 1}, answer, generated_identities);
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addInactiveNPCPublic({0, 1}, answer);
 
     for (const auto& objectAndAction : answer) {
         state.getObjectObserver().addObject(objectAndAction.object);

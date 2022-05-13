@@ -12,7 +12,6 @@ class OnTheFly : public AbstractGenerator {
     std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) override;
 
   private:
-    uint64_t generated_identities_ = 0;
     // TODO: reimplement as unordered_set by implementing hash function
     std::set<common::Coordinate> generated_coordinates_;
 };

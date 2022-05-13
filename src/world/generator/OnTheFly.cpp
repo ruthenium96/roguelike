@@ -12,19 +12,19 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
 
     std::vector<ObjectAndActions> answer;
     if (coordinate.x == 0 && coordinate.y == 0) {
-        addPlayer(coordinate, answer, generated_identities_);
-        addFloor(coordinate, answer, generated_identities_);
+        addPlayer(coordinate, answer);
+        addFloor(coordinate, answer);
     } else {
 
         float probability = distribution_(randomEngine_);
         if (probability < 0.05) {
-            addWall(coordinate, answer, generated_identities_);
+            addWall(coordinate, answer);
         } else {
-            addFloor(coordinate, answer, generated_identities_);
+            addFloor(coordinate, answer);
             if (probability > 0.99) {
-                addArtefact(coordinate, answer, generated_identities_);
+                addArtefact(coordinate, answer);
             } else if (probability > 0.985) {
-                addNPC(coordinate, answer, generated_identities_);
+                addNPC(coordinate, answer);
             }
         }
     }
