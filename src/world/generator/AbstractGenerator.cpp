@@ -80,18 +80,11 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
     // add Artefact item
     auto itemIdentity = state::Identity(generated_identities_++);
 
-    auto generatedItemType = genItemType();
-    switch (generatedItemType) {
-        case common::ItemType::RING:
-            artefact.object->getItems().push_back(
-                std::make_unique<world::state::item::Ring>(itemIdentity, objectIdentity));
-            break;
-        case common::ItemType::STICK:
-            artefact.object->getItems().push_back(
-                std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
-            break;
-        default:
-            throw std::runtime_error("Unknown item type was generated");
+    float probability = distribution_(randomEngine_);
+    if (probability > 0.8) {
+        artefact.object->getItems().push_back(std::make_unique<world::state::item::Ring>(itemIdentity, objectIdentity));
+    } else {
+        artefact.object->getItems().push_back(std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
     }
 
     // add Artefact actions
@@ -124,5 +117,11 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
 
 const serialization::Serializer &AbstractGenerator::getSaver() const {
     return saver_;
+}
+
+AbstractGenerator::AbstractGenerator() {
+    std::random_device rd;
+    randomEngine_ = std::default_random_engine (rd());
+    distribution_ = std::uniform_real_distribution<float>(0, 1);
 }
 }  // namespace world::generator

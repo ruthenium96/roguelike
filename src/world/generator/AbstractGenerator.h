@@ -8,6 +8,7 @@
 #include "../state/object/concrete/Player.h"
 #include "serialization/Serializer.h"
 #include <memory>
+#include <random>
 #include <vector>
 
 namespace world::generator {
@@ -21,6 +22,8 @@ struct ObjectAndActions {
 // An abstract class for generation of the World.
 class AbstractGenerator {
   public:
+    AbstractGenerator();
+
     // Generate Objects in Coordinate based on object::Observer information
     virtual std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) = 0;
     virtual ~AbstractGenerator() = default;
@@ -32,6 +35,9 @@ class AbstractGenerator {
     void addWall(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
     void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
+    std::default_random_engine randomEngine_;
+    std::uniform_real_distribution<float> distribution_;
+
 
   private:
     serialization::Serializer saver_;

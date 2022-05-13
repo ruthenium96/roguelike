@@ -34,10 +34,4 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
     return answer;
 }
 
-OnTheFly::OnTheFly() {
-    std::random_device rd;
-    randomEngine_ = std::default_random_engine (rd());
-    distribution_ = std::uniform_real_distribution<float>(0, 1);
-}
-
 }  // namespace world::generator
