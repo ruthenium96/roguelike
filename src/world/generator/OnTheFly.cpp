@@ -18,15 +18,15 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
     } else {
 
         float probability = RandomNumberGenerator::generate();
-        if (probability < 0.05) {
+        if (probability < wallProbability_[0]) {
             addWall(coordinate, answer);
         } else {
             addFloor(coordinate, answer);
-            if (probability > 0.99) {
+            if (probability > objectOnFloorProbability_[0]) {
                 addArtefact(coordinate, answer);
-            } else if (probability > 0.985) {
+            } else if (probability > objectOnFloorProbability_[1]) {
                 addNPC(coordinate, answer);
-            } else if (probability > 0.9825) {
+            } else if (probability > objectOnFloorProbability_[2]) {
                 addMold(coordinate, answer);
             }
         }

@@ -84,8 +84,7 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
 
 void AbstractGenerator::addArtefact(common::Coordinate coordinate,
                                     std::vector<ObjectAndActions>& answer) {
-    std::array<float, 1> defaultThreshold = {0.8};
-    addArtefact(coordinate, answer, defaultThreshold);
+    addArtefact(coordinate, answer, artefactTypeProbability_);
 }
 
 void AbstractGenerator::addNPC(common::Coordinate coordinate,
@@ -116,8 +115,7 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
 }
 
 void AbstractGenerator::addNPC(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
-    std::array<float, 2> defaultThreshold = {0.5, 0.1};
-    addNPC(coordinate, answer, defaultThreshold);
+    addNPC(coordinate, answer, NPCTypeProbability_);
 }
 
 void AbstractGenerator::addMold(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
