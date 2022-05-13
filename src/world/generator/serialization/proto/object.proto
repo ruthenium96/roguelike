@@ -38,6 +38,7 @@ message Object {
     WALL = 2;
     ARTEFACT = 3;
     NPC = 4;
+    MOLD = 5;
   }
 
   uint64 selfIdentity = 1;

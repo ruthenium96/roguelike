@@ -10,6 +10,7 @@ add_library(state
         object/concrete/Wall.cpp object/concrete/Wall.h
         object/concrete/Artefact.cpp object/concrete/Artefact.h
         object/concrete/NPC.cpp object/concrete/NPC.h
+        object/concrete/Mold.cpp object/concrete/Mold.h
 
         action/AbstractAction.h action/AbstractAction.cpp
         action/Observer.cpp action/Observer.h
@@ -27,7 +28,7 @@ add_library(state
 
         item/AbstractItem.cpp item/AbstractItem.h
         item/concrete/Stick.cpp item/concrete/Stick.h
-        item/concrete/Ring.h
-        item/concrete/Ring.cpp)
+        item/concrete/Ring.cpp item/concrete/Ring.h
+        )
 
 target_link_libraries(state random)

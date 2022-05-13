@@ -10,6 +10,7 @@
 #include "../../state/object/concrete/Floor.h"
 #include "../../state/object/concrete/Wall.h"
 #include "../../state/object/concrete/NPC.h"
+#include "../../state/object/concrete/Mold.h"
 #include <memory>
 
 namespace world::generator::serialization {
@@ -24,6 +25,7 @@ void ProtobufEngine::associate_object_types() {
     object_mapper_.associate_types(ProtoSerializer::Object::FLOOR, common::ObjectType::FLOOR);
     object_mapper_.associate_types(ProtoSerializer::Object::WALL, common::ObjectType::WALL);
     object_mapper_.associate_types(ProtoSerializer::Object::NPC, common::ObjectType::NPC);
+    object_mapper_.associate_types(ProtoSerializer::Object::MOLD, common::ObjectType::MOLD);
 
     // TODO: implement it as named constructors
     objectConstructor_[common::ObjectType::PLAYER] = [](world::state::Identity identity){return std::make_shared<world::state::object::Player>(identity);};
@@ -31,6 +33,7 @@ void ProtobufEngine::associate_object_types() {
     objectConstructor_[common::ObjectType::FLOOR] = [](world::state::Identity identity){return std::make_shared<world::state::object::Floor>(identity);};
     objectConstructor_[common::ObjectType::WALL] = [](world::state::Identity identity){return std::make_shared<world::state::object::Wall>(identity);};
     objectConstructor_[common::ObjectType::NPC] = [](world::state::Identity identity){return std::make_shared<world::state::object::NPC>(identity);};
+    objectConstructor_[common::ObjectType::MOLD] = [](world::state::Identity identity){return std::make_shared<world::state::object::Mold>(identity);};
 }
 
 ProtobufEngine::ProtobufEngine() {

@@ -36,9 +36,10 @@ class AbstractGenerator {
     void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 1> threshold);
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&);
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 2> threshold);
+    void addMold(common::Coordinate, std::vector<ObjectAndActions>&);
 
 
-  private:
+private:
     serialization::Serializer saver_;
 };
 

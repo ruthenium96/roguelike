@@ -11,6 +11,7 @@
 #include "../state/object/concrete/Artefact.h"
 #include "../state/object/concrete/Wall.h"
 #include "../state/object/concrete/NPC.h"
+#include "../state/object/concrete/Mold.h"
 #include <random>
 
 namespace world::generator {
@@ -117,6 +118,17 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
 void AbstractGenerator::addNPC(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     std::array<float, 2> defaultThreshold = {0.5, 0.1};
     addNPC(coordinate, answer, defaultThreshold);
+}
+
+void AbstractGenerator::addMold(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+    ObjectAndActions mold;
+    auto moldIdentity = state::IdentityGenerator::getNewIdentity();
+    // add NPC object
+    mold.object = std::make_shared<state::object::Mold>(moldIdentity);
+    mold.object->getCoordinate() = coordinate;
+    // add Mold actions
+    // ...
+    answer.push_back(mold);
 }
 
 

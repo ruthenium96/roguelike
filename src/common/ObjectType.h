@@ -9,6 +9,7 @@ enum class ObjectType {
     WALL,
     ARTEFACT,
     NPC,
+    MOLD,
 };
 
 }  // namespace common

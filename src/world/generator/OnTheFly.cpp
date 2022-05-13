@@ -26,6 +26,8 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
                 addArtefact(coordinate, answer);
             } else if (probability > 0.985) {
                 addNPC(coordinate, answer);
+            } else if (probability > 0.9825) {
+                addMold(coordinate, answer);
             }
         }
     }
