@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+
+node "UI Painter" {
+  [Image Generator] -right-> [Game Skin]
+}
+[Image Generator] -left- [Display]
+[Image Generator] -down-> [UI]
+
+node "UI" {
+    [UI] -->  [WorldStateProcessor]
+    [UI] -left->  [MenuProcessor]
+}
+
+
+node "Game Engine" {
+    [GameEngine] <--> [WorldState]
+    [GameEngine] --> [WorldGenerator]
+    [WorldState] --> [GameObjects]
+    database "GameObjects" {
+    }
+}
+
+node "InputManager" {
+    [Keyboard Manager] --> [Keyboard]
+}
+
+
+node "Controller" {
+    [Controller] --> [Keyboard Manager]
+}
+
+
+[UI] <--> [Controller]
+[GameEngine] <-up-> [Controller]
+
+[WorldStateProcessor] --> [WorldState]
+
+@enduml
