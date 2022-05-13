@@ -23,8 +23,8 @@ class Observer {
 
 private:
     std::set<std::shared_ptr<AbstractAction>> allActions_;
-    std::vector<std::shared_ptr<AbstractAction>> everyMoveActions_;
-    void updateRepresentations();
+    mutable std::vector<std::shared_ptr<AbstractAction>> everyMoveActions_;
+    void updateRepresentations() const;
 };
 }  // namespace world::state::action
 
