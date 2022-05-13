@@ -23,7 +23,13 @@ public:
         addArtefact(coordinate, answer, generated_identities_);
     };
     void addAggresiveNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addNPC(coordinate, answer, generated_identities_, {0.0});
+        addNPC(coordinate, answer, generated_identities_, {0.0, 0.0});
+    }
+    void addCowardNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
+        addNPC(coordinate, answer, generated_identities_, {1.0, 0.0});
+    }
+    void addInactiveNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
+        addNPC(coordinate, answer, generated_identities_, {1.0, 1.0});
     }
     std::vector<ObjectAndActions> generateObjects(common::Coordinate coordinate,
                                                   const state::object::Observer &observer) override {
@@ -387,4 +393,66 @@ TEST(state_tests, twoAggressiveNPC) {
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 1}).size(), 2);
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 2}).size(), 2);
+}
+
+TEST(state_tests, cowardNPC) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addCowardNPCPublic({0, 1}, answer, generated_identities);
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    auto player = state.getObjectObserver().getPlayer();
+    std::shared_ptr<world::state::object::AbstractObject> enemy = nullptr;
+    for (const auto& object : state.getObjectObserver().getObjectsAtCoordinate({0, 1})) {
+        if (object->getObjectType() == common::ObjectType::NPC) {
+            enemy = object;
+        }
+    }
+    assert(enemy != nullptr);
+    common::Coordinate wantedCoordinate = {0, 1};
+    ASSERT_EQ(enemy->getCoordinate(), wantedCoordinate);
+
+    state.applyEveryTurnInternalActions();
+    ASSERT_NE(enemy->getCoordinate(), wantedCoordinate);
+}
+
+TEST(state_tests, inactiveNPC) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    uint64_t generated_identities;
+    generator.addPlayerPublic({0, 0}, answer, generated_identities);
+    generator.addInactiveNPCPublic({0, 1}, answer, generated_identities);
+
+    for (const auto& objectAndAction : answer) {
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    auto player = state.getObjectObserver().getPlayer();
+    std::shared_ptr<world::state::object::AbstractObject> enemy = nullptr;
+    for (const auto& object : state.getObjectObserver().getObjectsAtCoordinate({0, 1})) {
+        if (object->getObjectType() == common::ObjectType::NPC) {
+            enemy = object;
+        }
+    }
+    assert(enemy != nullptr);
+    common::Coordinate wantedCoordinate = {0, 1};
+    ASSERT_EQ(enemy->getCoordinate(), wantedCoordinate);
+
+    state.applyEveryTurnInternalActions();
+    ASSERT_EQ(enemy->getCoordinate(), wantedCoordinate);
 }
