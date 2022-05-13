@@ -314,7 +314,7 @@ TEST(state_tests, aggressiveNPC) {
     auto new_hp_enemy = std::any_cast<int32_t>(enemy->getProperty("hp").value());
     ASSERT_TRUE(new_hp_enemy < old_hp_enemy);
     state.applyEveryTurnInternalActions();
-    auto new_hp_player = std::any_cast<int32_t>(enemy->getProperty("hp").value());
+    auto new_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
     ASSERT_TRUE(new_hp_player < old_hp_player);
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
     ASSERT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 1}).size(), 2);
