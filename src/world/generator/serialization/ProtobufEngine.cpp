@@ -2,6 +2,8 @@
 #include "../../state/action/internal/PickDropItem.h"
 #include "../../state/action/internal/Poison.h"
 #include "../../state/action/npc/AggressiveNPC.h"
+#include "../../state/action/npc/InactiveNPC.h"
+#include "../../state/action/npc/CowardNPC.h"
 #include "../../state/item/concrete/Stick.h"
 #include "../../state/item/concrete/Ring.h"
 #include "../../state/object/concrete/Artefact.h"
@@ -197,8 +199,12 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
             shared_action = std::make_shared<world::state::action::PickDropItem>(actionIdentity);
         } else if (action_type == ProtoSerializer::Action_ActionType_POISON) {
             shared_action = std::make_shared<world::state::action::Poison>(actionIdentity);
-        } else if (action_type == ProtoSerializer::Action_ActionType_AGGRESIVE_NPC) {
+        } else if (action_type == ProtoSerializer::Action_ActionType_AGGRESSIVE_NPC) {
             shared_action = std::make_shared<world::state::action::AggressiveNPC>(actionIdentity);
+        } else if (action_type == ProtoSerializer::Action_ActionType_COWARD_NPC) {
+            shared_action = std::make_shared<world::state::action::CowardNPC>(actionIdentity);
+        } else if (action_type == ProtoSerializer::Action_ActionType_INACTIVE_NPC) {
+            shared_action = std::make_shared<world::state::action::InactiveNPC>(actionIdentity);
         } else {
             assert(0);
         }
