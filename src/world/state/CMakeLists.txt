@@ -19,6 +19,8 @@ add_library(state
         action/external/PlayerUIInteract.cpp action/external/PlayerUIInteract.h
         action/internal/PickDropItem.cpp action/internal/PickDropItem.h
         action/internal/Poison.cpp action/internal/Poison.h
+        action/npc/AbstractNPC.cpp action/npc/AbstractNPC.h
+        action/npc/CowardNPC.cpp action/npc/CowardNPC.h
         action/npc/AggressiveNPC.cpp action/npc/AggressiveNPC.h
 
         item/AbstractItem.cpp item/AbstractItem.h

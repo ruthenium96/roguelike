@@ -1,18 +1,18 @@
-#ifndef ARCH_ROGUELIKE_AGGRESSIVENPC_H
-#define ARCH_ROGUELIKE_AGGRESSIVENPC_H
+#ifndef ARCH_ROGUELIKE_COWARDNPC_H
+#define ARCH_ROGUELIKE_COWARDNPC_H
 
 #include "AbstractNPC.h"
 namespace world::state::action {
 
-class AggressiveNPC : public AbstractNPC {
+class CowardNPC : public AbstractNPC{
 public:
-    explicit AggressiveNPC(const std::optional<Identity> &selfIdentity);
+    explicit CowardNPC(const std::optional<Identity> &selfIdentity);
 
     void changeTarget(object::Observer &observer, Observer &observer1) override;
-
 private:
     std::optional<std::shared_ptr<AbstractAction>> findDirection(const object::Observer &objectObserver, const action::Observer &actionObserver, int32_t dx_with_player, int32_t dy_with_player);
+
 };
 }
 
-#endif //ARCH_ROGUELIKE_AGGRESSIVENPC_H
+#endif //ARCH_ROGUELIKE_COWARDNPC_H
