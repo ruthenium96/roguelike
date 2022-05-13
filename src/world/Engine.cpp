@@ -197,6 +197,8 @@ void Engine::initialize() {
 }
 
 void Engine::resetWorld() {
+    // reset counter
+    state::IdentityGenerator::setTo(0);
     state_ = state::State();
     errorMessageForUi = std::nullopt;
     initialize();
