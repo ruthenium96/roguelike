@@ -29,15 +29,14 @@ class AbstractGenerator {
     const serialization::Serializer& getSaver() const;
 
   protected:
-    void addPlayer(common::Coordinate, std::vector<ObjectAndActions>&);
-    void addFloor(common::Coordinate, std::vector<ObjectAndActions>&);
-    void addWall(common::Coordinate, std::vector<ObjectAndActions>&);
-    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&);
-    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 1> threshold);
-    void addNPC(common::Coordinate, std::vector<ObjectAndActions>&);
-    void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 2> threshold);
-    void addMold(common::Coordinate, std::vector<ObjectAndActions>&);
-
+    static void addPlayer(common::Coordinate, std::vector<ObjectAndActions>&);
+    static void addFloor(common::Coordinate, std::vector<ObjectAndActions>&);
+    static void addWall(common::Coordinate, std::vector<ObjectAndActions>&);
+    static void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&);
+    static void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 1> threshold);
+    static void addNPC(common::Coordinate, std::vector<ObjectAndActions>&);
+    static void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 2> threshold);
+    static void addMold(common::Coordinate, std::vector<ObjectAndActions>&);
 
 private:
     serialization::Serializer saver_;
