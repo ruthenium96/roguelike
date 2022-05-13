@@ -1,11 +1,13 @@
 #include "ProtobufEngine.h"
 #include "../../state/action/internal/PickDropItem.h"
 #include "../../state/action/internal/Poison.h"
+#include "../../state/action/npc/AggressiveNPC.h"
 #include "../../state/item/concrete/Stick.h"
 #include "../../state/item/concrete/Ring.h"
 #include "../../state/object/concrete/Artefact.h"
 #include "../../state/object/concrete/Floor.h"
 #include "../../state/object/concrete/Wall.h"
+#include "../../state/object/concrete/NPC.h"
 #include <memory>
 
 namespace world::generator::serialization {
@@ -19,12 +21,14 @@ void ProtobufEngine::associate_object_types() {
     object_mapper_.associate_types(ProtoSerializer::Object::ARTEFACT, common::ObjectType::ARTEFACT);
     object_mapper_.associate_types(ProtoSerializer::Object::FLOOR, common::ObjectType::FLOOR);
     object_mapper_.associate_types(ProtoSerializer::Object::WALL, common::ObjectType::WALL);
+    object_mapper_.associate_types(ProtoSerializer::Object::NPC, common::ObjectType::NPC);
 
     // TODO: implement it as named constructors
     objectConstructor_[common::ObjectType::PLAYER] = [](world::state::Identity identity){return std::make_shared<world::state::object::Player>(identity);};
     objectConstructor_[common::ObjectType::ARTEFACT] = [](world::state::Identity identity){return std::make_shared<world::state::object::Artefact>(identity);};
     objectConstructor_[common::ObjectType::FLOOR] = [](world::state::Identity identity){return std::make_shared<world::state::object::Floor>(identity);};
     objectConstructor_[common::ObjectType::WALL] = [](world::state::Identity identity){return std::make_shared<world::state::object::Wall>(identity);};
+    objectConstructor_[common::ObjectType::NPC] = [](world::state::Identity identity){return std::make_shared<world::state::object::NPC>(identity);};
 }
 
 ProtobufEngine::ProtobufEngine() {
@@ -162,7 +166,7 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
             shared_object->setProperty("defence", proto_object.properties().defence().value());
         }
         if (proto_object.properties().has_vision()) {
-            shared_object->setProperty("vision", proto_object.properties().defence().value());
+            shared_object->setProperty("vision", proto_object.properties().vision().value());
         }
         // items
         int items_size = proto_object.items_size();
@@ -193,6 +197,8 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
             shared_action = std::make_shared<world::state::action::PickDropItem>(actionIdentity);
         } else if (action_type == ProtoSerializer::Action_ActionType_POISON) {
             shared_action = std::make_shared<world::state::action::Poison>(actionIdentity);
+        } else if (action_type == ProtoSerializer::Action_ActionType_AGGRESIVE_NPC) {
+            shared_action = std::make_shared<world::state::action::AggressiveNPC>(actionIdentity);
         } else {
             assert(0);
         }

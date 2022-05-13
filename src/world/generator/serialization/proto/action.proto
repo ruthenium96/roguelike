@@ -18,6 +18,7 @@ message Action {
   enum ActionType {
     PICKITEM = 0;
     POISON = 1;
+    AGGRESIVE_NPC = 2;
   }
 
   ActionType type = 1;

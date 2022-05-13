@@ -56,12 +56,17 @@ TEST(state_tests, canWalkOntoFloor) {
         }
     }
     common::Coordinate expectedCoordinate = {0, 0};
+    auto playerIdentity = state.getObjectObserver().getPlayer()->getIdentity();
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
     auto moveActionRight = std::make_shared<world::state::action::Move>(1, 0);
+    moveActionRight->setCorrespondingObjectIdentity(playerIdentity);
     auto moveActionLeft = std::make_shared<world::state::action::Move>(-1, 0);
+    moveActionLeft->setCorrespondingObjectIdentity(playerIdentity);
     auto moveActionUp = std::make_shared<world::state::action::Move>(0, -1);
+    moveActionUp->setCorrespondingObjectIdentity(playerIdentity);
     auto moveActionDown = std::make_shared<world::state::action::Move>(0, 1);
+    moveActionDown->setCorrespondingObjectIdentity(playerIdentity);
 
     ASSERT_EQ(state.applyAction(moveActionRight), true);
     expectedCoordinate.x += 1;
@@ -107,18 +112,23 @@ TEST(state_tests, cannotWalkIntoWall) {
         }
     }
     common::Coordinate expectedCoordinate = {0, 0};
+    auto playerIdentity = state.getObjectObserver().getPlayer()->getIdentity();
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
     auto moveAction = std::make_shared<world::state::action::Move>(1, 0);
+    moveAction->setCorrespondingObjectIdentity(playerIdentity);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
     moveAction = std::make_shared<world::state::action::Move>(-1, 0);
+    moveAction->setCorrespondingObjectIdentity(playerIdentity);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
     moveAction = std::make_shared<world::state::action::Move>(0, 1);
+    moveAction->setCorrespondingObjectIdentity(playerIdentity);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
     moveAction = std::make_shared<world::state::action::Move>(0, -1);
+    moveAction->setCorrespondingObjectIdentity(playerIdentity);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 }

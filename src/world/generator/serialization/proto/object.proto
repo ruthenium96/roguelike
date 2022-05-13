@@ -37,6 +37,7 @@ message Object {
     FLOOR = 1;
     WALL = 2;
     ARTEFACT = 3;
+    NPC = 4;
   }
 
   uint64 selfIdentity = 1;
