@@ -310,7 +310,7 @@ TEST(state_tests, aggressiveNPC) {
     auto old_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
 
     auto playerAttackAction = std::make_shared<world::state::action::Move>(player->getIdentity(), 0, 1);
-    playerAttackAction->setProperty("confuseThreshold", std::any_cast<float>(1.0));
+    playerAttackAction->setProperty("confuseThreshold", std::any_cast<float>(1.0f));
     ASSERT_EQ(state.applyAction(playerAttackAction), true);
     auto new_hp_enemy = std::any_cast<int32_t>(enemy->getProperty("hp").value());
     ASSERT_TRUE(new_hp_enemy < old_hp_enemy);
@@ -361,7 +361,7 @@ TEST(state_tests, twoAggressiveNPC) {
     auto old_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
 
     auto playerAttackAction = std::make_shared<world::state::action::Move>(player->getIdentity(), 0, 1);
-    playerAttackAction->setProperty("confuseThreshold", std::any_cast<float>(1.0));
+    playerAttackAction->setProperty("confuseThreshold", std::any_cast<float>(1.0f));
     ASSERT_EQ(state.applyAction(playerAttackAction), true);
     auto new_hp_enemy_close = std::any_cast<int32_t>(enemy_close->getProperty("hp").value());
     auto new_hp_enemy_far = std::any_cast<int32_t>(enemy_far->getProperty("hp").value());

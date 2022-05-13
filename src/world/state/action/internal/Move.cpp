@@ -9,6 +9,8 @@ Move::Move(Identity movingObject, int32_t delta_x, int32_t delta_y) : AbstractAc
     setCorrespondingObjectIdentity(movingObject);
     setProperty("dx", std::make_any<int32_t>(delta_x));
     setProperty("dy", std::make_any<int32_t>(delta_y));
+    // default value:
+    setProperty("confuseThreshold", std::make_any<float>(0.7f));
 }
 
 bool Move::precondition(const object::Observer& objectObserver, const action::Observer&) {
@@ -44,10 +46,7 @@ void Move::changeTarget(object::Observer& objectObserver, action::Observer& acti
             attack(object, anotherObject);
             if (object == objectObserver.getPlayer()) {
                 float probability = RandomNumberGenerator::generate();
-                float threshold = 0.7; // default value
-                if (getProperty("confuseThreshold").has_value()) {
-                    threshold = std::any_cast<float>(getProperty("confuseThreshold").value());
-                }
+                auto threshold = std::any_cast<float>(getProperty("confuseThreshold").value());
                 if (probability > threshold) {
                     int32_t duration = 4;
                     auto confuseAction = std::make_shared<Confuse>(state::IdentityGenerator::getNewIdentity(),

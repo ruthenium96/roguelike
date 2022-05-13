@@ -10,7 +10,7 @@ Confuse::Confuse(const std::optional<Identity> &selfIdentity, Identity confusedO
     setProperty("duration", std::make_any<int32_t>(duration));
     setCorrespondingObjectIdentity(confusedObjectIdentity);
     // deactivate all actions of confused object
-    for (auto& action : actionObserver.getAllActions()) {
+    for (auto& action : actionObserver.getEveryTurnActions()) {
         if (action->getCorrespondingObjectIdentity() == confusedObjectIdentity) {
             action->deleteProperty("every_turn");
         }
