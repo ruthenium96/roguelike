@@ -1,3 +1,4 @@
+#include <cassert>
 #include "State.h"
 
 namespace world::state {
@@ -32,6 +33,7 @@ action::Observer& State::getActionObserver() {
 
 void State::applyEveryTurnInternalActions() {
     for (auto& internalAction : getActionObserver().getEveryTurnActions()) {
+        assert(internalAction->getProperty("every_turn").has_value());
         applyAction(internalAction);
     }
 }
