@@ -3,6 +3,7 @@
 #include "../state/action/internal/Poison.h"
 #include "../state/action/internal/PickDropItem.h"
 #include "../state/action/npc/AggressiveNPC.h"
+#include "../state/action/npc/CowardNPC.h"
 #include "../state/item/concrete/Ring.h"
 #include "../state/item/concrete/Stick.h"
 #include "../state/object/concrete/Artefact.h"
@@ -71,7 +72,8 @@ inline common::ItemType genItemType() {
 
 void AbstractGenerator::addArtefact(common::Coordinate coordinate,
                                     std::vector<ObjectAndActions>& answer,
-                                    uint64_t& generated_identities_) {
+                                    uint64_t& generated_identities_,
+                                    std::vector<float> threshold) {
     // add Artefact
     ObjectAndActions artefact;
     auto objectIdentity = state::Identity(generated_identities_++);
@@ -81,7 +83,7 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
     auto itemIdentity = state::Identity(generated_identities_++);
 
     float probability = distribution_(randomEngine_);
-    if (probability > 0.8) {
+    if (probability > threshold[0]) {
         artefact.object->getItems().push_back(std::make_unique<world::state::item::Ring>(itemIdentity, objectIdentity));
     } else {
         artefact.object->getItems().push_back(std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
@@ -97,9 +99,17 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
     answer.push_back(artefact);
 }
 
+void AbstractGenerator::addArtefact(common::Coordinate coordinate,
+                                    std::vector<ObjectAndActions>& answer,
+                                    uint64_t& generated_identities_) {
+    std::vector<float> defaultThreshold = {0.8};
+    addArtefact(coordinate, answer, generated_identities_, defaultThreshold);
+}
+
 void AbstractGenerator::addNPC(common::Coordinate coordinate,
                                std::vector<ObjectAndActions>& answer,
-                               uint64_t& generated_identities_) {
+                               uint64_t& generated_identities_,
+                               std::vector<float> threshold) {
     ObjectAndActions npc;
     auto npcIdentity = state::Identity(generated_identities_++);
     // add NPC object
@@ -107,11 +117,25 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
     npc.object->getCoordinate() = coordinate;
     // add NPC actions
     auto actionIdentity = state::Identity(generated_identities_++);
-    auto NPCAction = std::make_shared<state::action::AggressiveNPC>(actionIdentity);
+    std::shared_ptr<state::action::AbstractNPC> NPCAction = nullptr;
+    float probability = distribution_(randomEngine_);
+    if (probability > threshold[0]) {
+        NPCAction = std::make_shared<world::state::action::AggressiveNPC>(actionIdentity);
+    } else {
+        NPCAction = std::make_shared<world::state::action::CowardNPC>(actionIdentity);
+    }
+
     NPCAction->setCorrespondingObjectIdentity(npcIdentity);
     npc.actions.push_back(NPCAction);
     // ...
     answer.push_back(npc);
+}
+
+void AbstractGenerator::addNPC(common::Coordinate coordinate,
+                               std::vector<ObjectAndActions>& answer,
+                               uint64_t& generated_identities_) {
+    std::vector<float> defaultThreshold = {0.5};
+    addNPC(coordinate, answer, generated_identities_, defaultThreshold);
 }
 
 

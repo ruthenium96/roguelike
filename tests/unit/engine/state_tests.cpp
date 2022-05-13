@@ -22,8 +22,8 @@ public:
     void addArtefactPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
         addArtefact(coordinate, answer, generated_identities_);
     };
-    void addNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
-        addNPC(coordinate, answer, generated_identities_);
+    void addAggresiveNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer, uint64_t& generated_identities_) {
+        addNPC(coordinate, answer, generated_identities_, {0.0});
     }
     std::vector<ObjectAndActions> generateObjects(common::Coordinate coordinate,
                                                   const state::object::Observer &observer) override {
@@ -299,7 +299,7 @@ TEST(state_tests, aggressiveNPC) {
     generator.addPlayerPublic({0, 0}, answer, generated_identities);
     generator.addFloorPublic({0, 0}, answer, generated_identities);
     generator.addFloorPublic({0, 1}, answer, generated_identities);
-    generator.addNPCPublic({0, 1}, answer, generated_identities);
+    generator.addAggresiveNPCPublic({0, 1}, answer, generated_identities);
 
     for (const auto& objectAndAction : answer) {
         state.getObjectObserver().addObject(objectAndAction.object);
@@ -340,9 +340,9 @@ TEST(state_tests, twoAggressiveNPC) {
     generator.addPlayerPublic({0, 0}, answer, generated_identities);
     generator.addFloorPublic({0, 0}, answer, generated_identities);
     generator.addFloorPublic({0, 1}, answer, generated_identities);
-    generator.addNPCPublic({0, 1}, answer, generated_identities);
+    generator.addAggresiveNPCPublic({0, 1}, answer, generated_identities);
     generator.addFloorPublic({0, 2}, answer, generated_identities);
-    generator.addNPCPublic({0, 2}, answer, generated_identities);
+    generator.addAggresiveNPCPublic({0, 2}, answer, generated_identities);
 
 
     for (const auto& objectAndAction : answer) {
