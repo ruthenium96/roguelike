@@ -22,6 +22,7 @@ add_library(state
         action/npc/AbstractNPC.cpp action/npc/AbstractNPC.h
         action/npc/CowardNPC.cpp action/npc/CowardNPC.h
         action/npc/AggressiveNPC.cpp action/npc/AggressiveNPC.h
+        action/npc/InactiveNPC.cpp action/npc/InactiveNPC.h
 
         item/AbstractItem.cpp item/AbstractItem.h
         item/concrete/Stick.cpp item/concrete/Stick.h
