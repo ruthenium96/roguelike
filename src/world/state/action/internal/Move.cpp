@@ -1,5 +1,6 @@
 #include "Move.h"
 #include "Confuse.h"
+#include "../../../RandomNumberGenerator.h"
 #include <algorithm>
 
 namespace world::state::action {
@@ -42,13 +43,15 @@ void Move::changeTarget(object::Observer& objectObserver, action::Observer& acti
         if (anotherObject->getProperty("hp").has_value() && anotherObject->getObjectType() != object->getObjectType()) {
             attack(object, anotherObject);
             if (object == objectObserver.getPlayer()) {
-                // MAYBE
-                int32_t duration = 3;
-                auto confuseAction = std::make_shared<Confuse>(state::IdentityGenerator::getNewIdentity(),
-                                                               anotherObject->getIdentity(),
-                                                               3,
-                                                               objectObserver, actionObserver);
-                actionObserver.addAction(confuseAction);
+                float probability = RandomNumberGenerator::generate();
+                if (probability > 0.7) {
+                    int32_t duration = 4;
+                    auto confuseAction = std::make_shared<Confuse>(state::IdentityGenerator::getNewIdentity(),
+                                                                   anotherObject->getIdentity(),
+                                                                   duration,
+                                                                   objectObserver, actionObserver);
+                    actionObserver.addAction(confuseAction);
+                }
             }
             return;
         }

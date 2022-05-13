@@ -1,4 +1,6 @@
 #include "Confuse.h"
+#include "Move.h"
+#include "../../../RandomNumberGenerator.h"
 
 namespace world::state::action {
 
@@ -30,7 +32,14 @@ void Confuse::changeTarget(object::Observer &objectObserver, Observer &actionObs
         return;
     }
 
-    // TODO: CREATE MOVE
+    // random move
+    int32_t dx_step_try = 0;
+    int32_t dy_step_try = 0;
+    randomDirection(dx_step_try, dy_step_try);
+    auto move = std::make_shared<Move>(confusedObjectIdentity, dx_step_try, dy_step_try);
+    if (move->precondition(objectObserver, actionObserver)) {
+        move->changeTarget(objectObserver, actionObserver);
+    }
 
     auto duration = std::any_cast<int32_t>(getProperty("duration").value());
     --duration;
@@ -43,6 +52,22 @@ void Confuse::changeTarget(object::Observer &objectObserver, Observer &actionObs
             }
         }
         deleteItselfFromActionObserver(actionObserver);
+    }
+}
+
+void Confuse::randomDirection(int32_t &dx_step_try, int32_t &dy_step_try) {
+    float probability = RandomNumberGenerator::generate();
+    if (probability < 0.25) {
+        dx_step_try = 1;
+    }
+    if (0.25 <= probability && probability < 0.50) {
+        dx_step_try = -1;
+    }
+    if (0.50 <= probability && probability < 0.75) {
+        dy_step_try = 1;
+    }
+    if (0.75 < probability) {
+        dy_step_try = -1;
     }
 }
 

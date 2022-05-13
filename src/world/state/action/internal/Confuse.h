@@ -16,6 +16,9 @@ public:
 
     void changeTarget(object::Observer &objectObserver, Observer &actionObserver) override;
 
+private:
+    static void randomDirection(int32_t& dx_step_try, int32_t& dy_step_try);
+
 };
 
 }
