@@ -9,7 +9,6 @@
 #include "../state/Identity.h"
 #include "serialization/Serializer.h"
 #include <memory>
-#include <random>
 #include <vector>
 
 namespace world::generator {
@@ -23,8 +22,6 @@ struct ObjectAndActions {
 // An abstract class for generation of the World.
 class AbstractGenerator {
   public:
-    AbstractGenerator();
-
     // Generate Objects in Coordinate based on object::Observer information
     virtual std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) = 0;
     virtual ~AbstractGenerator() = default;
@@ -38,8 +35,6 @@ class AbstractGenerator {
     void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 1> threshold);
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&);
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 2> threshold);
-    std::default_random_engine randomEngine_;
-    std::uniform_real_distribution<float> distribution_;
 
 
   private:

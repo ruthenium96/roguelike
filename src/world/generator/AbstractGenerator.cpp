@@ -1,4 +1,5 @@
 #include "AbstractGenerator.h"
+#include "../RandomNumberGenerator.h"
 #include "../../common/ItemType.h"
 #include "../state/action/internal/Poison.h"
 #include "../state/action/internal/PickDropItem.h"
@@ -11,7 +12,6 @@
 #include "../state/object/concrete/Wall.h"
 #include "../state/object/concrete/NPC.h"
 #include <random>
-#include <stdexcept>
 
 namespace world::generator {
 
@@ -53,21 +53,6 @@ void AbstractGenerator::addWall(common::Coordinate coordinate,
     answer.push_back(wall);
 }
 
-namespace {
-inline common::ItemType genItemType() {
-    std::random_device rd;
-    std::default_random_engine eng(rd());
-    std::uniform_real_distribution<float> distr(0, 1);
-
-    float probability = distr(eng);
-    if (probability > 0.8) {
-        return common::ItemType::RING;
-    } else {
-        return common::ItemType::STICK;
-    }
-}
-}  // namespace
-
 void AbstractGenerator::addArtefact(common::Coordinate coordinate,
                                     std::vector<ObjectAndActions>& answer,
                                     std::array<float, 1> threshold) {
@@ -79,7 +64,7 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
     // add Artefact item
     auto itemIdentity = state::IdentityGenerator::getNewIdentity();
 
-    float probability = distribution_(randomEngine_);
+    float probability = RandomNumberGenerator::generate();
     if (probability > threshold[0]) {
         artefact.object->getItems().push_back(std::make_unique<world::state::item::Ring>(itemIdentity, objectIdentity));
     } else {
@@ -113,7 +98,8 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
     // add NPC actions
     auto actionIdentity = state::IdentityGenerator::getNewIdentity();
     std::shared_ptr<state::action::AbstractNPC> NPCAction = nullptr;
-    float probability = distribution_(randomEngine_);
+    float probability = RandomNumberGenerator::generate();
+
     if (probability > threshold[0]) {
         NPCAction = std::make_shared<world::state::action::AggressiveNPC>(actionIdentity);
     } else if (probability > threshold[1]) {
@@ -138,9 +124,4 @@ const serialization::Serializer &AbstractGenerator::getSaver() const {
     return saver_;
 }
 
-AbstractGenerator::AbstractGenerator() {
-    std::random_device rd;
-    randomEngine_ = std::default_random_engine (rd());
-    distribution_ = std::uniform_real_distribution<float>(0, 1);
-}
 }  // namespace world::generator

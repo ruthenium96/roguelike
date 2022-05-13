@@ -5,4 +5,4 @@ add_library(generator
         OnTheFly.cpp OnTheFly.h
         FromTheDisk.cpp FromTheDisk.h)
 
-target_link_libraries(generator serializer state)
+target_link_libraries(generator serializer state random)

@@ -29,3 +29,5 @@ add_library(state
         item/concrete/Stick.cpp item/concrete/Stick.h
         item/concrete/Ring.h
         item/concrete/Ring.cpp)
+
+target_link_libraries(state random)

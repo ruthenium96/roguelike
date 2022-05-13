@@ -5,6 +5,7 @@
 #include "state/action/internal/Move.h"
 #include "state/action/external/PlayerUIInteract.h"
 #include <algorithm>
+#include <valarray>
 
 namespace world {
 

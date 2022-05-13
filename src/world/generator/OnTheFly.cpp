@@ -1,4 +1,5 @@
 #include "OnTheFly.h"
+#include "../RandomNumberGenerator.h"
 #include <algorithm>
 
 namespace world::generator {
@@ -16,7 +17,7 @@ std::vector<ObjectAndActions> OnTheFly::generateObjects(common::Coordinate coord
         addFloor(coordinate, answer);
     } else {
 
-        float probability = distribution_(randomEngine_);
+        float probability = RandomNumberGenerator::generate();
         if (probability < 0.05) {
             addWall(coordinate, answer);
         } else {
