@@ -3,6 +3,7 @@
 #include "../state/action/internal/Poison.h"
 #include "../state/action/internal/PickDropItem.h"
 #include "../state/action/npc/AggressiveNPC.h"
+#include "../state/action/npc/InactiveNPC.h"
 #include "../state/action/npc/CowardNPC.h"
 #include "../state/item/concrete/Ring.h"
 #include "../state/item/concrete/Stick.h"
@@ -73,7 +74,7 @@ inline common::ItemType genItemType() {
 void AbstractGenerator::addArtefact(common::Coordinate coordinate,
                                     std::vector<ObjectAndActions>& answer,
                                     uint64_t& generated_identities_,
-                                    std::vector<float> threshold) {
+                                    std::array<float, 1> threshold) {
     // add Artefact
     ObjectAndActions artefact;
     auto objectIdentity = state::Identity(generated_identities_++);
@@ -102,14 +103,14 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
 void AbstractGenerator::addArtefact(common::Coordinate coordinate,
                                     std::vector<ObjectAndActions>& answer,
                                     uint64_t& generated_identities_) {
-    std::vector<float> defaultThreshold = {0.8};
+    std::array<float, 1> defaultThreshold = {0.8};
     addArtefact(coordinate, answer, generated_identities_, defaultThreshold);
 }
 
 void AbstractGenerator::addNPC(common::Coordinate coordinate,
                                std::vector<ObjectAndActions>& answer,
                                uint64_t& generated_identities_,
-                               std::vector<float> threshold) {
+                               std::array<float, 2> threshold) {
     ObjectAndActions npc;
     auto npcIdentity = state::Identity(generated_identities_++);
     // add NPC object
@@ -121,8 +122,10 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
     float probability = distribution_(randomEngine_);
     if (probability > threshold[0]) {
         NPCAction = std::make_shared<world::state::action::AggressiveNPC>(actionIdentity);
-    } else {
+    } else if (probability > threshold[1]) {
         NPCAction = std::make_shared<world::state::action::CowardNPC>(actionIdentity);
+    } else {
+        NPCAction = std::make_shared<world::state::action::InactiveNPC>(actionIdentity);
     }
 
     NPCAction->setCorrespondingObjectIdentity(npcIdentity);
@@ -134,7 +137,7 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
 void AbstractGenerator::addNPC(common::Coordinate coordinate,
                                std::vector<ObjectAndActions>& answer,
                                uint64_t& generated_identities_) {
-    std::vector<float> defaultThreshold = {0.5};
+    std::array<float, 2> defaultThreshold = {0.5, 0.1};
     addNPC(coordinate, answer, generated_identities_, defaultThreshold);
 }
 

@@ -34,9 +34,9 @@ class AbstractGenerator {
     void addFloor(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
     void addWall(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
     void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
-    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&, std::vector<float> threshold);
+    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&, std::array<float, 1> threshold);
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
-    void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&, std::vector<float> threshold);
+    void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&, std::array<float, 2> threshold);
     std::default_random_engine randomEngine_;
     std::uniform_real_distribution<float> distribution_;
 
