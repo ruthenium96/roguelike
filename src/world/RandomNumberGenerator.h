@@ -4,6 +4,7 @@
 #include <random>
 
 namespace world {
+// static class for generating of random numbers.
 class RandomNumberGenerator {
 public:
     static float generate() {

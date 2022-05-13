@@ -19,6 +19,7 @@ struct UiState {
 
 }  // namespace
 
+// V from MVC
 class UI {
   public:
     UI(const std::string& style = "default");  // TODO: add style set
@@ -26,10 +27,13 @@ class UI {
     // draw current game image
     void draw(const common::WorldUITransfer& world_state);
 
+    // draw death screen
     void drawDeath(const common::Death& death);
 
+    // apply command from controller or world
     common::Command apply_command(const common::Command& command,
                                   const common::WorldUITransfer& world_state);
+    // activate and deactivate UI regime
     // true if state was activated
     bool activate_state(const common::WorldUITransfer& world_state);
     void deactivate_state(const common::WorldUITransfer& world_state);

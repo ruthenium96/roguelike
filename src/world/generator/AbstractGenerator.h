@@ -25,6 +25,7 @@ class AbstractGenerator {
     // Generate Objects in Coordinate based on object::Observer information
     virtual std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) = 0;
     virtual ~AbstractGenerator() = default;
+    // returns reference to serializer
     const serialization::Serializer& getSaver() const;
 
   protected:

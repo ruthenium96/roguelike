@@ -5,7 +5,7 @@
 #include "PlayerEquipment.h"
 #include "WorldUITransfer.h"
 
-// This class helps modules communicate each other.
+// Trying to emulate healthy enums.
 namespace common {
 
 enum class Direction {
@@ -68,7 +68,7 @@ private:
     bool dummyField_ = false;
 };
 
-
+// This class helps modules communicate each other.
 using Command = std::variant<
         // Controller => Controller:
         Controller_Unknown,

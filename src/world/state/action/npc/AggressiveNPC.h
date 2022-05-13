@@ -3,7 +3,7 @@
 
 #include "AbstractNPC.h"
 namespace world::state::action {
-
+// Behaviour of Aggressive NPC.
 class AggressiveNPC : public AbstractNPC {
 public:
     explicit AggressiveNPC(const std::optional<Identity> &selfIdentity);

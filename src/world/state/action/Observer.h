@@ -6,16 +6,21 @@
 
 namespace world::state::action {
 class AbstractAction;
-
+// Observer of Actions.
 class Observer {
   public:
+    // add new actiob
     void addAction(const std::shared_ptr<action::AbstractAction>& action);
+    // delete new action
     void deleteAction(Identity actionIdentity);
+    // Trying to get Actions by corresponding Identities
     std::optional<std::shared_ptr<action::AbstractAction>> getActionByCorrespondingObjectIdentity(
         Identity objectIdentity) const;
     std::optional<std::shared_ptr<action::AbstractAction>> getActionByCorrespondingItemIdentity(
             Identity objectIdentity) const;
+    // gets all actions with property "every_turn"
     const std::vector<std::shared_ptr<AbstractAction>>& getEveryTurnActions() const;
+    // gets all actions
     const std::set<std::shared_ptr<AbstractAction>>& getAllActions() const;
 
     bool operator==(const Observer &rhs) const;

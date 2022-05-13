@@ -5,6 +5,7 @@
 #include "../../../../common/ItemType.h"
 
 namespace world::state::action {
+// Action from Engine to drop the Item
 class PlayerDrop : public AbstractAction {
   public:
     explicit PlayerDrop(common::ItemType itemType);

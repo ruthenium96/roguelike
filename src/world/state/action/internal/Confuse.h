@@ -9,6 +9,7 @@ namespace world::state::action {
 
 // corresponding object is confused object
 class Confuse : public AbstractNPC {
+// Action for confusing NPC
 public:
     Confuse(const std::optional<Identity> &selfIdentity, Identity confusedObjectIdentity, int32_t duration, object::Observer &objectObserver, Observer &actionObserver);
 

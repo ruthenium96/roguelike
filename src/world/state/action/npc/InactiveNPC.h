@@ -3,7 +3,7 @@
 
 #include "AbstractNPC.h"
 namespace world::state::action {
-
+// Behaviour of Inactive NPC.
 class InactiveNPC : public AbstractNPC {
 public:
     explicit InactiveNPC(const std::optional<Identity> &selfIdentity);

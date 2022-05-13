@@ -13,6 +13,7 @@ public:
 
     std::vector<ObjectAndActions>
     generateObjects(common::Coordinate coordinate, const state::object::Observer &observer) override;
+    // returns reference to deserializer
     const serialization::Deserializer& getLoader() const;
 
 private:

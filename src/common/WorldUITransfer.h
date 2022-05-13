@@ -13,6 +13,7 @@ struct WorldUITransfer {
     PlayerMetrics playerMetrics;
     Inventory inventory;
     PlayerEquipment playerEquipment;
+    // Message to display
     std::optional<std::string> message;
 };
 }  // namespace common

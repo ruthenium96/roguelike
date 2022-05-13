@@ -7,6 +7,7 @@
 #include <map>
 
 namespace world::state {
+// Class for simulating behaviour of languages with runtime typing. Requested for suitable holding of properties.
 class Entity {
   public:
     const std::map<std::string, std::any>& getAllProperties() const;

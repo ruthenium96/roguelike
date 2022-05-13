@@ -6,6 +6,7 @@
 
 namespace controller {
 
+// Controller from MVC
 class Controller {
   public:
     Controller() = default;

@@ -3,7 +3,7 @@
 
 #include "../AbstractAction.h"
 namespace world::state::action {
-
+// An abstract NPC class. ALso is required for NPC's death.
 class AbstractNPC : public AbstractAction {
 public:
     explicit AbstractNPC(const std::optional<Identity> &selfIdentity);

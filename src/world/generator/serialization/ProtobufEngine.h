@@ -28,6 +28,7 @@ class ProtoToGameTypeMapper {
 }  // namespace
 
 namespace world::generator::serialization {
+// The main serialization and deserialization class
 class ProtobufEngine {
   public:
     ProtobufEngine();

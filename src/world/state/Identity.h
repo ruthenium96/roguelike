@@ -33,6 +33,7 @@ class Identity {
     uint64_t identity_;
 };
 
+// Static class for generating Identities.
 class IdentityGenerator {
 public:
     static Identity getNewIdentity() {

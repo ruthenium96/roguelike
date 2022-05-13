@@ -19,6 +19,7 @@ class Engine {
     // Generate current Map
     common::WorldUITransfer getWorldUITransfer() const;
 
+    // reset world after death.
     void resetWorld();
 
   private:

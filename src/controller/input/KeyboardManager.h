@@ -3,6 +3,7 @@
 #include "AbstractManager.h"
 
 namespace controller::input {
+// Realization for keyboard.
 class KeyboardManager : public AbstractManager {
   public:
     KeyboardManager() = default;

@@ -5,7 +5,7 @@
 
 namespace world::state::action {
 
-// Action of movement.
+// Action of movement and attack.
 class Move : public AbstractAction {
   public:
     Move(Identity movingObject, int32_t delta_x, int32_t delta_y);
