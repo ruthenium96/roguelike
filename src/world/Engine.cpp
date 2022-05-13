@@ -152,8 +152,7 @@ Engine::generateExternalAction(const common::Command& command) const {
                 assert(0);
         }
         auto playerIdentity = state_.getObjectObserver().getPlayer()->getIdentity();
-        externalAction = std::make_shared<state::action::Move>(delta_x, delta_y);
-        externalAction.value()->setCorrespondingObjectIdentity(playerIdentity);
+        externalAction = std::make_shared<state::action::Move>(playerIdentity, delta_x, delta_y);
     } else if (std::holds_alternative<common::World_ApplyItem>(command)) {
         auto variant = std::get<common::World_ApplyItem>(command);
         externalAction = std::make_shared<state::action::PlayerUIInteract>(variant.type, variant.equipmentPosition);

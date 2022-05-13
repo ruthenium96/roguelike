@@ -3,7 +3,8 @@
 
 namespace world::state::action {
 
-Move::Move(int32_t delta_x, int32_t delta_y) : AbstractAction(std::nullopt) {
+Move::Move(Identity movingObject, int32_t delta_x, int32_t delta_y) : AbstractAction(std::nullopt) {
+    setCorrespondingObjectIdentity(movingObject);
     setProperty("dx", std::make_any<int32_t>(delta_x));
     setProperty("dy", std::make_any<int32_t>(delta_y));
 }
@@ -39,6 +40,9 @@ void Move::changeTarget(object::Observer& objectObserver, action::Observer& acti
     for (auto& anotherObject: objectObserver.getObjectsAtCoordinate(wantedCoordinate)) {
         if (anotherObject->getProperty("hp").has_value() && anotherObject->getObjectType() != object->getObjectType()) {
             attack(object, anotherObject);
+            if (object == objectObserver.getPlayer()) {
+                // TODO: may be confusing!
+            }
             return;
         }
     }

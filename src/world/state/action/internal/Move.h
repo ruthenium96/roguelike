@@ -8,7 +8,7 @@ namespace world::state::action {
 // Action of movement.
 class Move : public AbstractAction {
   public:
-    Move(int32_t delta_x, int32_t delta_y);
+    Move(Identity movingObject, int32_t delta_x, int32_t delta_y);
 
     bool precondition(const object::Observer& objectObserver, const action::Observer&) override;
 

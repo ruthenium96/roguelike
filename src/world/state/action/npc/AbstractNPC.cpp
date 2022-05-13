@@ -37,7 +37,7 @@ AbstractNPC::contructAndTryMove(const object::Observer &objectObserver, const Ob
                                 int32_t dx_step_try, int32_t dy_step_try) {
     auto NPCIdentity = getCorrespondingObjectIdentity().value();
 
-    auto tryMove = std::make_shared<Move>(dx_step_try, dy_step_try);
+    auto tryMove = std::make_shared<Move>(NPCIdentity, dx_step_try, dy_step_try);
     tryMove->setCorrespondingObjectIdentity(NPCIdentity);
     if (tryMove->precondition(objectObserver, actionObserver)) {
         return tryMove;

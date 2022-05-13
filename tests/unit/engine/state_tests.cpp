@@ -68,14 +68,10 @@ TEST(state_tests, canWalkOntoFloor) {
     auto playerIdentity = state.getObjectObserver().getPlayer()->getIdentity();
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
-    auto moveActionRight = std::make_shared<world::state::action::Move>(1, 0);
-    moveActionRight->setCorrespondingObjectIdentity(playerIdentity);
-    auto moveActionLeft = std::make_shared<world::state::action::Move>(-1, 0);
-    moveActionLeft->setCorrespondingObjectIdentity(playerIdentity);
-    auto moveActionUp = std::make_shared<world::state::action::Move>(0, -1);
-    moveActionUp->setCorrespondingObjectIdentity(playerIdentity);
-    auto moveActionDown = std::make_shared<world::state::action::Move>(0, 1);
-    moveActionDown->setCorrespondingObjectIdentity(playerIdentity);
+    auto moveActionRight = std::make_shared<world::state::action::Move>(playerIdentity, 1, 0);
+    auto moveActionLeft = std::make_shared<world::state::action::Move>(playerIdentity, -1, 0);
+    auto moveActionUp = std::make_shared<world::state::action::Move>(playerIdentity, 0, -1);
+    auto moveActionDown = std::make_shared<world::state::action::Move>(playerIdentity, 0, 1);
 
     ASSERT_EQ(state.applyAction(moveActionRight), true);
     expectedCoordinate.x += 1;
@@ -124,20 +120,16 @@ TEST(state_tests, cannotWalkIntoWall) {
     auto playerIdentity = state.getObjectObserver().getPlayer()->getIdentity();
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 
-    auto moveAction = std::make_shared<world::state::action::Move>(1, 0);
-    moveAction->setCorrespondingObjectIdentity(playerIdentity);
+    auto moveAction = std::make_shared<world::state::action::Move>(playerIdentity, 1, 0);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
-    moveAction = std::make_shared<world::state::action::Move>(-1, 0);
-    moveAction->setCorrespondingObjectIdentity(playerIdentity);
+    moveAction = std::make_shared<world::state::action::Move>(playerIdentity, -1, 0);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
-    moveAction = std::make_shared<world::state::action::Move>(0, 1);
-    moveAction->setCorrespondingObjectIdentity(playerIdentity);
+    moveAction = std::make_shared<world::state::action::Move>(playerIdentity, 0, 1);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
-    moveAction = std::make_shared<world::state::action::Move>(0, -1);
-    moveAction->setCorrespondingObjectIdentity(playerIdentity);
+    moveAction = std::make_shared<world::state::action::Move>(playerIdentity, 0, -1);
     ASSERT_EQ(state.applyAction(moveAction), false);
     ASSERT_EQ(state.getObjectObserver().getPlayer()->getCoordinate(), expectedCoordinate);
 }
@@ -325,8 +317,7 @@ TEST(state_tests, aggressiveNPC) {
     auto old_hp_enemy = std::any_cast<int32_t>(enemy->getProperty("hp").value());
     auto old_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
 
-    auto playerAttackAction = std::make_shared<world::state::action::Move>(0, 1);
-    playerAttackAction->setCorrespondingObjectIdentity(player->getIdentity());
+    auto playerAttackAction = std::make_shared<world::state::action::Move>(player->getIdentity(), 0, 1);
     ASSERT_EQ(state.applyAction(playerAttackAction), true);
     auto new_hp_enemy = std::any_cast<int32_t>(enemy->getProperty("hp").value());
     ASSERT_TRUE(new_hp_enemy < old_hp_enemy);
@@ -377,8 +368,7 @@ TEST(state_tests, twoAggressiveNPC) {
     auto old_hp_enemy_far = std::any_cast<int32_t>(enemy_close->getProperty("hp").value());
     auto old_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
 
-    auto playerAttackAction = std::make_shared<world::state::action::Move>(0, 1);
-    playerAttackAction->setCorrespondingObjectIdentity(player->getIdentity());
+    auto playerAttackAction = std::make_shared<world::state::action::Move>(player->getIdentity(), 0, 1);
     ASSERT_EQ(state.applyAction(playerAttackAction), true);
     auto new_hp_enemy_close = std::any_cast<int32_t>(enemy_close->getProperty("hp").value());
     auto new_hp_enemy_far = std::any_cast<int32_t>(enemy_far->getProperty("hp").value());
