@@ -6,6 +6,7 @@
 #include <vector>
 
 namespace common {
+// Player Inventory
 struct ItemData {
     ItemType itemType;
     std::string description;

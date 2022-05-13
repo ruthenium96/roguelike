@@ -8,6 +8,7 @@ enum class ObjectType {
     FLOOR,
     WALL,
     ARTEFACT,
+    NPC,
 };
 
 }  // namespace common

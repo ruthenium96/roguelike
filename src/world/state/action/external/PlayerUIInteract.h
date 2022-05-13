@@ -5,6 +5,7 @@
 #include "../../../../common/PlayerEquipment.h"
 
 namespace world::state::action {
+// Action from Engine to UI interact with something the Inventory Item
 class PlayerUIInteract : public AbstractAction {
   public:
     PlayerUIInteract(common::ItemType itemType, common::EquipmentPosition position);

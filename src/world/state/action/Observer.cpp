@@ -27,10 +27,12 @@ void Observer::deleteAction(Identity actionIdentity) {
 }
 
 const std::vector<std::shared_ptr<AbstractAction>>& Observer::getEveryTurnActions() const {
+    // TODO: fix it
+    updateRepresentations();
     return everyMoveActions_;
 }
 
-void Observer::updateRepresentations() {
+void Observer::updateRepresentations() const {
     // update EveryMove Representation:
     everyMoveActions_.clear();
     for (const auto& action : allActions_) {

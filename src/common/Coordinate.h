@@ -6,6 +6,7 @@
 
 namespace common {
 
+// Coordinate of Object.
 struct Coordinate {
     bool operator==(const Coordinate& rhs) const { return x == rhs.x && y == rhs.y; }
 

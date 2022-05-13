@@ -18,7 +18,7 @@ class Observer {
     std::shared_ptr<object::AbstractObject> getPlayer();
     std::shared_ptr<const object::AbstractObject> getPlayer() const;
     // Get object using its Identity.
-    std::optional<std::shared_ptr<object::AbstractObject>> getObject(Identity);
+    std::optional<std::shared_ptr<object::AbstractObject>> getObject(Identity) const;
 
     // Get all Objects using their Coordinate.
     std::vector<std::shared_ptr<AbstractObject>> getObjectsAtCoordinate(common::Coordinate coordinate) const;
@@ -26,11 +26,13 @@ class Observer {
 
     // Adds new object.
     void addObject(const std::shared_ptr<object::AbstractObject>&);
-    //
+    // Delete object.
     void deleteObject(Identity);
 
 
+    // Counts number of Item with concrete Type in Player's Inventory
     size_t howManyItemsOfThisTypeHoldsPlayer(common::ItemType type) const;
+    // Counts number of weared Item with concrete Type in Player's Inventory
     size_t countHowManyTimesItemIsWearedByPlayer(common::ItemType type) const;
 
     bool operator==(const Observer &rhs) const;

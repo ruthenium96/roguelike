@@ -5,6 +5,7 @@
 
 namespace world::state::action {
 class Poison : public AbstractAction {
+// Action for Poisoning of Object.
 public:
     // default constructor
     explicit Poison(std::optional<Identity> selfIdentity);

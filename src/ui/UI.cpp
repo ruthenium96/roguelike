@@ -50,9 +50,9 @@ UI::UI(const std::string& style) {
     }
 }
 
-common::ControllerCommand UI::apply_command(const common::ControllerCommand& command,
-                                            const common::WorldUITransfer& world_state) {
-    using common::ControllerCommand;
+common::Command UI::apply_command(const common::Command& command,
+                                  const common::WorldUITransfer& world_state) {
+    using common::Command;
 
     if (std::holds_alternative<common::Interact>(command)) {
         auto item_type = get_inventory_item_type_by_index(world_state.inventory, state_.inventory_pos);
@@ -339,5 +339,30 @@ void UI::pushEquipmentOnDisplay(const common::PlayerEquipment &equipment) {
     display_.add_display_data(equipment_display, game_board_equipment_height_pos, game_board_equipment_width_pos);
 
 }
+
+void UI::drawDeath(const common::Death &death) {
+    display_.fill_border();
+
+    pushDeathScreenOnDisplay(death);
+
+    display_.draw();
+    display_.clear_data();
+}
+
+
+void UI::pushDeathScreenOnDisplay(const common::Death &death) {
+    const size_t death_display_height = 4U;
+    const size_t death_display_width = 46;
+    CharDisplay death_display(death_display_height, death_display_width);
+    death_display.fill_border();
+
+    death_display.put_string("You're dead.", 1U, 17U  );
+    death_display.put_string("Press any button to restart.", 2U, 8U);
+
+    const size_t game_board_death_height_pos = 14U;
+    const size_t game_board_death_width_pos = 5U;
+    display_.add_display_data(death_display, game_board_death_height_pos, game_board_death_width_pos);
+}
+
 
 }  // namespace ui

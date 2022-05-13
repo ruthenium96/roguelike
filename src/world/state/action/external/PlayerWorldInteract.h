@@ -4,6 +4,7 @@
 #include "../AbstractAction.h"
 
 namespace world::state::action {
+// Action from Engine to World interact with other Object (namely, Artefact)
 class PlayerWorldInteract : public AbstractAction {
   public:
     PlayerWorldInteract() : AbstractAction(std::nullopt){};

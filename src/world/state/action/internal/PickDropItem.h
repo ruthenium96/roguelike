@@ -4,6 +4,7 @@
 #include "../AbstractAction.h"
 
 namespace world::state::action {
+// Action for Item ability to be picked and dropped.
 class PickDropItem : public AbstractAction {
   public:
     explicit PickDropItem(const std::optional<Identity>& selfIdentity);

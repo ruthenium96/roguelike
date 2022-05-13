@@ -6,6 +6,7 @@
 #include "../state/object/Observer.h"
 #include "../state/object/concrete/Floor.h"
 #include "../state/object/concrete/Player.h"
+#include "../state/Identity.h"
 #include "serialization/Serializer.h"
 #include <memory>
 #include <vector>
@@ -24,13 +25,18 @@ class AbstractGenerator {
     // Generate Objects in Coordinate based on object::Observer information
     virtual std::vector<ObjectAndActions> generateObjects(common::Coordinate, const state::object::Observer&) = 0;
     virtual ~AbstractGenerator() = default;
+    // returns reference to serializer
     const serialization::Serializer& getSaver() const;
 
   protected:
-    void addPlayer(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
-    void addFloor(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
-    void addWall(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
-    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, uint64_t&);
+    void addPlayer(common::Coordinate, std::vector<ObjectAndActions>&);
+    void addFloor(common::Coordinate, std::vector<ObjectAndActions>&);
+    void addWall(common::Coordinate, std::vector<ObjectAndActions>&);
+    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&);
+    void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 1> threshold);
+    void addNPC(common::Coordinate, std::vector<ObjectAndActions>&);
+    void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 2> threshold);
+
 
   private:
     serialization::Serializer saver_;

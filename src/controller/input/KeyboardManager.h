@@ -3,9 +3,10 @@
 #include "AbstractManager.h"
 
 namespace controller::input {
+// Realization for keyboard.
 class KeyboardManager : public AbstractManager {
   public:
     KeyboardManager() = default;
-    common::ControllerCommand readCommand() override;
+    common::Command readCommand() override;
 };
 }  // namespace controller::input

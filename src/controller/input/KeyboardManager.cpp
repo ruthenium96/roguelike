@@ -40,9 +40,9 @@ inline char read_char_with_no_confirmation() {
 }  // namespace
 
 namespace controller::input {
-using common::ControllerCommand;
+using common::Command;
 
-ControllerCommand KeyboardManager::readCommand() {
+Command KeyboardManager::readCommand() {
     char symbol = std::tolower(read_char_with_no_confirmation());
     if (symbol == 'w' || symbol == 'd' || symbol == 's' || symbol == 'a') {
         common::Direction direction;

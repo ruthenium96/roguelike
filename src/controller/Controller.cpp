@@ -3,23 +3,25 @@
 #include <algorithm>
 
 namespace controller {
-using common::ControllerCommand;
+using common::Command;
 
 namespace {
 
-bool is_ui_command(const ControllerCommand& command) {
+bool is_ui_command(const Command& command) {
     if (std::holds_alternative<common::Interact>(command)) {
         return true;
     } else if (std::holds_alternative<common::UI_DropItem>(command)) {
         return true;
     } else if (std::holds_alternative<common::Move>(command)) {
         return true;
+    } else if (std::holds_alternative<common::Ignore>(command)) {
+        return true;
     } else {
         return false;
     }
 }
 
-bool is_world_command(const ControllerCommand& command) {
+bool is_world_command(const Command& command) {
     if (std::holds_alternative<common::Move>(command)) {
         return true;
     } else if (std::holds_alternative<common::Interact>(command)) {
@@ -40,9 +42,9 @@ bool is_world_command(const ControllerCommand& command) {
 void Controller::start() {
     // use us_.draw_init();
 
-    ControllerCommand command;
-    auto world_state = engine_.getWorldUITransfer();
-    ui_.draw(world_state);
+    Command command;
+    auto worldUITransfer = engine_.getWorldUITransfer();
+    ui_.draw(worldUITransfer);
     while (true) {
         command = manager_.readCommand();
         if (std::holds_alternative<common::Controller_Unknown>(command)) {
@@ -50,27 +52,51 @@ void Controller::start() {
         } else if (std::holds_alternative<common::Controller_Exit>(command)) {
             break;
         } else if (std::holds_alternative<common::Controller_ChangeRegime>(command)) {
-            changeRegime(world_state);
+            changeRegime(worldUITransfer);
+            // reset command to ignore, it is the dirty trick
+            command = common::Ignore();
         }
+
+        // set "default" value
+        common::Command engineCommand = common::Ignore();
 
         if (getCurrentRegime() == CurrentRegime::UI) {
             if (is_ui_command(command)) {
-                auto commandFromUI = ui_.apply_command(command, world_state);
-                engine_.applyCommand(commandFromUI);
+                auto UICommand = ui_.apply_command(command, worldUITransfer);
+                engineCommand = engine_.applyCommand(UICommand);
             }
             // TODO: return to world regime if the last item was dropped
             // do nothing if it is not command of UI
         } else if (getCurrentRegime() == CurrentRegime::WORLD) {
             if (is_world_command(command)) {
-                engine_.applyCommand(command);
+                engineCommand = engine_.applyCommand(command);
             }
             // do nothing if it is not command of World
         } else {
             assert(0);
         }
 
-        world_state = engine_.getWorldUITransfer();
-        ui_.draw(world_state);
+        if (std::holds_alternative<common::WorldUITransfer>(engineCommand)) {
+            worldUITransfer = std::get<common::WorldUITransfer>(engineCommand);
+            ui_.draw(worldUITransfer);
+            continue;
+        }
+        if (std::holds_alternative<common::Death>(engineCommand)) {
+            auto death = std::get<common::Death>(engineCommand);
+            ui_.drawDeath(death);
+
+            Command afterDeathCommand = manager_.readCommand();
+            if (std::holds_alternative<common::Controller_Exit>(afterDeathCommand)) {
+                break;
+            }
+
+            engine_.resetWorld();
+            worldUITransfer = engine_.getWorldUITransfer();
+            if (getCurrentRegime() == CurrentRegime::UI) {
+                changeRegime(worldUITransfer);
+            }
+            ui_.draw(worldUITransfer);
+        }
     }
 
     // us_.draw_final();

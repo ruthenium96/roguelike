@@ -13,6 +13,7 @@ public:
 
     std::vector<ObjectAndActions>
     generateObjects(common::Coordinate coordinate, const state::object::Observer &observer) override;
+    // returns reference to deserializer
     const serialization::Deserializer& getLoader() const;
 
 private:
@@ -20,7 +21,6 @@ private:
     std::optional<world::state::State> loadedState_;
     std::filesystem::path path_;
     bool wasLoaded_ = false;
-    uint64_t generated_identity_;
     std::set<common::Coordinate> generated_coordinates_;
     std::set<common::Coordinate> loaded_coordinates_;
 

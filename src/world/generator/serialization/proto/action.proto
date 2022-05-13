@@ -18,6 +18,9 @@ message Action {
   enum ActionType {
     PICKITEM = 0;
     POISON = 1;
+    AGGRESSIVE_NPC = 2;
+    COWARD_NPC = 3;
+    INACTIVE_NPC = 4;
   }
 
   ActionType type = 1;

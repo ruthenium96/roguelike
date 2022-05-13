@@ -5,6 +5,7 @@
 #include <filesystem>
 
 namespace world::generator::serialization {
+// Adapter for serialization
 class Serializer {
 public:
     Serializer() = default;

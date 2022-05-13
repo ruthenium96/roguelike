@@ -7,7 +7,7 @@
 #include <utility>
 
 namespace world::state::item {
-
+// Abstract class for Item.
 class AbstractItem : public Entity {
   public:
     AbstractItem(const Identity& itemIdentity, const Identity& objectHolderIdentity)

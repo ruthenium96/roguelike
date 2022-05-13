@@ -17,6 +17,7 @@ message ObjectProperties {
   google.protobuf.BoolValue interactable = 6;
   google.protobuf.Int32Value attack = 7;
   google.protobuf.Int32Value defence = 8;
+  google.protobuf.Int32Value vision = 9;
 }
 
 message Item {
@@ -36,6 +37,7 @@ message Object {
     FLOOR = 1;
     WALL = 2;
     ARTEFACT = 3;
+    NPC = 4;
   }
 
   uint64 selfIdentity = 1;

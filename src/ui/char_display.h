@@ -10,6 +10,7 @@
 
 namespace ui {
 
+// Interface for displaying
 class CharDisplay {
   public:
     CharDisplay(size_t height, size_t width) : height_{height}, width_{width} { clear_data(); }

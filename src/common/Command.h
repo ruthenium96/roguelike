@@ -3,8 +3,9 @@
 #include <variant>
 #include "ItemType.h"
 #include "PlayerEquipment.h"
+#include "WorldUITransfer.h"
 
-// This class helps modules communicate each other.
+// Trying to emulate healthy enums.
 namespace common {
 
 enum class Direction {
@@ -62,20 +63,30 @@ private:
     bool dummyField_ = false;
 };
 
-using ControllerCommand = std::variant<
-        // Internal Controller Commands:
+struct Death {
+private:
+    bool dummyField_ = false;
+};
+
+// This class helps modules communicate each other.
+using Command = std::variant<
+        // Controller => Controller:
         Controller_Unknown,
         Controller_ChangeRegime,
         Controller_Exit,
-        // UI and World Commands:
-        Ignore,
+        // Controller => World/UI
         Move,
         Interact,
-        // UI Commands:
+        // Controller => UI
         UI_DropItem,
-        // World Commands:
+        // UI => World
+        Ignore,
         World_ApplyItem,
-        World_DropItem
+        World_DropItem,
+        // World => Controller
+        Death,
+        // World => UI
+        WorldUITransfer
         >;
 
 }  // namespace common

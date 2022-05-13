@@ -33,6 +33,20 @@ class Identity {
     uint64_t identity_;
 };
 
+// Static class for generating Identities.
+class IdentityGenerator {
+public:
+    static Identity getNewIdentity() {
+        return Identity(generatedIdentities++);
+    };
+    static void setTo(uint64_t newValue) {
+        generatedIdentities = newValue;
+    }
+private:
+    inline static uint64_t generatedIdentities;
+};
+
+
 }  // namespace world::state
 
 #endif  // ARCH_ROGUELIKE_IDENTITY_H
