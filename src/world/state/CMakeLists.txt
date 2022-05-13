@@ -14,11 +14,12 @@ add_library(state
         action/AbstractAction.h action/AbstractAction.cpp
         action/Observer.cpp action/Observer.h
         action/external/PlayerDrop.cpp action/external/PlayerDrop.h
-        action/external/PlayerMove.cpp action/external/PlayerMove.h
+        action/internal/Move.cpp action/internal/Move.h
         action/external/PlayerWorldInteract.cpp action/external/PlayerWorldInteract.h
         action/external/PlayerUIInteract.cpp action/external/PlayerUIInteract.h
         action/internal/PickDropItem.cpp action/internal/PickDropItem.h
         action/internal/Poison.cpp action/internal/Poison.h
+        action/npc/AggressiveNPC.cpp action/npc/AggressiveNPC.h
 
         item/AbstractItem.cpp item/AbstractItem.h
         item/concrete/Stick.cpp item/concrete/Stick.h

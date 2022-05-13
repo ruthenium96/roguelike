@@ -6,6 +6,7 @@ NPC::NPC(const Identity &identity) : AbstractObject(identity) {
     setProperty("attack", std::make_any<int32_t>(5));
     setProperty("defence", std::make_any<int32_t>(2));
     setProperty("vision", std::make_any<int32_t>(5));
+    setProperty("blocking", std::make_any<bool>(true));
 }
 
 common::ObjectType NPC::getObjectType() const {

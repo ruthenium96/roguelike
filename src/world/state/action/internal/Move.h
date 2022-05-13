@@ -13,6 +13,9 @@ class Move : public AbstractAction {
     bool precondition(const object::Observer& objectObserver, const action::Observer&) override;
 
     void changeTarget(object::Observer&, action::Observer&) override;
+
+  private:
+    void attack(std::shared_ptr<object::AbstractObject>& attacker, std::shared_ptr<object::AbstractObject>& defender);
 };
 
 }  // namespace world::state::action

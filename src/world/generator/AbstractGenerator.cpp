@@ -2,6 +2,7 @@
 #include "../../common/ItemType.h"
 #include "../state/action/internal/Poison.h"
 #include "../state/action/internal/PickDropItem.h"
+#include "../state/action/npc/AggressiveNPC.h"
 #include "../state/item/concrete/Ring.h"
 #include "../state/item/concrete/Stick.h"
 #include "../state/object/concrete/Artefact.h"
@@ -112,10 +113,10 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
     npc.object = std::make_shared<state::object::NPC>(npcIdentity);
     npc.object->getCoordinate() = coordinate;
     // add NPC actions
-//    auto actionIdentity = state::Identity(generated_identities_++);
-//    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, -1, 100000);
-//    poisonAction->setCorrespondingObjectIdentity(playerIdentity);
-//    player.actions.push_back(poisonAction);
+    auto actionIdentity = state::Identity(generated_identities_++);
+    auto NPCAction = std::make_shared<state::action::AggressiveNPC>(actionIdentity);
+    NPCAction->setCorrespondingObjectIdentity(npcIdentity);
+    npc.actions.push_back(NPCAction);
     // ...
     answer.push_back(npc);
 }
