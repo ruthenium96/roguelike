@@ -44,7 +44,11 @@ void Move::changeTarget(object::Observer& objectObserver, action::Observer& acti
             attack(object, anotherObject);
             if (object == objectObserver.getPlayer()) {
                 float probability = RandomNumberGenerator::generate();
-                if (probability > 0.7) {
+                float threshold = 0.7; // default value
+                if (getProperty("confuseThreshold").has_value()) {
+                    threshold = std::any_cast<float>(getProperty("confuseThreshold").value());
+                }
+                if (probability > threshold) {
                     int32_t duration = 4;
                     auto confuseAction = std::make_shared<Confuse>(state::IdentityGenerator::getNewIdentity(),
                                                                    anotherObject->getIdentity(),
