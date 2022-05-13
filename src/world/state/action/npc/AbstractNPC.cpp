@@ -26,10 +26,18 @@ void AbstractNPC::death(object::Observer &objectObserver, Observer &actionObserv
     player->levelUp(10);
 
     auto NPCIdentity = getCorrespondingObjectIdentity().value();
+
+    std::vector<Identity> actionsToDelete;
+    for (auto& action : actionObserver.getAllActions()) {
+        if (action->getCorrespondingObjectIdentity().value() == NPCIdentity) {
+            actionsToDelete.push_back(action->getSelfIdentity().value());
+        }
+    }
     objectObserver.deleteObject(NPCIdentity);
 
-    deleteItselfFromActionObserver(actionObserver);
-
+    for (auto actionIdentity : actionsToDelete) {
+        actionObserver.deleteAction(actionIdentity);
+    }
 }
 
 std::optional<std::shared_ptr<AbstractAction>>
