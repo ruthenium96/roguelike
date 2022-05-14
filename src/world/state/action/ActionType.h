@@ -11,6 +11,8 @@ enum class ActionType {
     COWARD_NPC,
     INACTIVE_NPC,
     CONFUSE,
+    MOLD_EVERY_TURN,
+    MOLD_INTERACTION
 };
 }
 

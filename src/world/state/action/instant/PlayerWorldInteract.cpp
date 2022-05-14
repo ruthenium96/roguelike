@@ -12,10 +12,6 @@ void PlayerWorldInteract::changeTarget(object::Observer& objectObserver, action:
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
     auto interactableObject = findInteractableObject(objects).value();
-    if (interactableObject->getObjectType() != common::ObjectType::ARTEFACT) {
-        // do not support other ObjectTypes now
-        return;
-    }
 
     auto interactableObjectIdentity = interactableObject->getIdentity();
 

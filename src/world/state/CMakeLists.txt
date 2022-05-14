@@ -26,6 +26,8 @@ add_library(state
         action/npc/CowardNPC.cpp action/npc/CowardNPC.h
         action/npc/AggressiveNPC.cpp action/npc/AggressiveNPC.h
         action/npc/InactiveNPC.cpp action/npc/InactiveNPC.h
+        action/mold/MoldEveryTurn.cpp action/mold/MoldEveryTurn.h
+        action/mold/MoldInteraction.cpp action/mold/MoldInteraction.h
 
         item/AbstractItem.cpp item/AbstractItem.h
         item/concrete/Stick.cpp item/concrete/Stick.h

@@ -32,7 +32,8 @@ action::Observer& State::getActionObserver() {
 }
 
 void State::applyEveryTurnInternalActions() {
-    for (auto& internalAction : getActionObserver().getEveryTurnActions()) {
+    auto currentEveryTurnActions = getActionObserver().getEveryTurnActions();
+    for (auto& internalAction : currentEveryTurnActions) {
         assert(internalAction->getProperty("every_turn").has_value());
         applyAction(internalAction);
     }

@@ -6,6 +6,8 @@
 #include "../state/action/npc/AggressiveNPC.h"
 #include "../state/action/npc/InactiveNPC.h"
 #include "../state/action/npc/CowardNPC.h"
+#include "../state/action/mold/MoldInteraction.h"
+#include "../state/action/mold/MoldEveryTurn.h"
 #include "../state/item/concrete/Ring.h"
 #include "../state/item/concrete/Stick.h"
 #include "../state/object/concrete/Artefact.h"
@@ -125,6 +127,13 @@ void AbstractGenerator::addMold(common::Coordinate coordinate, std::vector<Objec
     mold.object = std::make_shared<state::object::Mold>(moldIdentity);
     mold.object->getCoordinate() = coordinate;
     // add Mold actions
+    auto moldEveryTurn = std::make_shared<state::action::MoldEveryTurn>(state::IdentityGenerator::getNewIdentity());
+    moldEveryTurn->setCorrespondingObjectIdentity(moldIdentity);
+    mold.actions.push_back(moldEveryTurn);
+
+    auto moldInteraction = std::make_shared<state::action::MoldInteraction>(state::IdentityGenerator::getNewIdentity());
+    moldInteraction->setCorrespondingObjectIdentity(moldIdentity);
+    mold.actions.push_back(moldInteraction);
     // ...
     answer.push_back(mold);
 }

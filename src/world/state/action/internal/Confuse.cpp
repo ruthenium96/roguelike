@@ -17,7 +17,7 @@ Confuse::Confuse(const std::optional<Identity> &selfIdentity, Identity confusedO
     for (auto& action : actionObserver.getActionsByCorrespondingObjectIdentity(confusedObjectIdentity)) {
         // try to find previous confusing actions:
         if (action->getActionType() == ActionType::CONFUSE) {
-            assert(!mbPreviousConfusing.has_value());
+            assert(!mbPreviousConfusingIdentity.has_value());
             mbPreviousConfusingIdentity = action->getSelfIdentity().value();
         }
         if (action->getProperty("every_turn").has_value()) {
