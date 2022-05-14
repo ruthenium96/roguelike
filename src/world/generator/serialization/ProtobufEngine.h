@@ -38,10 +38,13 @@ class ProtobufEngine {
   private:
     void associate_item_types();
     void associate_object_types();
+    void associate_action_types();
     ProtoToGameTypeMapper<ProtoSerializer::Item::ItemType, common::ItemType> item_mapper_;
     ProtoToGameTypeMapper<ProtoSerializer::Object::ObjectType, common::ObjectType> object_mapper_;
+    ProtoToGameTypeMapper<ProtoSerializer::Action::ActionType, world::state::action::ActionType> action_mapper_;
 
     std::map<common::ObjectType, std::function<std::shared_ptr<world::state::object::AbstractObject>(world::state::Identity)>> objectConstructor_;
+    std::map<world::state::action::ActionType, std::function<std::shared_ptr<world::state::action::AbstractAction>(world::state::Identity)>> actionConstructor_;
 };
 }
 #endif  // ARCH_ROGUELIKE_PROTOBUFENGINE_H

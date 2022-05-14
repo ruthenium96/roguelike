@@ -1,4 +1,5 @@
 #include "ProtobufEngine.h"
+#include "../../state/action/internal/Confuse.h"
 #include "../../state/action/internal/PickDropItem.h"
 #include "../../state/action/internal/Poison.h"
 #include "../../state/action/npc/AggressiveNPC.h"
@@ -17,6 +18,22 @@ namespace world::generator::serialization {
 void ProtobufEngine::associate_item_types() {
     item_mapper_.associate_types(ProtoSerializer::Item::STICK, common::ItemType::STICK);
     item_mapper_.associate_types(ProtoSerializer::Item::RING, common::ItemType::RING);
+}
+
+void ProtobufEngine::associate_action_types() {
+    action_mapper_.associate_types(ProtoSerializer::Action::PICK_ITEM, world::state::action::ActionType::PICK_ITEM);
+    action_mapper_.associate_types(ProtoSerializer::Action::POISON, world::state::action::ActionType::POISON);
+    action_mapper_.associate_types(ProtoSerializer::Action::AGGRESSIVE_NPC, world::state::action::ActionType::AGRESSIVE_NPC);
+    action_mapper_.associate_types(ProtoSerializer::Action::COWARD_NPC, world::state::action::ActionType::COWARD_NPC);
+    action_mapper_.associate_types(ProtoSerializer::Action::INACTIVE_NPC, world::state::action::ActionType::INACTIVE_NPC);
+//    action_mapper_.associate_types(ProtoSerializer::Action::CONFUSE, world::state::action::ActionType::CONFUSE);
+
+    actionConstructor_[world::state::action::ActionType::PICK_ITEM] = [](world::state::Identity identity){return std::make_shared<world::state::action::PickDropItem>(identity);};
+    actionConstructor_[world::state::action::ActionType::POISON] = [](world::state::Identity identity){return std::make_shared<world::state::action::Poison>(identity);};
+    actionConstructor_[world::state::action::ActionType::AGRESSIVE_NPC] = [](world::state::Identity identity){return std::make_shared<world::state::action::AggressiveNPC>(identity);};
+    actionConstructor_[world::state::action::ActionType::COWARD_NPC] = [](world::state::Identity identity){return std::make_shared<world::state::action::CowardNPC>(identity);};
+    actionConstructor_[world::state::action::ActionType::INACTIVE_NPC] = [](world::state::Identity identity){return std::make_shared<world::state::action::InactiveNPC>(identity);};
+//    actionConstructor_[world::state::action::ActionType::CONFUSE] = [](world::state::Identity identity){return std::make_shared<world::state::action::Confuse>(identity);};
 }
 
 void ProtobufEngine::associate_object_types() {
@@ -41,6 +58,7 @@ ProtobufEngine::ProtobufEngine() {
 
     associate_item_types();
     associate_object_types();
+    associate_action_types();
 }
 
 ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& state) const {
@@ -97,6 +115,10 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
     // Serialize all Actions
     for (const auto& action_ptr : state.getActionObserver().getAllActions()) {
         ProtoSerializer::Action* new_proto_action = proto_state.add_actions();
+        // type:
+        ProtoSerializer::Action::ActionType action_proto_type =
+                action_mapper_.get_proto_associated_type_with(action_ptr->getActionType());
+        new_proto_action->set_type(action_proto_type);
         // self-Identity:
         if (action_ptr->getSelfIdentity().has_value()) {
             new_proto_action->set_selfidentity(action_ptr->getSelfIdentity().value().asNumber());
@@ -196,23 +218,11 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
     int actions_size = proto_state.actions_size();
     for (int action_index = 0; action_index < actions_size; ++action_index) {
         const ProtoSerializer::Action& proto_action = proto_state.actions(action_index);
+        auto game_action_type = action_mapper_.get_game_associated_type_with(proto_action.type());
         // type, identity
-        auto action_type = proto_action.type();
         std::shared_ptr<world::state::action::AbstractAction> shared_action;
         auto actionIdentity = world::state::Identity(proto_action.selfidentity());
-        if (action_type == ProtoSerializer::Action_ActionType_PICKITEM) {
-            shared_action = std::make_shared<world::state::action::PickDropItem>(actionIdentity);
-        } else if (action_type == ProtoSerializer::Action_ActionType_POISON) {
-            shared_action = std::make_shared<world::state::action::Poison>(actionIdentity);
-        } else if (action_type == ProtoSerializer::Action_ActionType_AGGRESSIVE_NPC) {
-            shared_action = std::make_shared<world::state::action::AggressiveNPC>(actionIdentity);
-        } else if (action_type == ProtoSerializer::Action_ActionType_COWARD_NPC) {
-            shared_action = std::make_shared<world::state::action::CowardNPC>(actionIdentity);
-        } else if (action_type == ProtoSerializer::Action_ActionType_INACTIVE_NPC) {
-            shared_action = std::make_shared<world::state::action::InactiveNPC>(actionIdentity);
-        } else {
-            assert(0);
-        }
+        shared_action = actionConstructor_.at(game_action_type)(actionIdentity);
         // object identity:
         if (proto_action.has_objectidentity()) {
             auto objectIdentity = world::state::Identity(proto_action.objectidentity().value());
