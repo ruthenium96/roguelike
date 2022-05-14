@@ -42,6 +42,9 @@ class AbstractAction : public Entity {
 
     bool operator!=(const AbstractAction &rhs) const;
 
+protected:
+    void attack(std::shared_ptr<object::AbstractObject>& attacker, std::shared_ptr<object::AbstractObject>& defender);
+
 private:
     const std::optional<Identity> selfIdentity_;
     std::optional<Identity> correspondingObjectIdentity_;

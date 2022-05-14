@@ -70,17 +70,6 @@ void Move::changeTarget(object::Observer& objectObserver, action::Observer& acti
     object->getCoordinate().y += dy;
 }
 
-void Move::attack(std::shared_ptr<object::AbstractObject> &attacker,
-                  std::shared_ptr<object::AbstractObject> &defender) {
-    auto attacker_attack = std::any_cast<int32_t>(attacker->getProperty("attack").value());
-    auto defender_defence = std::any_cast<int32_t>(defender->getProperty("defence").value());
-
-    int32_t damage = std::max(attacker_attack - defender_defence, 0);
-
-    int32_t old_hp = std::any_cast<int32_t>(defender->getProperty("hp").value());
-    defender->setProperty("hp", old_hp - damage);
-}
-
 ActionType Move::getActionType() const {
     return ActionType::INSTANT_ACTION;
 }
