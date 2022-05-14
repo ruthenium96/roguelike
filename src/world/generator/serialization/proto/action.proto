@@ -23,6 +23,8 @@ message Action {
     COWARD_NPC = 3;
     INACTIVE_NPC = 4;
     CONFUSE = 5;
+    MOLD_INTERACTION = 6;
+    MOLD_EVERY_TURN = 7;
   }
 
   ActionType type = 1;

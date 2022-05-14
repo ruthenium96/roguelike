@@ -8,7 +8,6 @@ namespace world::state::action {
 MoldEveryTurn::MoldEveryTurn(const std::optional<Identity> &selfIdentity) : AbstractAction(
         selfIdentity) {
     setProperty("every_turn", true);
-    setProperty("dmg", 2);
 }
 
 

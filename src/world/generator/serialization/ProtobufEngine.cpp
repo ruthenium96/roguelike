@@ -5,6 +5,8 @@
 #include "../../state/action/npc/AggressiveNPC.h"
 #include "../../state/action/npc/InactiveNPC.h"
 #include "../../state/action/npc/CowardNPC.h"
+#include "../../state/action/mold/MoldInteraction.h"
+#include "../../state/action/mold/MoldEveryTurn.h"
 #include "../../state/item/concrete/Stick.h"
 #include "../../state/item/concrete/Ring.h"
 #include "../../state/object/concrete/Artefact.h"
@@ -27,6 +29,8 @@ void ProtobufEngine::associate_action_types() {
     action_mapper_.associate_types(ProtoSerializer::Action::COWARD_NPC, world::state::action::ActionType::COWARD_NPC);
     action_mapper_.associate_types(ProtoSerializer::Action::INACTIVE_NPC, world::state::action::ActionType::INACTIVE_NPC);
 //    action_mapper_.associate_types(ProtoSerializer::Action::CONFUSE, world::state::action::ActionType::CONFUSE);
+    action_mapper_.associate_types(ProtoSerializer::Action::MOLD_INTERACTION, world::state::action::ActionType::MOLD_INTERACTION);
+    action_mapper_.associate_types(ProtoSerializer::Action::MOLD_EVERY_TURN, world::state::action::ActionType::MOLD_EVERY_TURN);
 
     actionConstructor_[world::state::action::ActionType::PICK_ITEM] = [](world::state::Identity identity){return std::make_shared<world::state::action::PickDropItem>(identity);};
     actionConstructor_[world::state::action::ActionType::POISON] = [](world::state::Identity identity){return std::make_shared<world::state::action::Poison>(identity);};
@@ -34,6 +38,9 @@ void ProtobufEngine::associate_action_types() {
     actionConstructor_[world::state::action::ActionType::COWARD_NPC] = [](world::state::Identity identity){return std::make_shared<world::state::action::CowardNPC>(identity);};
     actionConstructor_[world::state::action::ActionType::INACTIVE_NPC] = [](world::state::Identity identity){return std::make_shared<world::state::action::InactiveNPC>(identity);};
 //    actionConstructor_[world::state::action::ActionType::CONFUSE] = [](world::state::Identity identity){return std::make_shared<world::state::action::Confuse>(identity);};
+    actionConstructor_[world::state::action::ActionType::MOLD_INTERACTION] = [](world::state::Identity identity){return std::make_shared<world::state::action::MoldInteraction>(identity);};
+    actionConstructor_[world::state::action::ActionType::MOLD_EVERY_TURN] = [](world::state::Identity identity){return std::make_shared<world::state::action::MoldEveryTurn>(identity);};
+
 }
 
 void ProtobufEngine::associate_object_types() {
@@ -96,6 +103,8 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
                 proto_properties->mutable_defence()->set_value(std::any_cast<int32_t>(value));
             } else if (key == "vision") {
                 proto_properties->mutable_vision()->set_value(std::any_cast<int32_t>(value));
+            } else if (key == "growingThreshold") {
+                proto_properties->mutable_growingthreshold()->set_value(std::any_cast<float>(value));
             } else {
                 assert(0);
             }
@@ -196,6 +205,9 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
         }
         if (proto_object.properties().has_vision()) {
             shared_object->setProperty("vision", proto_object.properties().vision().value());
+        }
+        if (proto_object.properties().has_growingthreshold()) {
+            shared_object->setProperty("growingThreshold", proto_object.properties().growingthreshold().value());
         }
         // items
         int items_size = proto_object.items_size();
