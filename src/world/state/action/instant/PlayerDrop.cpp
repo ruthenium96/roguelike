@@ -53,4 +53,8 @@ std::optional<std::shared_ptr<object::AbstractObject>> PlayerDrop::findInteracta
     }
     return std::nullopt;
 }
+
+ActionType PlayerDrop::getActionType() const {
+    return ActionType::INSTANT_ACTION;
+}
 }

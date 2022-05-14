@@ -12,6 +12,8 @@ class PickDropItem : public AbstractAction {
     bool precondition(const object::Observer&, const action::Observer&) override;
 
     void changeTarget(object::Observer& observer, action::Observer& set) override;
+
+    ActionType getActionType() const override;
     // always: correspondingObjectIdentity_ = artefactIdentity, even if Artefact does not exist
     // correspondingItemIdentity_ always is the same
   private:

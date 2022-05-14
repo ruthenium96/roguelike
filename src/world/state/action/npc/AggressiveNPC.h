@@ -10,6 +10,8 @@ public:
 
     void changeTarget(object::Observer &observer, Observer &observer1) override;
 
+    ActionType getActionType() const override;
+
 private:
     std::optional<std::shared_ptr<AbstractAction>> findDirection(const object::Observer &objectObserver, const action::Observer &actionObserver, int32_t dx_with_player, int32_t dy_with_player);
 };

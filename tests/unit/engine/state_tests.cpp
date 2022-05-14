@@ -2,10 +2,10 @@
 
 #include "../../../src/world/generator/AbstractGenerator.h"
 #include "../../../src/world/state/State.h"
-#include "../../../src/world/state/action/external/PlayerDrop.h"
-#include "../../../src/world/state/action/external/PlayerWorldInteract.h"
-#include "../../../src/world/state/action/internal/Move.h"
-#include "../../../src/world/state/action/external/PlayerUIInteract.h"
+#include "../../../src/world/state/action/instant/PlayerDrop.h"
+#include "../../../src/world/state/action/instant/PlayerWorldInteract.h"
+#include "../../../src/world/state/action/instant/Move.h"
+#include "../../../src/world/state/action/instant/PlayerUIInteract.h"
 
 namespace world::generator {
 class GeneratorForTests : public AbstractGenerator {

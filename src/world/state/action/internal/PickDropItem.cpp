@@ -47,4 +47,8 @@ void PickDropItem::moveItem(std::shared_ptr<object::AbstractObject> from,
     }
 
 }
+
+ActionType PickDropItem::getActionType() const {
+    return ActionType::PICK_ITEM;
+}
 }  // namespace world::state::action

@@ -22,6 +22,7 @@ message Action {
     AGGRESSIVE_NPC = 2;
     COWARD_NPC = 3;
     INACTIVE_NPC = 4;
+    CONFUSE = 5;
   }
 
   ActionType type = 1;

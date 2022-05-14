@@ -1,5 +1,5 @@
 #include "Move.h"
-#include "Confuse.h"
+#include "../internal/Confuse.h"
 #include "../../../RandomNumberGenerator.h"
 #include <algorithm>
 
@@ -79,6 +79,10 @@ void Move::attack(std::shared_ptr<object::AbstractObject> &attacker,
 
     int32_t old_hp = std::any_cast<int32_t>(defender->getProperty("hp").value());
     defender->setProperty("hp", old_hp - damage);
+}
+
+ActionType Move::getActionType() const {
+    return ActionType::INSTANT_ACTION;
 }
 
 }  // namespace world::state::action

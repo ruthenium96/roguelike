@@ -32,4 +32,8 @@ void Poison::changeTarget(object::Observer &objectObserver, action::Observer &ac
 }
 
 Poison::Poison(std::optional<Identity> selfIdentity) : Poison(selfIdentity, 0, 0) {}
+
+ActionType Poison::getActionType() const {
+    return ActionType::POISON;
+}
 }

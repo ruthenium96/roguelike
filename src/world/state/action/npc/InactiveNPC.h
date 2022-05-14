@@ -9,6 +9,8 @@ public:
     explicit InactiveNPC(const std::optional<Identity> &selfIdentity);
 
     void changeTarget(object::Observer &observer, Observer &observer1) override;
+
+    ActionType getActionType() const override;
 };
 }
 

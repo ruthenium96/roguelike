@@ -46,4 +46,8 @@ CowardNPC::findDirection(const object::Observer &objectObserver, const Observer 
     return std::nullopt;
 }
 
+ActionType CowardNPC::getActionType() const {
+    return ActionType::COWARD_NPC;
+}
+
 }

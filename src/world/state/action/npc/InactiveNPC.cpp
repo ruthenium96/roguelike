@@ -13,4 +13,8 @@ void InactiveNPC::changeTarget(object::Observer &objectObserver, action::Observe
         return;
     }
 }
+
+ActionType InactiveNPC::getActionType() const {
+    return ActionType::INACTIVE_NPC;
+}
 }

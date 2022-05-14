@@ -1,6 +1,6 @@
 #include <valarray>
 #include "AbstractNPC.h"
-#include "../internal/Move.h"
+#include "../instant/Move.h"
 
 
 namespace world::state::action {

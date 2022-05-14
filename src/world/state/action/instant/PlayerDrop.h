@@ -14,7 +14,9 @@ class PlayerDrop : public AbstractAction {
 
     void changeTarget(object::Observer &observer, Observer &observer1) override;
 
-  private:
+    ActionType getActionType() const override;
+
+private:
     // TODO: DRY, the same function exists in PlayerInteract
     std::optional<std::shared_ptr<object::AbstractObject>> findInteractableObject(
             const std::vector<std::shared_ptr<object::AbstractObject>>& objects);

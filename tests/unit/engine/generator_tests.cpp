@@ -3,8 +3,8 @@
 #include "../../../src/world/generator/FromTheDisk.h"
 #include "../../../src/world/generator/OnTheFly.h"
 #include "../../../src/world/state/State.h"
-#include "../../../src/world/state/action/internal/Move.h"
-#include "../../../src/world/state/action/external/PlayerWorldInteract.h"
+#include "../../../src/world/state/action/instant/Move.h"
+#include "../../../src/world/state/action/instant/PlayerWorldInteract.h"
 
 
 TEST(generator_tests, stateEqualsItself) {
@@ -21,7 +21,6 @@ TEST(generator_tests, stateEqualsItself) {
                     state.getActionObserver().addAction(action);
                 }
             }
-
         }
     }
     EXPECT_EQ(state, state);

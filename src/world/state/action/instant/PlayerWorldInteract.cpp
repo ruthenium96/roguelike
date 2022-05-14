@@ -41,4 +41,8 @@ std::optional<std::shared_ptr<object::AbstractObject>> PlayerWorldInteract::find
     }
     return std::nullopt;
 }
+
+ActionType PlayerWorldInteract::getActionType() const {
+    return ActionType::INSTANT_ACTION;
+}
 }  // namespace world::state::action

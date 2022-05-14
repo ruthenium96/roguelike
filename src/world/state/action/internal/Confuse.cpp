@@ -1,5 +1,5 @@
 #include "Confuse.h"
-#include "Move.h"
+#include "../instant/Move.h"
 #include "../../../RandomNumberGenerator.h"
 
 namespace world::state::action {
@@ -69,6 +69,10 @@ void Confuse::randomDirection(int32_t &dx_step_try, int32_t &dy_step_try) {
     if (0.75 < probability) {
         dy_step_try = -1;
     }
+}
+
+ActionType Confuse::getActionType() const {
+    return ActionType::CONFUSE;
 }
 
 }

@@ -14,6 +14,8 @@ class Move : public AbstractAction {
 
     void changeTarget(object::Observer&, action::Observer&) override;
 
+    ActionType getActionType() const override;
+
   private:
     void attack(std::shared_ptr<object::AbstractObject>& attacker, std::shared_ptr<object::AbstractObject>& defender);
 };
