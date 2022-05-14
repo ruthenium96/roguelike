@@ -6,11 +6,14 @@
 #include "../state/action/npc/AggressiveNPC.h"
 #include "../state/action/npc/InactiveNPC.h"
 #include "../state/action/npc/CowardNPC.h"
+#include "../state/action/mold/MoldInteraction.h"
+#include "../state/action/mold/MoldEveryTurn.h"
 #include "../state/item/concrete/Ring.h"
 #include "../state/item/concrete/Stick.h"
 #include "../state/object/concrete/Artefact.h"
 #include "../state/object/concrete/Wall.h"
 #include "../state/object/concrete/NPC.h"
+#include "../state/object/concrete/Mold.h"
 #include <random>
 
 namespace world::generator {
@@ -23,10 +26,10 @@ void AbstractGenerator::addPlayer(common::Coordinate coordinate,
     player.object = std::make_shared<state::object::Player>(playerIdentity);
     player.object->getCoordinate() = coordinate;
     // add Player actions
-    auto actionIdentity = state::IdentityGenerator::getNewIdentity();
-    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, -1, 100000);
-    poisonAction->setCorrespondingObjectIdentity(playerIdentity);
-    player.actions.push_back(poisonAction);
+//    auto actionIdentity = state::IdentityGenerator::getNewIdentity();
+//    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, -1, 100000);
+//    poisonAction->setCorrespondingObjectIdentity(playerIdentity);
+//    player.actions.push_back(poisonAction);
     // ...
     answer.push_back(player);
 }
@@ -83,8 +86,7 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
 
 void AbstractGenerator::addArtefact(common::Coordinate coordinate,
                                     std::vector<ObjectAndActions>& answer) {
-    std::array<float, 1> defaultThreshold = {0.8};
-    addArtefact(coordinate, answer, defaultThreshold);
+    addArtefact(coordinate, answer, artefactTypeProbability_);
 }
 
 void AbstractGenerator::addNPC(common::Coordinate coordinate,
@@ -115,8 +117,25 @@ void AbstractGenerator::addNPC(common::Coordinate coordinate,
 }
 
 void AbstractGenerator::addNPC(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
-    std::array<float, 2> defaultThreshold = {0.5, 0.1};
-    addNPC(coordinate, answer, defaultThreshold);
+    addNPC(coordinate, answer, NPCTypeProbability_);
+}
+
+void AbstractGenerator::addMold(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+    ObjectAndActions mold;
+    auto moldIdentity = state::IdentityGenerator::getNewIdentity();
+    // add NPC object
+    mold.object = std::make_shared<state::object::Mold>(moldIdentity);
+    mold.object->getCoordinate() = coordinate;
+    // add Mold actions
+    auto moldEveryTurn = std::make_shared<state::action::MoldEveryTurn>(state::IdentityGenerator::getNewIdentity());
+    moldEveryTurn->setCorrespondingObjectIdentity(moldIdentity);
+    mold.actions.push_back(moldEveryTurn);
+
+    auto moldInteraction = std::make_shared<state::action::MoldInteraction>(state::IdentityGenerator::getNewIdentity());
+    moldInteraction->setCorrespondingObjectIdentity(moldIdentity);
+    mold.actions.push_back(moldInteraction);
+    // ...
+    answer.push_back(mold);
 }
 
 

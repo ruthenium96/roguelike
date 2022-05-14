@@ -4,6 +4,7 @@
 #include "../object/Observer.h"
 #include "../Identity.h"
 #include "../Entity.h"
+#include "ActionType.h"
 #include "Observer.h"
 
 namespace world::state::action {
@@ -13,6 +14,9 @@ class Observer;
 class AbstractAction : public Entity {
   public:
     explicit AbstractAction(std::optional<Identity> selfIdentity) : selfIdentity_(selfIdentity){};
+
+    virtual ActionType getActionType() const = 0;
+
     // It is precondition: should this Action be applied or not.
     virtual bool precondition(const object::Observer&, const action::Observer&) = 0;
 
@@ -37,6 +41,9 @@ class AbstractAction : public Entity {
     bool operator==(const AbstractAction &rhs) const;
 
     bool operator!=(const AbstractAction &rhs) const;
+
+protected:
+    void attack(std::shared_ptr<object::AbstractObject>& attacker, std::shared_ptr<object::AbstractObject>& defender);
 
 private:
     const std::optional<Identity> selfIdentity_;

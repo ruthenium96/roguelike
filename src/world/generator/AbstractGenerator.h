@@ -18,6 +18,7 @@ struct ObjectAndActions {
     std::shared_ptr<state::object::AbstractObject> object;
     std::vector<std::shared_ptr<state::action::AbstractAction>> actions;
 };
+class GeneratorBuilder;
 
 // An abstract class for generation of the World.
 class AbstractGenerator {
@@ -36,10 +37,14 @@ class AbstractGenerator {
     void addArtefact(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 1> threshold);
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&);
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 2> threshold);
+    void addMold(common::Coordinate, std::vector<ObjectAndActions>&);
 
-
-  private:
+private:
     serialization::Serializer saver_;
+    std::array<float, 1> artefactTypeProbability_ = {0.8};
+    std::array<float, 2> NPCTypeProbability_ = {0.5, 0.1};
+
+    friend GeneratorBuilder;
 };
 
 }  // namespace world::generator

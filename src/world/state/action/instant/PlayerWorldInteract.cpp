@@ -1,3 +1,4 @@
+#include <cassert>
 #include "PlayerWorldInteract.h"
 
 namespace world::state::action {
@@ -11,21 +12,20 @@ void PlayerWorldInteract::changeTarget(object::Observer& objectObserver, action:
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     auto objects = objectObserver.getObjectsAtCoordinate(playerCoordinate);
     auto interactableObject = findInteractableObject(objects).value();
-    if (interactableObject->getObjectType() != common::ObjectType::ARTEFACT) {
-        // do not support other ObjectTypes now
-        return;
-    }
 
     auto interactableObjectIdentity = interactableObject->getIdentity();
 
     // We know Artefact Identity, but do not know Item Identity
     // thus we have to find item through Artefact
-    auto maybe_action = actionObserver.getActionByCorrespondingObjectIdentity(interactableObjectIdentity);
-    if (!maybe_action.has_value()) {
-        return;
+    auto allObjectActions = actionObserver.getActionsByCorrespondingObjectIdentity(interactableObjectIdentity);
+    assert(!allObjectActions.empty());
+    for (auto& action : allObjectActions) {
+        if (action->getProperty("interaction").has_value() && std::any_cast<bool>(action->getProperty("interaction").value())) {
+            action->changeTarget(objectObserver, actionObserver);
+            return;
+        }
     }
-    auto action = maybe_action.value();
-    action->changeTarget(objectObserver, actionObserver);
+    assert(0);
 }
 
 std::optional<std::shared_ptr<object::AbstractObject>> PlayerWorldInteract::findInteractableObject(
@@ -36,5 +36,9 @@ std::optional<std::shared_ptr<object::AbstractObject>> PlayerWorldInteract::find
         }
     }
     return std::nullopt;
+}
+
+ActionType PlayerWorldInteract::getActionType() const {
+    return ActionType::INSTANT_ACTION;
 }
 }  // namespace world::state::action

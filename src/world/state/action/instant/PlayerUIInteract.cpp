@@ -83,4 +83,8 @@ void PlayerUIInteract::unwear(object::Observer &objectObserver) {
     }
 }
 
+ActionType PlayerUIInteract::getActionType() const {
+    return ActionType::INSTANT_ACTION;
+}
+
 }

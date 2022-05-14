@@ -1,5 +1,6 @@
+#include <cassert>
 #include "Confuse.h"
-#include "Move.h"
+#include "../instant/Move.h"
 #include "../../../RandomNumberGenerator.h"
 
 namespace world::state::action {
@@ -9,11 +10,23 @@ Confuse::Confuse(const std::optional<Identity> &selfIdentity, Identity confusedO
     setProperty("every_turn", std::make_any<bool>(true));
     setProperty("duration", std::make_any<int32_t>(duration));
     setCorrespondingObjectIdentity(confusedObjectIdentity);
+
+    std::optional<Identity> mbPreviousConfusingIdentity = std::nullopt;
+
     // deactivate all actions of confused object
-    for (auto& action : actionObserver.getEveryTurnActions()) {
-        if (action->getCorrespondingObjectIdentity() == confusedObjectIdentity) {
-            action->deleteProperty("every_turn");
+    for (auto& action : actionObserver.getActionsByCorrespondingObjectIdentity(confusedObjectIdentity)) {
+        // try to find previous confusing actions:
+        if (action->getActionType() == ActionType::CONFUSE) {
+            assert(!mbPreviousConfusingIdentity.has_value());
+            mbPreviousConfusingIdentity = action->getSelfIdentity().value();
         }
+        if (action->getProperty("every_turn").has_value()) {
+            action->setProperty("every_turn", false);
+        }
+    }
+    // delete previous confusing actions, if it was found
+    if (mbPreviousConfusingIdentity.has_value()) {
+        actionObserver.deleteAction(mbPreviousConfusingIdentity.value());
     }
 }
 
@@ -45,9 +58,9 @@ void Confuse::changeTarget(object::Observer &objectObserver, Observer &actionObs
     --duration;
     setProperty("duration", std::make_any<int32_t>(duration));
     if (duration <= 0) {
-        for (auto& action : actionObserver.getAllActions()) {
-            // turn on previous actions...
-            if (action->getCorrespondingObjectIdentity() == confusedObjectIdentity) {
+        for (auto& action : actionObserver.getActionsByCorrespondingObjectIdentity(confusedObjectIdentity)) {
+            // turn on previous every_turn actions...
+            if (action->getProperty("every_turn").has_value()) {
                 action->setProperty("every_turn", true);
             }
         }
@@ -69,6 +82,10 @@ void Confuse::randomDirection(int32_t &dx_step_try, int32_t &dy_step_try) {
     if (0.75 < probability) {
         dy_step_try = -1;
     }
+}
+
+ActionType Confuse::getActionType() const {
+    return ActionType::CONFUSE;
 }
 
 }

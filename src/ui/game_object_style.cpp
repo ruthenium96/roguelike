@@ -15,6 +15,9 @@ char DefaultStyle::getGameObjectsRepr(const std::vector<ObjectType>& objects) co
     if (std::find(objects.cbegin(), objects.cend(), ObjectType::NPC) != objects.end()) {
         return getGameObjectRepr(ObjectType::NPC);
     }
+    if (std::find(objects.cbegin(), objects.cend(), ObjectType::MOLD) != objects.end()) {
+        return getGameObjectRepr(ObjectType::MOLD);
+    }
     if (std::find(objects.cbegin(), objects.cend(), ObjectType::ARTEFACT) != objects.end()) {
         return getGameObjectRepr(ObjectType::ARTEFACT);
     }

@@ -2,10 +2,10 @@
 
 #include "../../../src/world/generator/AbstractGenerator.h"
 #include "../../../src/world/state/State.h"
-#include "../../../src/world/state/action/external/PlayerDrop.h"
-#include "../../../src/world/state/action/external/PlayerWorldInteract.h"
-#include "../../../src/world/state/action/internal/Move.h"
-#include "../../../src/world/state/action/external/PlayerUIInteract.h"
+#include "../../../src/world/state/action/instant/PlayerDrop.h"
+#include "../../../src/world/state/action/instant/PlayerWorldInteract.h"
+#include "../../../src/world/state/action/instant/Move.h"
+#include "../../../src/world/state/action/instant/PlayerUIInteract.h"
 
 namespace world::generator {
 class GeneratorForTests : public AbstractGenerator {
@@ -30,6 +30,9 @@ public:
     }
     void addInactiveNPCPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
         addNPC(coordinate, answer, {1.0, 1.0});
+    }
+    void addMoldPublic(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
+        addMold(coordinate, answer);
     }
     std::vector<ObjectAndActions> generateObjects(common::Coordinate coordinate,
                                                   const state::object::Observer &observer) override {
@@ -436,4 +439,47 @@ TEST(state_tests, inactiveNPC) {
 
     state.applyEveryTurnInternalActions();
     ASSERT_EQ(enemy->getCoordinate(), wantedCoordinate);
+}
+
+TEST(state_tests, mold) {
+    world::state::State state;
+    world::generator::GeneratorForTests generator;
+
+    std::vector<world::generator::ObjectAndActions> answer;
+    generator.addPlayerPublic({0, 0}, answer);
+    generator.addMoldPublic({0, 0}, answer);
+    generator.addWallPublic({0, 1}, answer);
+
+    for (const auto& objectAndAction : answer) {
+        if (objectAndAction.object->getObjectType() == common::ObjectType::MOLD) {
+            // 100% probability of grow
+            objectAndAction.object->setProperty("growingThreshold", 0.0f);
+        }
+        state.getObjectObserver().addObject(objectAndAction.object);
+        for (const auto& action : objectAndAction.actions) {
+            state.getActionObserver().addAction(action);
+        }
+    }
+
+    auto player = state.getObjectObserver().getPlayer();
+    auto old_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
+
+
+    state.applyEveryTurnInternalActions();
+    auto new_hp_player = std::any_cast<int32_t>(player->getProperty("hp").value());
+
+    EXPECT_TRUE(new_hp_player < old_hp_player);
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 0}).size(), 2);
+
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, -1}).size(), 1);
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, -1})[0]->getObjectType(), common::ObjectType::MOLD);
+
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({1, 0}).size(), 1);
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({1, 0})[0]->getObjectType(), common::ObjectType::MOLD);
+
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({-1, 0}).size(), 1);
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({-1, 0})[0]->getObjectType(), common::ObjectType::MOLD);
+
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 1}).size(), 1);
+    EXPECT_EQ(state.getObjectObserver().getObjectsAtCoordinate({0, 1})[0]->getObjectType(), common::ObjectType::WALL);
 }

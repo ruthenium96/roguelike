@@ -18,6 +18,7 @@ message ObjectProperties {
   google.protobuf.Int32Value attack = 7;
   google.protobuf.Int32Value defence = 8;
   google.protobuf.Int32Value vision = 9;
+  google.protobuf.FloatValue growingThreshold = 10;
 }
 
 message Item {
@@ -38,6 +39,7 @@ message Object {
     WALL = 2;
     ARTEFACT = 3;
     NPC = 4;
+    MOLD = 5;
   }
 
   uint64 selfIdentity = 1;

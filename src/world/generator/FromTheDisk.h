@@ -6,7 +6,7 @@
 
 namespace world::generator {
 
-class FromTheDisk : AbstractGenerator {
+class FromTheDisk : public AbstractGenerator {
 public:
 
     explicit FromTheDisk(std::filesystem::path path);

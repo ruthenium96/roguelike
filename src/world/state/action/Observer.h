@@ -14,10 +14,10 @@ class Observer {
     // delete new action
     void deleteAction(Identity actionIdentity);
     // Trying to get Actions by corresponding Identities
-    std::optional<std::shared_ptr<action::AbstractAction>> getActionByCorrespondingObjectIdentity(
+    std::vector<std::shared_ptr<action::AbstractAction>> getActionsByCorrespondingObjectIdentity(
         Identity objectIdentity) const;
-    std::optional<std::shared_ptr<action::AbstractAction>> getActionByCorrespondingItemIdentity(
-            Identity objectIdentity) const;
+    std::vector<std::shared_ptr<action::AbstractAction>> getActionsByCorrespondingItemIdentity(
+            Identity itemIdentity) const;
     // gets all actions with property "every_turn"
     const std::vector<std::shared_ptr<AbstractAction>>& getEveryTurnActions() const;
     // gets all actions

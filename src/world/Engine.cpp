@@ -1,9 +1,9 @@
 #include "Engine.h"
 #include "generator/OnTheFly.h"
-#include "state/action/external/PlayerDrop.h"
-#include "state/action/external/PlayerWorldInteract.h"
-#include "state/action/internal/Move.h"
-#include "state/action/external/PlayerUIInteract.h"
+#include "state/action/instant/PlayerDrop.h"
+#include "state/action/instant/PlayerWorldInteract.h"
+#include "state/action/instant/Move.h"
+#include "state/action/instant/PlayerUIInteract.h"
 #include <algorithm>
 #include <valarray>
 

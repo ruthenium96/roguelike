@@ -20,6 +20,9 @@ bool Entity::compareTwoAny(const std::any &lhs, const std::any &rhs) {
     if (lhs.type() == typeid(int32_t)) {
         return std::any_cast<int32_t>(lhs) == std::any_cast<int32_t>(rhs);
     }
+    if (lhs.type() == typeid(float)) {
+        return std::any_cast<float>(lhs) == std::any_cast<float>(rhs);
+    }
     assert(0);
 }
 

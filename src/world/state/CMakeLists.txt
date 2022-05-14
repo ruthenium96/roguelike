@@ -10,24 +10,28 @@ add_library(state
         object/concrete/Wall.cpp object/concrete/Wall.h
         object/concrete/Artefact.cpp object/concrete/Artefact.h
         object/concrete/NPC.cpp object/concrete/NPC.h
+        object/concrete/Mold.cpp object/concrete/Mold.h
 
+        action/ActionType.h
         action/AbstractAction.h action/AbstractAction.cpp
         action/Observer.cpp action/Observer.h
-        action/external/PlayerDrop.cpp action/external/PlayerDrop.h
-        action/internal/Move.cpp action/internal/Move.h
-        action/external/PlayerWorldInteract.cpp action/external/PlayerWorldInteract.h
-        action/external/PlayerUIInteract.cpp action/external/PlayerUIInteract.h
+        action/instant/PlayerDrop.cpp action/instant/PlayerDrop.h
+        action/instant/Move.cpp action/instant/Move.h
+        action/instant/PlayerWorldInteract.cpp action/instant/PlayerWorldInteract.h
+        action/instant/PlayerUIInteract.cpp action/instant/PlayerUIInteract.h
         action/internal/PickDropItem.cpp action/internal/PickDropItem.h
         action/internal/Poison.cpp action/internal/Poison.h
+        action/internal/Confuse.cpp action/internal/Confuse.h
         action/npc/AbstractNPC.cpp action/npc/AbstractNPC.h
         action/npc/CowardNPC.cpp action/npc/CowardNPC.h
         action/npc/AggressiveNPC.cpp action/npc/AggressiveNPC.h
         action/npc/InactiveNPC.cpp action/npc/InactiveNPC.h
-        action/internal/Confuse.cpp action/internal/Confuse.h
+        action/mold/MoldEveryTurn.cpp action/mold/MoldEveryTurn.h
+        action/mold/MoldInteraction.cpp action/mold/MoldInteraction.h
 
         item/AbstractItem.cpp item/AbstractItem.h
         item/concrete/Stick.cpp item/concrete/Stick.h
-        item/concrete/Ring.h
-        item/concrete/Ring.cpp)
+        item/concrete/Ring.cpp item/concrete/Ring.h
+        )
 
 target_link_libraries(state random)

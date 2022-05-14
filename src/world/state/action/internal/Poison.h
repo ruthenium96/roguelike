@@ -14,7 +14,9 @@ public:
     bool precondition(const object::Observer &observer, const Observer &observer1) override;
 
     void changeTarget(object::Observer &observer, Observer &observer1) override;
-};
+
+        ActionType getActionType() const override;
+    };
 }
 
 #endif //ARCH_ROGUELIKE_POISON_H

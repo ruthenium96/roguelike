@@ -11,16 +11,20 @@ message ActionProperties {
   google.protobuf.Int32Value duration = 4;
   google.protobuf.BoolValue every_turn = 5;
   google.protobuf.UInt64Value item_to_drop = 6;
+  google.protobuf.BoolValue interaction = 7;
 }
 
 
 message Action {
   enum ActionType {
-    PICKITEM = 0;
+    PICK_ITEM = 0;
     POISON = 1;
     AGGRESSIVE_NPC = 2;
     COWARD_NPC = 3;
     INACTIVE_NPC = 4;
+    CONFUSE = 5;
+    MOLD_INTERACTION = 6;
+    MOLD_EVERY_TURN = 7;
   }
 
   ActionType type = 1;

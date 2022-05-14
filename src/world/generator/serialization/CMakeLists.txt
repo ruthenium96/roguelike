@@ -40,4 +40,4 @@ add_library(serializer
         Serializer.cpp Serializer.h
         Deserializer.cpp Deserializer.h)
 
-target_link_libraries(serializer INTERFACE ${Protobuf_LIBRARIES})
+target_link_libraries(serializer INTERFACE ${Protobuf_LIBRARIES} state)

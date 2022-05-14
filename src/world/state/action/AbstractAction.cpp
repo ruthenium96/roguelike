@@ -29,7 +29,9 @@ void AbstractAction::setCorrespondingItemIdentity(const std::optional<Identity> 
 }
 
 bool AbstractAction::isEveryTurn() const {
-    return getProperty("every_turn") != std::nullopt;
+    // every_turn can be false if something temporary turn it off, for example, confusing
+    return getProperty("every_turn").has_value()
+    && std::any_cast<bool>(getProperty("every_turn").value());
 }
 
 bool AbstractAction::operator==(const AbstractAction &rhs) const {
@@ -59,5 +61,16 @@ bool AbstractAction::operator==(const AbstractAction &rhs) const {
 
 bool AbstractAction::operator!=(const AbstractAction &rhs) const {
     return !(rhs == *this);
+}
+
+void AbstractAction::attack(std::shared_ptr<object::AbstractObject> &attacker,
+                            std::shared_ptr<object::AbstractObject> &defender) {
+    auto attacker_attack = std::any_cast<int32_t>(attacker->getProperty("attack").value());
+    auto defender_defence = std::any_cast<int32_t>(defender->getProperty("defence").value());
+
+    int32_t damage = std::max(attacker_attack - defender_defence, 0);
+
+    auto old_hp = std::any_cast<int32_t>(defender->getProperty("hp").value());
+    defender->setProperty("hp", old_hp - damage);
 }
 }  // namespace world::state::action

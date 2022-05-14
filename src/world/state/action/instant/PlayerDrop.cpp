@@ -32,9 +32,11 @@ void PlayerDrop::changeTarget(object::Observer &objectObserver, action::Observer
     auto player = objectObserver.getPlayer();
     auto requiredItemType = std::any_cast<common::ItemType>(getProperty("itemToDrop").value());
     for (const auto& item : player->getItems()) {
-        // TODO: at first, try to drop unweared items?
         if (item->getItemType() == requiredItemType) {
-            auto pickDropAction = actionObserver.getActionByCorrespondingItemIdentity(item->getSelfIdentity()).value();
+            auto allItemActions =
+                    actionObserver.getActionsByCorrespondingItemIdentity(item->getSelfIdentity());
+            assert(allItemActions.size() == 1);
+            auto pickDropAction = allItemActions[0];
             // NB: this function invalidates iterator
             pickDropAction->changeTarget(objectObserver, actionObserver);
             break;
@@ -50,5 +52,9 @@ std::optional<std::shared_ptr<object::AbstractObject>> PlayerDrop::findInteracta
         }
     }
     return std::nullopt;
+}
+
+ActionType PlayerDrop::getActionType() const {
+    return ActionType::INSTANT_ACTION;
 }
 }

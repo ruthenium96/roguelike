@@ -48,4 +48,8 @@ AggressiveNPC::findDirection(const object::Observer &objectObserver,
     return std::nullopt;
 }
 
+ActionType AggressiveNPC::getActionType() const {
+    return ActionType::AGRESSIVE_NPC;
+}
+
 }

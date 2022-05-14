@@ -4,12 +4,17 @@
 'The main class controlling game logic, UI and user input.
 class Controller {
 'Start game.
++ void init()
 + void start()
 }
 
 Controller "1" o-- "1" GameEngine
 Controller "1" o-- "1" UI
 Controller "1" o-- "1" InputManager
+
+abstract IStyle
+UI "1" o-- "1" IStyle
+UI "1" o-- "1" ConsoleDisplay
 
 'INPUT SECTION:
 abstract InputManager {
@@ -20,11 +25,20 @@ abstract InputManager {
 InputManager -.|> KeyboardManager
 
 class Command {
+        Controller_Unknown
+        Controller_ChangeRegime
+        Controller_Exit
+        Move
+        Interact
+        UI_DropItem
+        Ignore
+        World_ApplyItem
+        World_DropItem
+        Death
+        WorldUITransfer
 }
 
-Command "1" o-- "1" CommandType
-
-enum CommandType {
+enum Command {
 ChangeWorld
 ChangeUI
 TerminateGame
@@ -35,7 +49,7 @@ Unknown
 
 class UI {
 'Draws game, based on Map and Inventory information.
-+void draw(Map, Inventory)
++Command applyCommand(Command)
 }
 
 'WORLD LOGIC SECTION
@@ -57,8 +71,37 @@ abstract WorldGenerator {
 + GameObject[] generateObjects(Coordinate, Map)
 }
 
-WorldGenerator -.|> WorldGeneratorFromFile
-WorldGenerator -.|> WorldGeneratorOnTheFly
+WorldGenerator <|.- WorldGeneratorFromFile
+WorldGenerator <|.- WorldGeneratorOnTheFly
+WorldGenerator "1" o-- "1" Serializer
+WorldGeneratorFromFile "1" o-- "1" Deserializer
+
+
+class Deserializer {
++deserialize()
+}
+
+class Serializer {
++serialize()
+}
+
+class ProtobufEngine {
++serialize()
++deserialize()
+}
+
+ProtobufEngine "1" --o "1" Serializer
+ProtobufEngine "1" --o "1" Deserializer
+
+class Entity {
++std::any: getProperty(String)
++getProperty(String, std::any)
++deleteProperty(String)
+}
+
+Entity <|.- GameObject
+Entity <|.- Action
+Entity <|.- Item
 
 class WorldState {
 'Return Map.
@@ -74,33 +117,50 @@ ObjectObserver "1" o-- "*" GameObject
 'Object is something with Coordinate, Item[], Action[]
 abstract class GameObject {
 - identity: Identity
-+ Identity getIdentity()
++ Identity: getIdentity()
 - coordinate: Coordinate
-+ Coordinate getCoordinate()
-- values: Value[]
++ Coordinate: getCoordinate()
++ Item[]: getItems()
 }
 
-'Player is self-explaining
-class Player {
-+Inventory getInventory()
-}
-'Tile is something like floor, each coordinate has to have one Tile
-class Tile
+class Player
+class Floor
+class Wall
 'Artefact is something able to hold Item (like chest or just item).
 'It is required because Item is not GameObject.
 class Artefact
 
-GameObject --.|> Tile
-GameObject --.|> Player
-GameObject --.|> Artefact
+GameObject <|.- Floor
+GameObject <|.- Wall
+GameObject <|.- Player
+GameObject <|.- Artefact
+GameObject <|.- NPC
+GameObject <|.- Mold
 
 'Item is self-explaining
 class Item
 'Action is attempt of GameObject to change the World (including itself)
 abstract class Action {
-+ bool precondition(ObjectObserver, ActionObserver)
-+ void changeTarget(ObjectObserver, ActionObserver)
++ bool: precondition(ObjectObserver, ActionObserver)
++ changeTarget(ObjectObserver, ActionObserver)
 }
+
+abstract NPCAction
+
+Action <|.- Move
+Action <|.- PlayerDrop
+Action <|.- PlayerUIInteract
+Action <|.- PlayerWorldInteract
+Action <|.- MoldInteraction
+Action <|.- MoldEveryTurn
+Action <|.- Confuse
+Action <|.- PickDropItem
+Action <|.- Poison
+
+Action <|.- NPCAction
+NPCAction <|.- NPCAgrressive
+NPCAction <|.- NPCCoward
+NPCAction <|.- NPCInactive
 
 GameObject "1" o-- "*" Item
 

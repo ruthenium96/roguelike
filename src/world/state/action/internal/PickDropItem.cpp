@@ -4,7 +4,9 @@
 #include <algorithm>
 
 namespace world::state::action {
-PickDropItem::PickDropItem(const std::optional<Identity>& selfIdentity) : AbstractAction(selfIdentity) {}
+PickDropItem::PickDropItem(const std::optional<Identity>& selfIdentity) : AbstractAction(selfIdentity) {
+    setProperty("interaction", true);
+}
 
 bool PickDropItem::precondition(const object::Observer& objectObbserver, const action::Observer& actionObserver) {
     // TODO: it is true only if it was called from PlayerInteract
@@ -44,5 +46,9 @@ void PickDropItem::moveItem(std::shared_ptr<object::AbstractObject> from,
         }
     }
 
+}
+
+ActionType PickDropItem::getActionType() const {
+    return ActionType::PICK_ITEM;
 }
 }  // namespace world::state::action
