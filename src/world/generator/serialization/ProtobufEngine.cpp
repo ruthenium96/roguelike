@@ -124,6 +124,8 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
                 proto_properties->mutable_every_turn()->set_value(std::any_cast<bool>(value));
             } else if (key == "itemToDrop") {
                 proto_properties->mutable_item_to_drop()->set_value(std::any_cast<state::Identity>(value).asNumber());
+            } else if (key == "interaction") {
+                proto_properties->mutable_interaction()->set_value(std::any_cast<bool>(value));
             } else {
                 assert(0);
             }
@@ -240,6 +242,9 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
         if (proto_action.properties().has_item_to_drop()) {
             auto identityToDrop = state::Identity(proto_action.properties().item_to_drop().value());
             shared_action->setProperty("itemToDrop", identityToDrop);
+        }
+        if (proto_action.properties().has_interaction()) {
+            shared_action->setProperty("interaction", proto_action.properties().interaction().value());
         }
         state.getActionObserver().addAction(shared_action);
     }

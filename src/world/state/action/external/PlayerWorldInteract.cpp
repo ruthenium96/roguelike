@@ -1,3 +1,4 @@
+#include <cassert>
 #include "PlayerWorldInteract.h"
 
 namespace world::state::action {
@@ -20,12 +21,15 @@ void PlayerWorldInteract::changeTarget(object::Observer& objectObserver, action:
 
     // We know Artefact Identity, but do not know Item Identity
     // thus we have to find item through Artefact
-    auto maybe_action = actionObserver.getActionByCorrespondingObjectIdentity(interactableObjectIdentity);
-    if (!maybe_action.has_value()) {
-        return;
+    auto allObjectActions = actionObserver.getActionsByCorrespondingObjectIdentity(interactableObjectIdentity);
+    assert(!allObjectActions.empty());
+    for (auto& action : allObjectActions) {
+        if (action->getProperty("interaction").has_value() && std::any_cast<bool>(action->getProperty("interaction").value())) {
+            action->changeTarget(objectObserver, actionObserver);
+            return;
+        }
     }
-    auto action = maybe_action.value();
-    action->changeTarget(objectObserver, actionObserver);
+    assert(0);
 }
 
 std::optional<std::shared_ptr<object::AbstractObject>> PlayerWorldInteract::findInteractableObject(

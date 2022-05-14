@@ -6,15 +6,27 @@ void Observer::addAction(const std::shared_ptr<action::AbstractAction>& action) 
     updateRepresentations();
 }
 
-std::optional<std::shared_ptr<action::AbstractAction>> Observer::getActionByCorrespondingObjectIdentity(
-    Identity objectIdentity) const {
-    for (auto& action : allActions_) {
-        if (action->getCorrespondingObjectIdentity() == objectIdentity) {
-            return action;
+    std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingObjectIdentity(Identity objectIdentity) const {
+        std::vector<std::shared_ptr<action::AbstractAction>> answer;
+
+        for (auto& action : getAllActions()) {
+            if (action->getCorrespondingObjectIdentity() == objectIdentity) {
+                answer.push_back(action);
+            }
         }
+        return answer;
     }
-    return std::nullopt;
-}
+
+    std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingItemIdentity(Identity itemIdentity) const {
+        std::vector<std::shared_ptr<action::AbstractAction>> answer;
+
+        for (auto& action : getAllActions()) {
+            if (action->getCorrespondingItemIdentity() == itemIdentity) {
+                answer.push_back(action);
+            }
+        }
+        return answer;
+    }
 
 void Observer::deleteAction(Identity actionIdentity) {
     for (const auto& action : allActions_) {
@@ -66,13 +78,4 @@ const std::set<std::shared_ptr<AbstractAction>> &Observer::getAllActions() const
     return allActions_;
 }
 
-std::optional<std::shared_ptr<action::AbstractAction>>
-Observer::getActionByCorrespondingItemIdentity(Identity objectIdentity) const {
-    for (auto& action : getAllActions()) {
-        if (action->getCorrespondingItemIdentity() == objectIdentity) {
-            return action;
-        }
-    }
-    return std::nullopt;
-}
 }  // namespace world::state::action
