@@ -6,27 +6,27 @@ void Observer::addAction(const std::shared_ptr<action::AbstractAction>& action) 
     updateRepresentations();
 }
 
-    std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingObjectIdentity(Identity objectIdentity) const {
-        std::vector<std::shared_ptr<action::AbstractAction>> answer;
+std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingObjectIdentity(Identity objectIdentity) const {
+    std::vector<std::shared_ptr<action::AbstractAction>> answer;
 
-        for (auto& action : getAllActions()) {
-            if (action->getCorrespondingObjectIdentity() == objectIdentity) {
-                answer.push_back(action);
-            }
+    for (auto& action : getAllActions()) {
+        if (action->getCorrespondingObjectIdentity() == objectIdentity) {
+            answer.push_back(action);
         }
-        return answer;
     }
+    return answer;
+}
 
-    std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingItemIdentity(Identity itemIdentity) const {
-        std::vector<std::shared_ptr<action::AbstractAction>> answer;
+std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingItemIdentity(Identity itemIdentity) const {
+    std::vector<std::shared_ptr<action::AbstractAction>> answer;
 
-        for (auto& action : getAllActions()) {
-            if (action->getCorrespondingItemIdentity() == itemIdentity) {
-                answer.push_back(action);
-            }
+    for (auto& action : getAllActions()) {
+        if (action->getCorrespondingItemIdentity() == itemIdentity) {
+            answer.push_back(action);
         }
-        return answer;
     }
+    return answer;
+}
 
 void Observer::deleteAction(Identity actionIdentity) {
     for (const auto& action : allActions_) {

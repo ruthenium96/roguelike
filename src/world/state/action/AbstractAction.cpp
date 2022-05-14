@@ -29,7 +29,9 @@ void AbstractAction::setCorrespondingItemIdentity(const std::optional<Identity> 
 }
 
 bool AbstractAction::isEveryTurn() const {
-    return getProperty("every_turn") != std::nullopt;
+    // every_turn can be false if something temporary turn it off, for example, confusing
+    return getProperty("every_turn").has_value()
+    && std::any_cast<bool>(getProperty("every_turn").value());
 }
 
 bool AbstractAction::operator==(const AbstractAction &rhs) const {
