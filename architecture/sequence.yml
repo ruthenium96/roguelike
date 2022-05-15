@@ -1,0 +1,35 @@
+@startuml
+
+actor Player
+participant Controller
+participant KeyboardInputManager
+participant GameEngine
+participant WorldState
+participant ConsoleUI
+
+
+
+Controller->KeyboardInputManager: read_message
+Player->KeyboardInputManager:"W": char\n
+KeyboardInputManager-->Controller: message: Message
+
+Controller->GameEngine: applyExternalAction(action: Action)
+
+GameEngine->WorldState: getIdentities
+
+WorldState-->GameEngine: identities: Identity
+
+GameEngine->WorldState: getActions(identity: Identity)
+WorldState-->GameEngine: actions: Action[]
+
+GameEngine->GameEngine: applyActions
+
+GameEngine-->Controller: message: Message
+
+
+Controller->ConsoleUI: Render(state: WorldState)
+
+Controller<--ConsoleUI: message: Message
+
+
+@enduml

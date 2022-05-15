@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "Git pre-push hook started."
+echo "Applying clang-format."
+
+./tools/run-clang-format.py -r ./src
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "clang-format failed! Fixing..."
+    ./tools/run-clang-format.py -i -r ./src
+    echo "Done."
+    exit 1
+else 
+    echo "clang-format success."
+fi
+
+
