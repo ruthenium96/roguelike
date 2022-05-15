@@ -6,6 +6,7 @@
 #include "../../state/object/AbstractObject.h"
 #include <map>
 #include <unordered_map>
+#include <functional>
 #include <utility>
 
 namespace {
