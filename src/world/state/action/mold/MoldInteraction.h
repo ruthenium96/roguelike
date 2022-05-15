@@ -4,16 +4,16 @@
 #include "../AbstractAction.h"
 
 namespace world::state::action {
-class MoldInteraction : public AbstractAction{
-public:
-    explicit MoldInteraction(const std::optional<Identity> &selfIdentity);
+class MoldInteraction : public AbstractAction {
+  public:
+    explicit MoldInteraction(const std::optional<Identity>& selfIdentity);
 
     ActionType getActionType() const override;
 
-    bool precondition(const object::Observer &observer, const Observer &observer1) override;
+    bool precondition(const object::Observer& observer, const Observer& observer1) override;
 
-    void changeTarget(object::Observer &observer, Observer &observer1) override;
+    void changeTarget(object::Observer& observer, Observer& observer1) override;
 };
-}
+}  // namespace world::state::action
 
-#endif //ARCH_ROGUELIKE_MOLDINTERACTION_H
+#endif  // ARCH_ROGUELIKE_MOLDINTERACTION_H

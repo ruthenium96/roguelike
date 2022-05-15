@@ -1,6 +1,6 @@
 #include "Move.h"
-#include "../internal/Confuse.h"
 #include "../../../RandomNumberGenerator.h"
+#include "../internal/Confuse.h"
 #include <algorithm>
 
 namespace world::state::action {
@@ -25,7 +25,8 @@ bool Move::precondition(const object::Observer& objectObserver, const action::Ob
         if (anotherObject->getProperty("blocking") != std::nullopt) {
             // if blocking, only can attack
             // but cannot attack object with the same objectType
-            return (anotherObject->getProperty("hp").has_value() && anotherObject->getObjectType() != object->getObjectType());
+            return (anotherObject->getProperty("hp").has_value() &&
+                    anotherObject->getObjectType() != object->getObjectType());
         }
     }
     return true;
@@ -41,7 +42,7 @@ void Move::changeTarget(object::Observer& objectObserver, action::Observer& acti
 
     common::Coordinate wantedCoordinate = {object->getCoordinate().x + dx, object->getCoordinate().y + dy};
 
-    for (auto& anotherObject: objectObserver.getObjectsAtCoordinate(wantedCoordinate)) {
+    for (auto& anotherObject : objectObserver.getObjectsAtCoordinate(wantedCoordinate)) {
         if (anotherObject->getProperty("hp").has_value() && anotherObject->getObjectType() != object->getObjectType()) {
             attack(object, anotherObject);
             if (object == objectObserver.getPlayer()) {
@@ -52,7 +53,8 @@ void Move::changeTarget(object::Observer& objectObserver, action::Observer& acti
                     auto confuseAction = std::make_shared<Confuse>(state::IdentityGenerator::getNewIdentity(),
                                                                    anotherObject->getIdentity(),
                                                                    duration,
-                                                                   objectObserver, actionObserver);
+                                                                   objectObserver,
+                                                                   actionObserver);
                     actionObserver.addAction(confuseAction);
                 }
             }
@@ -60,7 +62,7 @@ void Move::changeTarget(object::Observer& objectObserver, action::Observer& acti
         }
     }
 
-    for (auto& anotherObject: objectObserver.getObjectsAtCoordinate(wantedCoordinate)) {
+    for (auto& anotherObject : objectObserver.getObjectsAtCoordinate(wantedCoordinate)) {
         if (anotherObject->getProperty("blocking").has_value()) {
             return;
         }

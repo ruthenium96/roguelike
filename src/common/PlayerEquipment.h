@@ -1,8 +1,8 @@
 #ifndef ARCH_ROGUELIKE_PLAYEREQUIPMENT_H
 #define ARCH_ROGUELIKE_PLAYEREQUIPMENT_H
 
-#include <optional>
 #include "ItemType.h"
+#include <optional>
 
 namespace common {
 
@@ -17,6 +17,6 @@ struct PlayerEquipment {
     std::optional<ItemType> leftHand;
     std::optional<ItemType> rightHand;
 };
-}
+}  // namespace common
 
-#endif //ARCH_ROGUELIKE_PLAYEREQUIPMENT_H
+#endif  // ARCH_ROGUELIKE_PLAYEREQUIPMENT_H

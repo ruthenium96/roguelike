@@ -2,18 +2,18 @@
 #include "../../state/action/internal/Confuse.h"
 #include "../../state/action/internal/PickDropItem.h"
 #include "../../state/action/internal/Poison.h"
-#include "../../state/action/npc/AggressiveNPC.h"
-#include "../../state/action/npc/InactiveNPC.h"
-#include "../../state/action/npc/CowardNPC.h"
-#include "../../state/action/mold/MoldInteraction.h"
 #include "../../state/action/mold/MoldEveryTurn.h"
-#include "../../state/item/concrete/Stick.h"
+#include "../../state/action/mold/MoldInteraction.h"
+#include "../../state/action/npc/AggressiveNPC.h"
+#include "../../state/action/npc/CowardNPC.h"
+#include "../../state/action/npc/InactiveNPC.h"
 #include "../../state/item/concrete/Ring.h"
+#include "../../state/item/concrete/Stick.h"
 #include "../../state/object/concrete/Artefact.h"
 #include "../../state/object/concrete/Floor.h"
-#include "../../state/object/concrete/Wall.h"
-#include "../../state/object/concrete/NPC.h"
 #include "../../state/object/concrete/Mold.h"
+#include "../../state/object/concrete/NPC.h"
+#include "../../state/object/concrete/Wall.h"
 #include <memory>
 
 namespace world::generator::serialization {
@@ -25,22 +25,40 @@ void ProtobufEngine::associate_item_types() {
 void ProtobufEngine::associate_action_types() {
     action_mapper_.associate_types(ProtoSerializer::Action::PICK_ITEM, world::state::action::ActionType::PICK_ITEM);
     action_mapper_.associate_types(ProtoSerializer::Action::POISON, world::state::action::ActionType::POISON);
-    action_mapper_.associate_types(ProtoSerializer::Action::AGGRESSIVE_NPC, world::state::action::ActionType::AGRESSIVE_NPC);
+    action_mapper_.associate_types(ProtoSerializer::Action::AGGRESSIVE_NPC,
+                                   world::state::action::ActionType::AGRESSIVE_NPC);
     action_mapper_.associate_types(ProtoSerializer::Action::COWARD_NPC, world::state::action::ActionType::COWARD_NPC);
-    action_mapper_.associate_types(ProtoSerializer::Action::INACTIVE_NPC, world::state::action::ActionType::INACTIVE_NPC);
-//    action_mapper_.associate_types(ProtoSerializer::Action::CONFUSE, world::state::action::ActionType::CONFUSE);
-    action_mapper_.associate_types(ProtoSerializer::Action::MOLD_INTERACTION, world::state::action::ActionType::MOLD_INTERACTION);
-    action_mapper_.associate_types(ProtoSerializer::Action::MOLD_EVERY_TURN, world::state::action::ActionType::MOLD_EVERY_TURN);
+    action_mapper_.associate_types(ProtoSerializer::Action::INACTIVE_NPC,
+                                   world::state::action::ActionType::INACTIVE_NPC);
+    //    action_mapper_.associate_types(ProtoSerializer::Action::CONFUSE, world::state::action::ActionType::CONFUSE);
+    action_mapper_.associate_types(ProtoSerializer::Action::MOLD_INTERACTION,
+                                   world::state::action::ActionType::MOLD_INTERACTION);
+    action_mapper_.associate_types(ProtoSerializer::Action::MOLD_EVERY_TURN,
+                                   world::state::action::ActionType::MOLD_EVERY_TURN);
 
-    actionConstructor_[world::state::action::ActionType::PICK_ITEM] = [](world::state::Identity identity){return std::make_shared<world::state::action::PickDropItem>(identity);};
-    actionConstructor_[world::state::action::ActionType::POISON] = [](world::state::Identity identity){return std::make_shared<world::state::action::Poison>(identity);};
-    actionConstructor_[world::state::action::ActionType::AGRESSIVE_NPC] = [](world::state::Identity identity){return std::make_shared<world::state::action::AggressiveNPC>(identity);};
-    actionConstructor_[world::state::action::ActionType::COWARD_NPC] = [](world::state::Identity identity){return std::make_shared<world::state::action::CowardNPC>(identity);};
-    actionConstructor_[world::state::action::ActionType::INACTIVE_NPC] = [](world::state::Identity identity){return std::make_shared<world::state::action::InactiveNPC>(identity);};
-//    actionConstructor_[world::state::action::ActionType::CONFUSE] = [](world::state::Identity identity){return std::make_shared<world::state::action::Confuse>(identity);};
-    actionConstructor_[world::state::action::ActionType::MOLD_INTERACTION] = [](world::state::Identity identity){return std::make_shared<world::state::action::MoldInteraction>(identity);};
-    actionConstructor_[world::state::action::ActionType::MOLD_EVERY_TURN] = [](world::state::Identity identity){return std::make_shared<world::state::action::MoldEveryTurn>(identity);};
-
+    actionConstructor_[world::state::action::ActionType::PICK_ITEM] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::action::PickDropItem>(identity);
+    };
+    actionConstructor_[world::state::action::ActionType::POISON] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::action::Poison>(identity);
+    };
+    actionConstructor_[world::state::action::ActionType::AGRESSIVE_NPC] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::action::AggressiveNPC>(identity);
+    };
+    actionConstructor_[world::state::action::ActionType::COWARD_NPC] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::action::CowardNPC>(identity);
+    };
+    actionConstructor_[world::state::action::ActionType::INACTIVE_NPC] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::action::InactiveNPC>(identity);
+    };
+    //    actionConstructor_[world::state::action::ActionType::CONFUSE] = [](world::state::Identity identity){return
+    //    std::make_shared<world::state::action::Confuse>(identity);};
+    actionConstructor_[world::state::action::ActionType::MOLD_INTERACTION] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::action::MoldInteraction>(identity);
+    };
+    actionConstructor_[world::state::action::ActionType::MOLD_EVERY_TURN] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::action::MoldEveryTurn>(identity);
+    };
 }
 
 void ProtobufEngine::associate_object_types() {
@@ -52,12 +70,24 @@ void ProtobufEngine::associate_object_types() {
     object_mapper_.associate_types(ProtoSerializer::Object::MOLD, common::ObjectType::MOLD);
 
     // TODO: implement it as named constructors
-    objectConstructor_[common::ObjectType::PLAYER] = [](world::state::Identity identity){return std::make_shared<world::state::object::Player>(identity);};
-    objectConstructor_[common::ObjectType::ARTEFACT] = [](world::state::Identity identity){return std::make_shared<world::state::object::Artefact>(identity);};
-    objectConstructor_[common::ObjectType::FLOOR] = [](world::state::Identity identity){return std::make_shared<world::state::object::Floor>(identity);};
-    objectConstructor_[common::ObjectType::WALL] = [](world::state::Identity identity){return std::make_shared<world::state::object::Wall>(identity);};
-    objectConstructor_[common::ObjectType::NPC] = [](world::state::Identity identity){return std::make_shared<world::state::object::NPC>(identity);};
-    objectConstructor_[common::ObjectType::MOLD] = [](world::state::Identity identity){return std::make_shared<world::state::object::Mold>(identity);};
+    objectConstructor_[common::ObjectType::PLAYER] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::object::Player>(identity);
+    };
+    objectConstructor_[common::ObjectType::ARTEFACT] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::object::Artefact>(identity);
+    };
+    objectConstructor_[common::ObjectType::FLOOR] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::object::Floor>(identity);
+    };
+    objectConstructor_[common::ObjectType::WALL] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::object::Wall>(identity);
+    };
+    objectConstructor_[common::ObjectType::NPC] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::object::NPC>(identity);
+    };
+    objectConstructor_[common::ObjectType::MOLD] = [](world::state::Identity identity) {
+        return std::make_shared<world::state::object::Mold>(identity);
+    };
 }
 
 ProtobufEngine::ProtobufEngine() {
@@ -78,7 +108,7 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
         new_proto_object->set_selfidentity(object_ptr->getIdentity().asNumber());
         // type:
         ProtoSerializer::Object::ObjectType object_proto_type =
-                object_mapper_.get_proto_associated_type_with(object_ptr->getObjectType());
+            object_mapper_.get_proto_associated_type_with(object_ptr->getObjectType());
         new_proto_object->set_type(object_proto_type);
         // coordinate:
         common::Coordinate coords = object_ptr->getCoordinate();
@@ -113,7 +143,7 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
         // ... and their Items
         for (const auto& item_ptr : object_ptr->getItems()) {
             ProtoSerializer::Item::ItemType item_proto_type =
-                    item_mapper_.get_proto_associated_type_with(item_ptr->getItemType());
+                item_mapper_.get_proto_associated_type_with(item_ptr->getItemType());
             ProtoSerializer::Item* new_proto_item = new_proto_object->add_items();
             new_proto_item->set_type(item_proto_type);
             new_proto_item->set_self_id(item_ptr->getSelfIdentity().asNumber());
@@ -126,7 +156,7 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
         ProtoSerializer::Action* new_proto_action = proto_state.add_actions();
         // type:
         ProtoSerializer::Action::ActionType action_proto_type =
-                action_mapper_.get_proto_associated_type_with(action_ptr->getActionType());
+            action_mapper_.get_proto_associated_type_with(action_ptr->getActionType());
         new_proto_action->set_type(action_proto_type);
         // self-Identity:
         if (action_ptr->getSelfIdentity().has_value()) {
@@ -134,11 +164,13 @@ ProtoSerializer::State ProtobufEngine::serialize(const world::state::State& stat
         }
         // Object Identity:
         if (action_ptr->getCorrespondingObjectIdentity().has_value()) {
-            new_proto_action->mutable_objectidentity()->set_value(action_ptr->getCorrespondingObjectIdentity().value().asNumber());
+            new_proto_action->mutable_objectidentity()->set_value(
+                action_ptr->getCorrespondingObjectIdentity().value().asNumber());
         }
         // Item Identity:
         if (action_ptr->getCorrespondingItemIdentity().has_value()) {
-            new_proto_action->mutable_itemidentity()->set_value(action_ptr->getCorrespondingItemIdentity().value().asNumber());
+            new_proto_action->mutable_itemidentity()->set_value(
+                action_ptr->getCorrespondingItemIdentity().value().asNumber());
         }
         // properties:
         auto* proto_properties = new_proto_action->mutable_properties();
@@ -217,9 +249,11 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
             auto itemIdentity = world::state::Identity(item_proto.self_id());
             auto ownerIdentity = world::state::Identity(item_proto.owner_id());
             if (game_item_type == common::ItemType::STICK) {
-                shared_object->getItems().push_back(std::make_unique<world::state::item::Stick>(itemIdentity, ownerIdentity));
+                shared_object->getItems().push_back(
+                    std::make_unique<world::state::item::Stick>(itemIdentity, ownerIdentity));
             } else if (game_item_type == common::ItemType::RING) {
-                shared_object->getItems().push_back(std::make_unique<world::state::item::Ring>(itemIdentity, ownerIdentity));
+                shared_object->getItems().push_back(
+                    std::make_unique<world::state::item::Ring>(itemIdentity, ownerIdentity));
             } else {
                 assert(0);
             }
@@ -272,4 +306,4 @@ world::state::State ProtobufEngine::deserialize(const ProtoSerializer::State& pr
     }
     return state;
 }
-}
+}  // namespace world::generator::serialization

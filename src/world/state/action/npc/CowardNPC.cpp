@@ -2,9 +2,9 @@
 
 namespace world::state::action {
 
-CowardNPC::CowardNPC(const std::optional<Identity> &selfIdentity) : AbstractNPC(selfIdentity) {}
+CowardNPC::CowardNPC(const std::optional<Identity>& selfIdentity) : AbstractNPC(selfIdentity) {}
 
-void CowardNPC::changeTarget(object::Observer &objectObserver, action::Observer &actionObserver) {
+void CowardNPC::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
     auto NPCIdentity = getCorrespondingObjectIdentity().value();
     auto NPCObject = objectObserver.getObject(NPCIdentity).value();
 
@@ -26,9 +26,10 @@ void CowardNPC::changeTarget(object::Observer &objectObserver, action::Observer 
     }
 }
 
-std::optional<std::shared_ptr<AbstractAction>>
-CowardNPC::findDirection(const object::Observer &objectObserver, const Observer &actionObserver,
-                         int32_t dx_with_player, int32_t dy_with_player) {
+std::optional<std::shared_ptr<AbstractAction>> CowardNPC::findDirection(const object::Observer& objectObserver,
+                                                                        const Observer& actionObserver,
+                                                                        int32_t dx_with_player,
+                                                                        int32_t dy_with_player) {
     {
         int32_t dx_step_try = (dx_with_player >= 0) ? 1 : -1;
         auto tryMove = contructAndTryMove(objectObserver, actionObserver, dx_step_try, 0);
@@ -50,4 +51,4 @@ ActionType CowardNPC::getActionType() const {
     return ActionType::COWARD_NPC;
 }
 
-}
+}  // namespace world::state::action

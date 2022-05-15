@@ -1,9 +1,9 @@
 #ifndef ARCH_ROGUELIKE_ABSTRACTACTION_H
 #define ARCH_ROGUELIKE_ABSTRACTACTION_H
 
-#include "../object/Observer.h"
-#include "../Identity.h"
 #include "../Entity.h"
+#include "../Identity.h"
+#include "../object/Observer.h"
 #include "ActionType.h"
 #include "Observer.h"
 
@@ -38,14 +38,14 @@ class AbstractAction : public Entity {
     const std::optional<Identity>& getCorrespondingItemIdentity() const;
     void setCorrespondingItemIdentity(const std::optional<Identity>& correspondingItemIdentity);
 
-    bool operator==(const AbstractAction &rhs) const;
+    bool operator==(const AbstractAction& rhs) const;
 
-    bool operator!=(const AbstractAction &rhs) const;
+    bool operator!=(const AbstractAction& rhs) const;
 
-protected:
+  protected:
     void attack(std::shared_ptr<object::AbstractObject>& attacker, std::shared_ptr<object::AbstractObject>& defender);
 
-private:
+  private:
     const std::optional<Identity> selfIdentity_;
     std::optional<Identity> correspondingObjectIdentity_;
     std::optional<Identity> correspondingItemIdentity_;

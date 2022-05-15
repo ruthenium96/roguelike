@@ -6,16 +6,14 @@
 namespace world {
 // static class for generating of random numbers.
 class RandomNumberGenerator {
-public:
-    static float generate() {
-        return distribution_(randomEngine_);
-    }
-private:
+  public:
+    static float generate() { return distribution_(randomEngine_); }
+
+  private:
     inline static std::random_device rd;
-    inline static std::default_random_engine randomEngine_ = std::default_random_engine (rd());
+    inline static std::default_random_engine randomEngine_ = std::default_random_engine(rd());
     inline static std::uniform_real_distribution<float> distribution_ = std::uniform_real_distribution<float>(0, 1);
-
 };
-}
+}  // namespace world
 
-#endif //ARCH_ROGUELIKE_RANDOMNUMBERGENERATOR_H
+#endif  // ARCH_ROGUELIKE_RANDOMNUMBERGENERATOR_H

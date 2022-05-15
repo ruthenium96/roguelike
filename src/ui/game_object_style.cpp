@@ -8,7 +8,7 @@ char DefaultStyle::getGameObjectsRepr(const std::vector<ObjectType>& objects) co
     if (objects.empty()) {
         return ' ';
     }
-    
+
     if (std::find(objects.cbegin(), objects.cend(), ObjectType::PLAYER) != objects.end()) {
         return getGameObjectRepr(ObjectType::PLAYER);
     }

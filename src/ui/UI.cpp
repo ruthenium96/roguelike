@@ -5,11 +5,11 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
-#include <optional>
 
 namespace ui {
 
@@ -50,8 +50,7 @@ UI::UI(const std::string& style) {
     }
 }
 
-common::Command UI::apply_command(const common::Command& command,
-                                  const common::WorldUITransfer& world_state) {
+common::Command UI::apply_command(const common::Command& command, const common::WorldUITransfer& world_state) {
     using common::Command;
 
     if (std::holds_alternative<common::Interact>(command)) {
@@ -126,7 +125,6 @@ bool UI::activate_state(const common::WorldUITransfer& world_state) {
     return false;
 }
 
-
 void UI::draw(const common::WorldUITransfer& world_state) {
     display_.fill_border();
 
@@ -173,7 +171,6 @@ void UI::pushStatsOnDisplay(const common::PlayerMetrics& player_stats) {
     stats_display.put_string("HP   : " + player_hp, curr_display_height++, 2U);
     stats_display.put_string("Att  : " + player_att, curr_display_height++, 2U);
     stats_display.put_string("Def  : " + player_def, curr_display_height++, 2U);
-
 
     // stats_display.put_string("Mana : " + player_mana, curr_display_height++, 2U);
 
@@ -276,7 +273,7 @@ void UI::pushMessageOnDisplay(const std::optional<std::string>& mbMessage) {
     display_.add_display_data(message_display, game_board_hello_height_pos, game_board_hello_width_pos);
 }
 
-void UI::pushEquipmentOnDisplay(const common::PlayerEquipment &equipment) {
+void UI::pushEquipmentOnDisplay(const common::PlayerEquipment& equipment) {
     const size_t equipment_display_height = 7U;
     const size_t equipment_display_width = 14U;
     CharDisplay equipment_display(equipment_display_height, equipment_display_width);
@@ -337,10 +334,9 @@ void UI::pushEquipmentOnDisplay(const common::PlayerEquipment &equipment) {
     const size_t game_board_equipment_height_pos = 20U;
     const size_t game_board_equipment_width_pos = 35U;
     display_.add_display_data(equipment_display, game_board_equipment_height_pos, game_board_equipment_width_pos);
-
 }
 
-void UI::drawDeath(const common::Death &death) {
+void UI::drawDeath(const common::Death& death) {
     display_.fill_border();
 
     pushDeathScreenOnDisplay(death);
@@ -349,20 +345,18 @@ void UI::drawDeath(const common::Death &death) {
     display_.clear_data();
 }
 
-
-void UI::pushDeathScreenOnDisplay(const common::Death &death) {
+void UI::pushDeathScreenOnDisplay(const common::Death& death) {
     const size_t death_display_height = 4U;
     const size_t death_display_width = 46;
     CharDisplay death_display(death_display_height, death_display_width);
     death_display.fill_border();
 
-    death_display.put_string("You're dead.", 1U, 17U  );
+    death_display.put_string("You're dead.", 1U, 17U);
     death_display.put_string("Press any button to restart.", 2U, 8U);
 
     const size_t game_board_death_height_pos = 14U;
     const size_t game_board_death_width_pos = 5U;
     display_.add_display_data(death_display, game_board_death_height_pos, game_board_death_width_pos);
 }
-
 
 }  // namespace ui

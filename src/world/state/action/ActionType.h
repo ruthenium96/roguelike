@@ -16,4 +16,4 @@ enum class ActionType {
 };
 }
 
-#endif //ARCH_ROGUELIKE_ACTIONTYPE_H
+#endif  // ARCH_ROGUELIKE_ACTIONTYPE_H

@@ -7,6 +7,6 @@ enum class ItemType {
     STICK,
     RING,
 };
-}
+}  // namespace common
 
 #endif  // ARCH_ROGUELIKE_ITEMTYPE_H

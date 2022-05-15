@@ -1,9 +1,9 @@
 #include "Engine.h"
 #include "generator/OnTheFly.h"
-#include "state/action/instant/PlayerDrop.h"
-#include "state/action/instant/PlayerWorldInteract.h"
 #include "state/action/instant/Move.h"
+#include "state/action/instant/PlayerDrop.h"
 #include "state/action/instant/PlayerUIInteract.h"
+#include "state/action/instant/PlayerWorldInteract.h"
 #include <algorithm>
 #include <valarray>
 
@@ -13,7 +13,7 @@ Engine::Engine() {
     initialize();
 }
 
-common::Command Engine::applyCommand(const common::Command& command)  {
+common::Command Engine::applyCommand(const common::Command& command) {
     using common::Command;
 
     auto mbExternalAction = generateExternalAction(command);
@@ -119,8 +119,8 @@ void Engine::generateWorldAroundPlayer(common::Coordinate playerCoordinate) {
     }
 }
 
-std::optional<std::shared_ptr<state::action::AbstractAction>>
-Engine::generateExternalAction(const common::Command& command) const {
+std::optional<std::shared_ptr<state::action::AbstractAction>> Engine::generateExternalAction(
+    const common::Command& command) const {
     std::optional<std::shared_ptr<state::action::AbstractAction>> externalAction = std::nullopt;
     // TODO: refactor it
 

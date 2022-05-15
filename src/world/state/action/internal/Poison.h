@@ -5,18 +5,18 @@
 
 namespace world::state::action {
 class Poison : public AbstractAction {
-// Action for Poisoning of Object.
-public:
+    // Action for Poisoning of Object.
+  public:
     // default constructor
     explicit Poison(std::optional<Identity> selfIdentity);
     Poison(std::optional<Identity> selfIdentity, int32_t hp_decrease, int32_t duration);
 
-    bool precondition(const object::Observer &observer, const Observer &observer1) override;
+    bool precondition(const object::Observer& observer, const Observer& observer1) override;
 
-    void changeTarget(object::Observer &observer, Observer &observer1) override;
+    void changeTarget(object::Observer& observer, Observer& observer1) override;
 
-        ActionType getActionType() const override;
-    };
-}
+    ActionType getActionType() const override;
+};
+}  // namespace world::state::action
 
-#endif //ARCH_ROGUELIKE_POISON_H
+#endif  // ARCH_ROGUELIKE_POISON_H

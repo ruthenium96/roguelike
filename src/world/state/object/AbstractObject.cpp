@@ -1,13 +1,11 @@
 #include "AbstractObject.h"
-
-#include <stdexcept>
 #include <cassert>
+#include <stdexcept>
 
 namespace world::state::object {
 
-bool AbstractObject::operator==(const AbstractObject &rhs) const {
-    if (std::tie(selfIdentity_, coordinate_) !=
-    std::tie(rhs.selfIdentity_, rhs.coordinate_)) {
+bool AbstractObject::operator==(const AbstractObject& rhs) const {
+    if (std::tie(selfIdentity_, coordinate_) != std::tie(rhs.selfIdentity_, rhs.coordinate_)) {
         return false;
     }
 
@@ -39,7 +37,7 @@ bool AbstractObject::operator==(const AbstractObject &rhs) const {
     return true;
 }
 
-bool AbstractObject::operator!=(const AbstractObject &rhs) const {
+bool AbstractObject::operator!=(const AbstractObject& rhs) const {
     return !(rhs == *this);
 }
 
@@ -69,6 +67,5 @@ void AbstractObject::levelUp(int32_t dexp) {
 
     setProperty("attack", old_attack + dlvl);
     setProperty("defence", old_defence + dlvl);
-
 }
 }  // namespace world::state::object

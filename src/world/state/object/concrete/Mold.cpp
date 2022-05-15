@@ -1,7 +1,7 @@
 #include "Mold.h"
 
 namespace world::state::object {
-Mold::Mold(const Identity &identity) : AbstractObject(identity) {
+Mold::Mold(const Identity& identity) : AbstractObject(identity) {
     // the only way to kill the Mold -- interact with it
     setProperty("interactable", std::make_any<bool>(true));
     setProperty("attack", std::make_any<int32_t>(2));
@@ -11,4 +11,4 @@ Mold::Mold(const Identity &identity) : AbstractObject(identity) {
 common::ObjectType Mold::getObjectType() const {
     return common::ObjectType::MOLD;
 }
-}
+}  // namespace world::state::object

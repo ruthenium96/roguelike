@@ -21,9 +21,9 @@ class AbstractItem : public Entity {
 
     virtual ~AbstractItem() = default;
 
-    bool operator==(const AbstractItem &rhs) const;
+    bool operator==(const AbstractItem& rhs) const;
 
-    bool operator!=(const AbstractItem &rhs) const;
+    bool operator!=(const AbstractItem& rhs) const;
 
   private:
     const Identity selfIdentity_;

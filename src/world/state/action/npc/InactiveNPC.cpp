@@ -1,9 +1,9 @@
 #include "InactiveNPC.h"
 
 namespace world::state::action {
-InactiveNPC::InactiveNPC(const std::optional<Identity> &selfIdentity) : AbstractNPC(selfIdentity) {}
+InactiveNPC::InactiveNPC(const std::optional<Identity>& selfIdentity) : AbstractNPC(selfIdentity) {}
 
-void InactiveNPC::changeTarget(object::Observer &objectObserver, action::Observer &actionObserver) {
+void InactiveNPC::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
     auto NPCIdentity = getCorrespondingObjectIdentity().value();
     auto NPCObject = objectObserver.getObject(NPCIdentity).value();
 
@@ -17,4 +17,4 @@ void InactiveNPC::changeTarget(object::Observer &objectObserver, action::Observe
 ActionType InactiveNPC::getActionType() const {
     return ActionType::INACTIVE_NPC;
 }
-}
+}  // namespace world::state::action

@@ -6,7 +6,8 @@ void Observer::addAction(const std::shared_ptr<action::AbstractAction>& action) 
     updateRepresentations();
 }
 
-std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingObjectIdentity(Identity objectIdentity) const {
+std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingObjectIdentity(
+    Identity objectIdentity) const {
     std::vector<std::shared_ptr<action::AbstractAction>> answer;
 
     for (auto& action : getAllActions()) {
@@ -17,7 +18,8 @@ std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorre
     return answer;
 }
 
-std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingItemIdentity(Identity itemIdentity) const {
+std::vector<std::shared_ptr<action::AbstractAction>> Observer::getActionsByCorrespondingItemIdentity(
+    Identity itemIdentity) const {
     std::vector<std::shared_ptr<action::AbstractAction>> answer;
 
     for (auto& action : getAllActions()) {
@@ -54,7 +56,7 @@ void Observer::updateRepresentations() const {
     }
 }
 
-bool Observer::operator==(const Observer &rhs) const {
+bool Observer::operator==(const Observer& rhs) const {
     if (allActions_.size() != rhs.allActions_.size()) {
         return false;
     }
@@ -70,11 +72,11 @@ bool Observer::operator==(const Observer &rhs) const {
     return true;
 }
 
-bool Observer::operator!=(const Observer &rhs) const {
+bool Observer::operator!=(const Observer& rhs) const {
     return !(rhs == *this);
 }
 
-const std::set<std::shared_ptr<AbstractAction>> &Observer::getAllActions() const {
+const std::set<std::shared_ptr<AbstractAction>>& Observer::getAllActions() const {
     return allActions_;
 }
 

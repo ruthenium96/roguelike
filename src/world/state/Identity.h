@@ -15,7 +15,7 @@ class Identity {
     Identity(Identity&&) = default;
     Identity& operator=(Identity&&) = default;
 
-    uint64_t asNumber() const {return identity_;};
+    uint64_t asNumber() const { return identity_; };
 
     bool operator==(const Identity& rhs) const { return identity_ == rhs.identity_; }
 
@@ -35,17 +35,13 @@ class Identity {
 
 // Static class for generating Identities.
 class IdentityGenerator {
-public:
-    static Identity getNewIdentity() {
-        return Identity(generatedIdentities++);
-    };
-    static void setTo(uint64_t newValue) {
-        generatedIdentities = newValue;
-    }
-private:
+  public:
+    static Identity getNewIdentity() { return Identity(generatedIdentities++); };
+    static void setTo(uint64_t newValue) { generatedIdentities = newValue; }
+
+  private:
     inline static uint64_t generatedIdentities;
 };
-
 
 }  // namespace world::state
 

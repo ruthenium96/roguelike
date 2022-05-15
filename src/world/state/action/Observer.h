@@ -17,16 +17,16 @@ class Observer {
     std::vector<std::shared_ptr<action::AbstractAction>> getActionsByCorrespondingObjectIdentity(
         Identity objectIdentity) const;
     std::vector<std::shared_ptr<action::AbstractAction>> getActionsByCorrespondingItemIdentity(
-            Identity itemIdentity) const;
+        Identity itemIdentity) const;
     // gets all actions with property "every_turn"
     const std::vector<std::shared_ptr<AbstractAction>>& getEveryTurnActions() const;
     // gets all actions
     const std::set<std::shared_ptr<AbstractAction>>& getAllActions() const;
 
-    bool operator==(const Observer &rhs) const;
-    bool operator!=(const Observer &rhs) const;
+    bool operator==(const Observer& rhs) const;
+    bool operator!=(const Observer& rhs) const;
 
-private:
+  private:
     std::set<std::shared_ptr<AbstractAction>> allActions_;
     mutable std::vector<std::shared_ptr<AbstractAction>> everyMoveActions_;
     void updateRepresentations() const;

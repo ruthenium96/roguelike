@@ -5,10 +5,7 @@
 
 namespace world::generator {
 
-enum class GeneratorType {
-    FROM_THE_DISK,
-    ON_THE_FLY
-};
+enum class GeneratorType { FROM_THE_DISK, ON_THE_FLY };
 // Builder for Generator class
 class GeneratorBuilder {
     std::unique_ptr<AbstractGenerator> build();
@@ -24,7 +21,7 @@ class GeneratorBuilder {
     // Aggressive, Coward, the rest is Inactive
     GeneratorType& setNPCTypeProbability(std::array<float, 2> NPCTypeProbability);
 
-private:
+  private:
     bool checkConsistence();
     std::optional<GeneratorType> generatorType_;
     std::optional<std::filesystem::path> path_;
@@ -32,8 +29,7 @@ private:
     std::optional<std::array<float, 3>> objectOnFloorProbability_;
     std::optional<std::array<float, 2>> NPCTypeProbability_;
     std::optional<std::array<float, 1>> artefactTypeProbability_;
-
 };
-}
+}  // namespace world::generator
 
-#endif //ARCH_ROGUELIKE_GENERATORBUILDER_H
+#endif  // ARCH_ROGUELIKE_GENERATORBUILDER_H

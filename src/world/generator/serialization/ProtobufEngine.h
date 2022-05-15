@@ -1,12 +1,12 @@
 #ifndef ARCH_ROGUELIKE_PROTOBUFENGINE_H
 #define ARCH_ROGUELIKE_PROTOBUFENGINE_H
 
-#include "proto/state.pb.h"
 #include "../../state/State.h"
 #include "../../state/object/AbstractObject.h"
+#include "proto/state.pb.h"
+#include <functional>
 #include <map>
 #include <unordered_map>
-#include <functional>
 #include <utility>
 
 namespace {
@@ -44,8 +44,12 @@ class ProtobufEngine {
     ProtoToGameTypeMapper<ProtoSerializer::Object::ObjectType, common::ObjectType> object_mapper_;
     ProtoToGameTypeMapper<ProtoSerializer::Action::ActionType, world::state::action::ActionType> action_mapper_;
 
-    std::map<common::ObjectType, std::function<std::shared_ptr<world::state::object::AbstractObject>(world::state::Identity)>> objectConstructor_;
-    std::map<world::state::action::ActionType, std::function<std::shared_ptr<world::state::action::AbstractAction>(world::state::Identity)>> actionConstructor_;
+    std::map<common::ObjectType,
+             std::function<std::shared_ptr<world::state::object::AbstractObject>(world::state::Identity)>>
+        objectConstructor_;
+    std::map<world::state::action::ActionType,
+             std::function<std::shared_ptr<world::state::action::AbstractAction>(world::state::Identity)>>
+        actionConstructor_;
 };
-}
+}  // namespace world::generator::serialization
 #endif  // ARCH_ROGUELIKE_PROTOBUFENGINE_H

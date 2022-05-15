@@ -9,6 +9,6 @@ class NPC : public AbstractObject {
     explicit NPC(const Identity& identity);
     common::ObjectType getObjectType() const override;
 };
-}
+}  // namespace world::state::object
 
-#endif //ARCH_ROGUELIKE_NPC_H
+#endif  // ARCH_ROGUELIKE_NPC_H

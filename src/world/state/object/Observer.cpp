@@ -56,7 +56,7 @@ void Observer::deleteObject(Identity identity) {
     identityObjectMap_.erase(identity);
 }
 
-bool Observer::operator==(const Observer &rhs) const {
+bool Observer::operator==(const Observer& rhs) const {
     if (identityObjectMap_.size() != rhs.identityObjectMap_.size()) {
         return false;
     }
@@ -72,7 +72,7 @@ bool Observer::operator==(const Observer &rhs) const {
     return true;
 }
 
-bool Observer::operator!=(const Observer &rhs) const {
+bool Observer::operator!=(const Observer& rhs) const {
     return !(rhs == *this);
 }
 

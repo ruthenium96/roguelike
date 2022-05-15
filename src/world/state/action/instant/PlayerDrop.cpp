@@ -1,6 +1,6 @@
+#include "PlayerDrop.h"
 #include <algorithm>
 #include <cassert>
-#include "PlayerDrop.h"
 
 namespace world::state::action {
 
@@ -8,13 +8,12 @@ PlayerDrop::PlayerDrop(common::ItemType itemType) : AbstractAction(std::nullopt)
     setProperty("itemToDrop", itemType);
 }
 
-bool PlayerDrop::precondition(const object::Observer &objectObserver, const action::Observer &actionObserver) {
+bool PlayerDrop::precondition(const object::Observer& objectObserver, const action::Observer& actionObserver) {
     auto requiredItemType = std::any_cast<common::ItemType>(getProperty("itemToDrop").value());
     // check if player actually have Item with required ItemType
     assert(std::any_of(objectObserver.getPlayer()->getItems().begin(),
                        objectObserver.getPlayer()->getItems().end(),
-                       [requiredItemType](const auto& item){return item->getItemType() == requiredItemType;})
-    );
+                       [requiredItemType](const auto& item) { return item->getItemType() == requiredItemType; }));
 
     // Cannot drop Item on the Coordinate with interactable object (for example, Artefact)
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
@@ -24,17 +23,16 @@ bool PlayerDrop::precondition(const object::Observer &objectObserver, const acti
         return false;
     }
     // Cannot drop Item if it is weared:
-    return objectObserver.countHowManyTimesItemIsWearedByPlayer(requiredItemType)
-    < objectObserver.howManyItemsOfThisTypeHoldsPlayer(requiredItemType);
+    return objectObserver.countHowManyTimesItemIsWearedByPlayer(requiredItemType) <
+           objectObserver.howManyItemsOfThisTypeHoldsPlayer(requiredItemType);
 }
 
-void PlayerDrop::changeTarget(object::Observer &objectObserver, action::Observer &actionObserver) {
+void PlayerDrop::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
     auto player = objectObserver.getPlayer();
     auto requiredItemType = std::any_cast<common::ItemType>(getProperty("itemToDrop").value());
     for (const auto& item : player->getItems()) {
         if (item->getItemType() == requiredItemType) {
-            auto allItemActions =
-                    actionObserver.getActionsByCorrespondingItemIdentity(item->getSelfIdentity());
+            auto allItemActions = actionObserver.getActionsByCorrespondingItemIdentity(item->getSelfIdentity());
             assert(allItemActions.size() == 1);
             auto pickDropAction = allItemActions[0];
             // NB: this function invalidates iterator
@@ -45,7 +43,7 @@ void PlayerDrop::changeTarget(object::Observer &objectObserver, action::Observer
 }
 
 std::optional<std::shared_ptr<object::AbstractObject>> PlayerDrop::findInteractableObject(
-        const std::vector<std::shared_ptr<object::AbstractObject>> &objects) {
+    const std::vector<std::shared_ptr<object::AbstractObject>>& objects) {
     for (const auto& object : objects) {
         if (object->getProperty("interactable").has_value()) {
             return object;
@@ -57,4 +55,4 @@ std::optional<std::shared_ptr<object::AbstractObject>> PlayerDrop::findInteracta
 ActionType PlayerDrop::getActionType() const {
     return ActionType::INSTANT_ACTION;
 }
-}
+}  // namespace world::state::action

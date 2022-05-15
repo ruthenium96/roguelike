@@ -1,12 +1,16 @@
-#include <cassert>
 #include "Confuse.h"
-#include "../instant/Move.h"
 #include "../../../RandomNumberGenerator.h"
+#include "../instant/Move.h"
+#include <cassert>
 
 namespace world::state::action {
 
-Confuse::Confuse(const std::optional<Identity> &selfIdentity, Identity confusedObjectIdentity, int32_t duration,
-                 object::Observer &objectObserver, Observer &actionObserver) : AbstractNPC(selfIdentity) {
+Confuse::Confuse(const std::optional<Identity>& selfIdentity,
+                 Identity confusedObjectIdentity,
+                 int32_t duration,
+                 object::Observer& objectObserver,
+                 Observer& actionObserver)
+    : AbstractNPC(selfIdentity) {
     setProperty("every_turn", std::make_any<bool>(true));
     setProperty("duration", std::make_any<int32_t>(duration));
     setCorrespondingObjectIdentity(confusedObjectIdentity);
@@ -30,12 +34,11 @@ Confuse::Confuse(const std::optional<Identity> &selfIdentity, Identity confusedO
     }
 }
 
-
-bool Confuse::precondition(const object::Observer &objectObserver, const Observer &actionObserver) {
+bool Confuse::precondition(const object::Observer& objectObserver, const Observer& actionObserver) {
     return true;
 }
 
-void Confuse::changeTarget(object::Observer &objectObserver, Observer &actionObserver) {
+void Confuse::changeTarget(object::Observer& objectObserver, Observer& actionObserver) {
 
     auto confusedObjectIdentity = getCorrespondingObjectIdentity().value();
     auto confusedObject = objectObserver.getObject(confusedObjectIdentity).value();
@@ -68,7 +71,7 @@ void Confuse::changeTarget(object::Observer &objectObserver, Observer &actionObs
     }
 }
 
-void Confuse::randomDirection(int32_t &dx_step_try, int32_t &dy_step_try) {
+void Confuse::randomDirection(int32_t& dx_step_try, int32_t& dy_step_try) {
     float probability = RandomNumberGenerator::generate();
     if (probability < 0.25) {
         dx_step_try = 1;
@@ -88,4 +91,4 @@ ActionType Confuse::getActionType() const {
     return ActionType::CONFUSE;
 }
 
-}
+}  // namespace world::state::action

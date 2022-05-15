@@ -15,7 +15,7 @@ class PlayerWorldInteract : public AbstractAction {
 
     ActionType getActionType() const override;
 
-private:
+  private:
     std::optional<std::shared_ptr<object::AbstractObject>> findInteractableObject(
         const std::vector<std::shared_ptr<object::AbstractObject>>& objects);
 };

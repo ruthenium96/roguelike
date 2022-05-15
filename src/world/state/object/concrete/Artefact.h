@@ -7,7 +7,8 @@ namespace world::state::object {
 
 class Artefact : public AbstractObject {
   public:
-    explicit Artefact(const Identity& identity);;
+    explicit Artefact(const Identity& identity);
+    ;
 
     common::ObjectType getObjectType() const override;
 

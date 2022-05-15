@@ -2,9 +2,9 @@
 #define ARCH_ROGUELIKE_ENTITY_H
 
 #include <any>
+#include <map>
 #include <optional>
 #include <string>
-#include <map>
 
 namespace world::state {
 // Class for simulating behaviour of languages with runtime typing. Requested for suitable holding of properties.
@@ -16,12 +16,11 @@ class Entity {
     void deleteProperty(const std::string& property_name);
 
   protected:
-    static bool compareTwoAny(const std::any& lhs, const std::any& rhs) ;
+    static bool compareTwoAny(const std::any& lhs, const std::any& rhs);
 
   private:
     std::map<std::string, std::any> property_;
-
 };
-}
+}  // namespace world::state
 
-#endif //ARCH_ROGUELIKE_ENTITY_H
+#endif  // ARCH_ROGUELIKE_ENTITY_H

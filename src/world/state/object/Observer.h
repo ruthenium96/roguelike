@@ -29,14 +29,13 @@ class Observer {
     // Delete object.
     void deleteObject(Identity);
 
-
     // Counts number of Item with concrete Type in Player's Inventory
     size_t howManyItemsOfThisTypeHoldsPlayer(common::ItemType type) const;
     // Counts number of weared Item with concrete Type in Player's Inventory
     size_t countHowManyTimesItemIsWearedByPlayer(common::ItemType type) const;
 
-    bool operator==(const Observer &rhs) const;
-    bool operator!=(const Observer &rhs) const;
+    bool operator==(const Observer& rhs) const;
+    bool operator!=(const Observer& rhs) const;
 
   private:
     std::map<Identity, std::shared_ptr<AbstractObject>> identityObjectMap_;

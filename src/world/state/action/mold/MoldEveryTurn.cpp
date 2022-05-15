@@ -1,21 +1,19 @@
 #include "MoldEveryTurn.h"
-#include "MoldInteraction.h"
 #include "../../../RandomNumberGenerator.h"
 #include "../../object/concrete/Mold.h"
+#include "MoldInteraction.h"
 
 namespace world::state::action {
 
-MoldEveryTurn::MoldEveryTurn(const std::optional<Identity> &selfIdentity) : AbstractAction(
-        selfIdentity) {
+MoldEveryTurn::MoldEveryTurn(const std::optional<Identity>& selfIdentity) : AbstractAction(selfIdentity) {
     setProperty("every_turn", true);
 }
-
 
 ActionType MoldEveryTurn::getActionType() const {
     return ActionType::MOLD_EVERY_TURN;
 }
 
-bool MoldEveryTurn::precondition(const object::Observer &objectObserver, const action::Observer &actionObserver) {
+bool MoldEveryTurn::precondition(const object::Observer& objectObserver, const action::Observer& actionObserver) {
     auto moldObjectIdentity = getCorrespondingObjectIdentity().value();
     auto moldObject = objectObserver.getObject(moldObjectIdentity).value();
     auto moldCoordinate = moldObject->getCoordinate();
@@ -54,7 +52,7 @@ bool MoldEveryTurn::precondition(const object::Observer &objectObserver, const a
     return false;
 }
 
-void MoldEveryTurn::changeTarget(object::Observer &objectObserver, action::Observer &actionObserver) {
+void MoldEveryTurn::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
     auto moldObjectIdentity = getCorrespondingObjectIdentity().value();
     auto moldObject = objectObserver.getObject(moldObjectIdentity).value();
     auto moldCoordinate = moldObject->getCoordinate();
@@ -97,13 +95,15 @@ void MoldEveryTurn::changeTarget(object::Observer &objectObserver, action::Obser
     }
 }
 
-void MoldEveryTurn::grow(object::Observer &objectObserver, Observer &actionObserver,
+void MoldEveryTurn::grow(object::Observer& objectObserver,
+                         Observer& actionObserver,
                          common::Coordinate wantedCoordinate) {
     auto moldObjectIdentity = getCorrespondingObjectIdentity().value();
     auto moldObject = objectObserver.getObject(moldObjectIdentity).value();
     std::shared_ptr<AbstractAction> thisMoldInteraction = nullptr;
     for (auto& action : actionObserver.getActionsByCorrespondingObjectIdentity(moldObjectIdentity)) {
-        if (action->getProperty("interaction").has_value() && std::any_cast<bool>(action->getProperty("interaction").value())) {
+        if (action->getProperty("interaction").has_value() &&
+            std::any_cast<bool>(action->getProperty("interaction").value())) {
             thisMoldInteraction = action;
             break;
         }
@@ -142,4 +142,4 @@ void MoldEveryTurn::grow(object::Observer &objectObserver, Observer &actionObser
     actionObserver.addAction(cloneMoldInteraction);
 }
 
-}
+}  // namespace world::state::action

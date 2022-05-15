@@ -1,5 +1,5 @@
-#include <cassert>
 #include "PlayerWorldInteract.h"
+#include <cassert>
 
 namespace world::state::action {
 bool PlayerWorldInteract::precondition(const object::Observer& objectObserver, const action::Observer& actionObserver) {
@@ -20,7 +20,8 @@ void PlayerWorldInteract::changeTarget(object::Observer& objectObserver, action:
     auto allObjectActions = actionObserver.getActionsByCorrespondingObjectIdentity(interactableObjectIdentity);
     assert(!allObjectActions.empty());
     for (auto& action : allObjectActions) {
-        if (action->getProperty("interaction").has_value() && std::any_cast<bool>(action->getProperty("interaction").value())) {
+        if (action->getProperty("interaction").has_value() &&
+            std::any_cast<bool>(action->getProperty("interaction").value())) {
             action->changeTarget(objectObserver, actionObserver);
             return;
         }

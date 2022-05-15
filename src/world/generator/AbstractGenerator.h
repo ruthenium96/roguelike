@@ -1,12 +1,12 @@
 #ifndef ARCH_ROGUELIKE_ABSTRACTGENERATOR_H
 #define ARCH_ROGUELIKE_ABSTRACTGENERATOR_H
 
+#include "../state/Identity.h"
 #include "../state/action/AbstractAction.h"
 #include "../state/object/AbstractObject.h"
 #include "../state/object/Observer.h"
 #include "../state/object/concrete/Floor.h"
 #include "../state/object/concrete/Player.h"
-#include "../state/Identity.h"
 #include "serialization/Serializer.h"
 #include <memory>
 #include <vector>
@@ -39,7 +39,7 @@ class AbstractGenerator {
     void addNPC(common::Coordinate, std::vector<ObjectAndActions>&, std::array<float, 2> threshold);
     void addMold(common::Coordinate, std::vector<ObjectAndActions>&);
 
-private:
+  private:
     serialization::Serializer saver_;
     std::array<float, 1> artefactTypeProbability_ = {0.8};
     std::array<float, 2> NPCTypeProbability_ = {0.5, 0.1};

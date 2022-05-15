@@ -45,7 +45,7 @@ class DefaultStyle : public IStyle {
         {ObjectType::ARTEFACT, 'I'},
         {ObjectType::NPC, 'N'},
         {ObjectType::MOLD, '^'},
-        }};
+    }};
 
     const std::unordered_map<ItemType, char> item_styles_{{
         {ItemType::STICK, '|'},

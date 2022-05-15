@@ -1,9 +1,10 @@
-#include <cassert>
 #include "PlayerUIInteract.h"
+#include <cassert>
 
 namespace world::state::action {
 
-PlayerUIInteract::PlayerUIInteract(common::ItemType itemType, common::EquipmentPosition position) : AbstractAction(std::nullopt) {
+PlayerUIInteract::PlayerUIInteract(common::ItemType itemType, common::EquipmentPosition position)
+    : AbstractAction(std::nullopt) {
     setProperty("itemToWear", itemType);
     std::string str_position;
     if (position == common::ARMOR) {
@@ -19,33 +20,34 @@ PlayerUIInteract::PlayerUIInteract(common::ItemType itemType, common::EquipmentP
     setProperty("position", str_position);
 }
 
-bool PlayerUIInteract::precondition(const object::Observer &objectObserver, const Observer &actionObserver) {
+bool PlayerUIInteract::precondition(const object::Observer& objectObserver, const Observer& actionObserver) {
 
     auto player = objectObserver.getPlayer();
     auto str_position = std::any_cast<std::string>(getProperty("position").value());
     auto itemType = std::any_cast<common::ItemType>(getProperty("itemToWear").value());
 
-    if (player->getProperty(str_position).has_value()) { // unwear case
+    if (player->getProperty(str_position).has_value()) {  // unwear case
         // Unwear, if existed type equals wanted type
         auto existedItemType = std::any_cast<common::ItemType>(player->getProperty(str_position).value());
         return existedItemType == itemType;
-    } else { // wear case
-        return objectObserver.countHowManyTimesItemIsWearedByPlayer(itemType) < objectObserver.howManyItemsOfThisTypeHoldsPlayer(itemType);
+    } else {  // wear case
+        return objectObserver.countHowManyTimesItemIsWearedByPlayer(itemType) <
+               objectObserver.howManyItemsOfThisTypeHoldsPlayer(itemType);
     }
 }
 
-void PlayerUIInteract::changeTarget(object::Observer &objectObserver, Observer &actionObserver) {
+void PlayerUIInteract::changeTarget(object::Observer& objectObserver, Observer& actionObserver) {
     auto player = objectObserver.getPlayer();
     auto str_position = std::any_cast<std::string>(getProperty("position").value());
 
     if (player->getProperty(str_position).has_value()) {  // unwear item
         unwear(objectObserver);
-    } else { // wear item
+    } else {  // wear item
         wear(objectObserver);
     }
 }
 
-void PlayerUIInteract::wear(object::Observer &objectObserver) {
+void PlayerUIInteract::wear(object::Observer& objectObserver) {
     auto player = objectObserver.getPlayer();
     auto itemType = std::any_cast<common::ItemType>(getProperty("itemToWear").value());
     auto str_position = std::any_cast<std::string>(getProperty("position").value());
@@ -64,7 +66,7 @@ void PlayerUIInteract::wear(object::Observer &objectObserver) {
     }
 }
 
-void PlayerUIInteract::unwear(object::Observer &objectObserver) {
+void PlayerUIInteract::unwear(object::Observer& objectObserver) {
     auto player = objectObserver.getPlayer();
     auto itemType = std::any_cast<common::ItemType>(getProperty("itemToWear").value());
     auto str_position = std::any_cast<std::string>(getProperty("position").value());
@@ -87,4 +89,4 @@ ActionType PlayerUIInteract::getActionType() const {
     return ActionType::INSTANT_ACTION;
 }
 
-}
+}  // namespace world::state::action

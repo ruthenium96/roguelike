@@ -6,7 +6,8 @@
 namespace world::state::item {
 class Ring : public AbstractItem {
   public:
-    Ring(const Identity& itemIdentity, const Identity& objectHolderIdentity);;
+    Ring(const Identity& itemIdentity, const Identity& objectHolderIdentity);
+    ;
 
     common::ItemType getItemType() const override { return common::ItemType::RING; };
 };

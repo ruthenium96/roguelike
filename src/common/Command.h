@@ -1,9 +1,9 @@
 #pragma once
 
-#include <variant>
 #include "ItemType.h"
 #include "PlayerEquipment.h"
 #include "WorldUITransfer.h"
+#include <variant>
 
 // Trying to emulate healthy enums.
 namespace common {
@@ -39,54 +39,53 @@ struct Controller_Unknown {
 };
 
 struct Ignore {
-private:
+  private:
     bool dummyField_ = false;
 };
 
 struct Interact {
-private:
+  private:
     bool dummyField_ = false;
 };
 
 struct Controller_ChangeRegime {
-private:
+  private:
     bool dummyField_ = false;
 };
 
 struct UI_DropItem {
-private:
+  private:
     bool dummyField_ = false;
 };
 
 struct Controller_Exit {
-private:
+  private:
     bool dummyField_ = false;
 };
 
 struct Death {
-private:
+  private:
     bool dummyField_ = false;
 };
 
 // This class helps modules communicate each other.
 using Command = std::variant<
-        // Controller => Controller:
-        Controller_Unknown,
-        Controller_ChangeRegime,
-        Controller_Exit,
-        // Controller => World/UI
-        Move,
-        Interact,
-        // Controller => UI
-        UI_DropItem,
-        // UI => World
-        Ignore,
-        World_ApplyItem,
-        World_DropItem,
-        // World => Controller
-        Death,
-        // World => UI
-        WorldUITransfer
-        >;
+    // Controller => Controller:
+    Controller_Unknown,
+    Controller_ChangeRegime,
+    Controller_Exit,
+    // Controller => World/UI
+    Move,
+    Interact,
+    // Controller => UI
+    UI_DropItem,
+    // UI => World
+    Ignore,
+    World_ApplyItem,
+    World_DropItem,
+    // World => Controller
+    Death,
+    // World => UI
+    WorldUITransfer>;
 
 }  // namespace common

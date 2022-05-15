@@ -1,15 +1,14 @@
-#include <valarray>
 #include "AbstractNPC.h"
 #include "../instant/Move.h"
-
+#include <valarray>
 
 namespace world::state::action {
 
-AbstractNPC::AbstractNPC(const std::optional<Identity> &selfIdentity) : AbstractAction(selfIdentity) {
+AbstractNPC::AbstractNPC(const std::optional<Identity>& selfIdentity) : AbstractAction(selfIdentity) {
     setProperty("every_turn", std::make_any<bool>(true));
 }
 
-bool AbstractNPC::precondition(const object::Observer &objectObserver, const action::Observer &actionObserver) {
+bool AbstractNPC::precondition(const object::Observer& objectObserver, const action::Observer& actionObserver) {
     // true if NPC can see Player
     auto playerCoordinate = objectObserver.getPlayer()->getCoordinate();
     auto NPCIdentity = getCorrespondingObjectIdentity().value();
@@ -21,7 +20,7 @@ bool AbstractNPC::precondition(const object::Observer &objectObserver, const act
     return sqrt(dx * dx + dy * dy) < vision;
 }
 
-void AbstractNPC::death(object::Observer &objectObserver, Observer &actionObserver) {
+void AbstractNPC::death(object::Observer& objectObserver, Observer& actionObserver) {
     auto player = objectObserver.getPlayer();
     player->levelUp(10);
 
@@ -40,9 +39,10 @@ void AbstractNPC::death(object::Observer &objectObserver, Observer &actionObserv
     }
 }
 
-std::optional<std::shared_ptr<AbstractAction>>
-AbstractNPC::contructAndTryMove(const object::Observer &objectObserver, const Observer &actionObserver,
-                                int32_t dx_step_try, int32_t dy_step_try) {
+std::optional<std::shared_ptr<AbstractAction>> AbstractNPC::contructAndTryMove(const object::Observer& objectObserver,
+                                                                               const Observer& actionObserver,
+                                                                               int32_t dx_step_try,
+                                                                               int32_t dy_step_try) {
     auto NPCIdentity = getCorrespondingObjectIdentity().value();
 
     auto tryMove = std::make_shared<Move>(NPCIdentity, dx_step_try, dy_step_try);
@@ -53,4 +53,4 @@ AbstractNPC::contructAndTryMove(const object::Observer &objectObserver, const Ob
         return std::nullopt;
     }
 }
-}
+}  // namespace world::state::action

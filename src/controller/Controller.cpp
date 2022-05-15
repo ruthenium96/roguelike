@@ -113,10 +113,9 @@ void Controller::changeRegime(const common::WorldUITransfer& world_state) {
     } else {
         assert(0);
     }
-
 }
 
-const Controller::CurrentRegime &Controller::getCurrentRegime() const {
+const Controller::CurrentRegime& Controller::getCurrentRegime() const {
     return currentRegime_;
 }
 

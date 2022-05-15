@@ -1,41 +1,39 @@
 #include "AbstractGenerator.h"
-#include "../RandomNumberGenerator.h"
 #include "../../common/ItemType.h"
-#include "../state/action/internal/Poison.h"
+#include "../RandomNumberGenerator.h"
 #include "../state/action/internal/PickDropItem.h"
-#include "../state/action/npc/AggressiveNPC.h"
-#include "../state/action/npc/InactiveNPC.h"
-#include "../state/action/npc/CowardNPC.h"
-#include "../state/action/mold/MoldInteraction.h"
+#include "../state/action/internal/Poison.h"
 #include "../state/action/mold/MoldEveryTurn.h"
+#include "../state/action/mold/MoldInteraction.h"
+#include "../state/action/npc/AggressiveNPC.h"
+#include "../state/action/npc/CowardNPC.h"
+#include "../state/action/npc/InactiveNPC.h"
 #include "../state/item/concrete/Ring.h"
 #include "../state/item/concrete/Stick.h"
 #include "../state/object/concrete/Artefact.h"
-#include "../state/object/concrete/Wall.h"
-#include "../state/object/concrete/NPC.h"
 #include "../state/object/concrete/Mold.h"
+#include "../state/object/concrete/NPC.h"
+#include "../state/object/concrete/Wall.h"
 #include <random>
 
 namespace world::generator {
 
-void AbstractGenerator::addPlayer(common::Coordinate coordinate,
-                                  std::vector<ObjectAndActions>& answer) {
+void AbstractGenerator::addPlayer(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     ObjectAndActions player;
     auto playerIdentity = state::IdentityGenerator::getNewIdentity();
     // add Player object
     player.object = std::make_shared<state::object::Player>(playerIdentity);
     player.object->getCoordinate() = coordinate;
     // add Player actions
-//    auto actionIdentity = state::IdentityGenerator::getNewIdentity();
-//    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, -1, 100000);
-//    poisonAction->setCorrespondingObjectIdentity(playerIdentity);
-//    player.actions.push_back(poisonAction);
+    //    auto actionIdentity = state::IdentityGenerator::getNewIdentity();
+    //    auto poisonAction = std::make_shared<state::action::Poison>(actionIdentity, -1, 100000);
+    //    poisonAction->setCorrespondingObjectIdentity(playerIdentity);
+    //    player.actions.push_back(poisonAction);
     // ...
     answer.push_back(player);
 }
 
-void AbstractGenerator::addFloor(common::Coordinate coordinate,
-                                 std::vector<ObjectAndActions>& answer) {
+void AbstractGenerator::addFloor(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     // add Floor
     ObjectAndActions floor;
     floor.object = std::make_shared<state::object::Floor>(state::IdentityGenerator::getNewIdentity());
@@ -45,8 +43,7 @@ void AbstractGenerator::addFloor(common::Coordinate coordinate,
     answer.push_back(floor);
 }
 
-void AbstractGenerator::addWall(common::Coordinate coordinate,
-                                std::vector<ObjectAndActions>& answer) {
+void AbstractGenerator::addWall(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     // add Wall
     ObjectAndActions wall;
     wall.object = std::make_shared<state::object::Wall>(state::IdentityGenerator::getNewIdentity());
@@ -71,7 +68,8 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
     if (probability > threshold[0]) {
         artefact.object->getItems().push_back(std::make_unique<world::state::item::Ring>(itemIdentity, objectIdentity));
     } else {
-        artefact.object->getItems().push_back(std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
+        artefact.object->getItems().push_back(
+            std::make_unique<world::state::item::Stick>(itemIdentity, objectIdentity));
     }
 
     // add Artefact actions
@@ -84,8 +82,7 @@ void AbstractGenerator::addArtefact(common::Coordinate coordinate,
     answer.push_back(artefact);
 }
 
-void AbstractGenerator::addArtefact(common::Coordinate coordinate,
-                                    std::vector<ObjectAndActions>& answer) {
+void AbstractGenerator::addArtefact(common::Coordinate coordinate, std::vector<ObjectAndActions>& answer) {
     addArtefact(coordinate, answer, artefactTypeProbability_);
 }
 
@@ -138,8 +135,7 @@ void AbstractGenerator::addMold(common::Coordinate coordinate, std::vector<Objec
     answer.push_back(mold);
 }
 
-
-const serialization::Serializer &AbstractGenerator::getSaver() const {
+const serialization::Serializer& AbstractGenerator::getSaver() const {
     return saver_;
 }
 

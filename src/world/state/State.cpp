@@ -1,5 +1,5 @@
-#include <cassert>
 #include "State.h"
+#include <cassert>
 
 namespace world::state {
 
@@ -39,11 +39,11 @@ void State::applyEveryTurnInternalActions() {
     }
 }
 
-bool State::operator==(const State &rhs) const {
+bool State::operator==(const State& rhs) const {
     return std::tie(objectObserver_, actionObserver_) == std::tie(rhs.objectObserver_, rhs.actionObserver_);
 }
 
-bool State::operator!=(const State &rhs) const {
+bool State::operator!=(const State& rhs) const {
     return !(rhs == *this);
 }
 

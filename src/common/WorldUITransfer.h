@@ -1,11 +1,11 @@
 #ifndef ARCH_ROGUELIKE_WORLDUITRANSFER_H
 #define ARCH_ROGUELIKE_WORLDUITRANSFER_H
 
-#include <optional>
 #include "Inventory.h"
 #include "Map.h"
 #include "PlayerEquipment.h"
 #include "PlayerMetrics.h"
+#include <optional>
 
 namespace common {
 struct WorldUITransfer {

@@ -31,8 +31,7 @@ class UI {
     void drawDeath(const common::Death& death);
 
     // apply command from controller or world
-    common::Command apply_command(const common::Command& command,
-                                  const common::WorldUITransfer& world_state);
+    common::Command apply_command(const common::Command& command, const common::WorldUITransfer& world_state);
     // activate and deactivate UI regime
     // true if state was activated
     bool activate_state(const common::WorldUITransfer& world_state);

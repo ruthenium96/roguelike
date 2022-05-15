@@ -1,10 +1,10 @@
-#include <valarray>
 #include "AggressiveNPC.h"
+#include <valarray>
 
 namespace world::state::action {
-AggressiveNPC::AggressiveNPC(const std::optional<Identity> &selfIdentity) : AbstractNPC(selfIdentity) {}
+AggressiveNPC::AggressiveNPC(const std::optional<Identity>& selfIdentity) : AbstractNPC(selfIdentity) {}
 
-void AggressiveNPC::changeTarget(object::Observer &objectObserver, action::Observer &actionObserver) {
+void AggressiveNPC::changeTarget(object::Observer& objectObserver, action::Observer& actionObserver) {
     auto NPCIdentity = getCorrespondingObjectIdentity().value();
     auto NPCObject = objectObserver.getObject(NPCIdentity).value();
 
@@ -26,11 +26,10 @@ void AggressiveNPC::changeTarget(object::Observer &objectObserver, action::Obser
     }
 }
 
-std::optional<std::shared_ptr<AbstractAction>>
-AggressiveNPC::findDirection(const object::Observer &objectObserver,
-                             const Observer &actionObserver,
-                             int32_t dx_with_player,
-                             int32_t dy_with_player) {
+std::optional<std::shared_ptr<AbstractAction>> AggressiveNPC::findDirection(const object::Observer& objectObserver,
+                                                                            const Observer& actionObserver,
+                                                                            int32_t dx_with_player,
+                                                                            int32_t dy_with_player) {
     if (dx_with_player != 0) {
         int32_t dx_step_try = (dx_with_player > 0) ? -1 : 1;
         auto tryMove = contructAndTryMove(objectObserver, actionObserver, dx_step_try, 0);
@@ -52,4 +51,4 @@ ActionType AggressiveNPC::getActionType() const {
     return ActionType::AGRESSIVE_NPC;
 }
 
-}
+}  // namespace world::state::action
